@@ -204,7 +204,7 @@ function go(v){
     player.unMute();
     player.setVolume(100);
     player.playVideo();
-    try{ player.unloadModule('captions'); player.unloadModule('cc'); }catch(e){}
+    killCaptions();
     log('go '+v.id);
   }catch(e){ log('ERR '+e); }
   navigator.wakeLock?.request('screen').then(w=>wake=w).catch(()=>{});
@@ -250,6 +250,14 @@ function run(){
       $('#bye').classList.add('on');$('#clk').style.display='none';log('done');
       if(wake)wake.release().catch(()=>{});}
   },100);
+}
+
+function killCaptions(){
+  let n=0;
+  const t=setInterval(()=>{
+    try{ player.unloadModule('captions'); player.unloadModule('cc'); }catch(e){}
+    if(++n>=8) clearInterval(t);
+  },600);
 }
 
 function chime(){try{const a=new (window.AudioContext||window.webkitAudioContext)();
