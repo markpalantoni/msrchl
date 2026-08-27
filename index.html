@@ -42,6 +42,12 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 #bye p{font-size:27px;font-weight:700}#bye small{opacity:.5;font-size:15px}
 #again{margin-top:26px;padding:15px 30px;border-radius:16px;border:2px solid #2f2b3d;
   background:transparent;color:#f4f1ea;font-size:15px}
+#clk{position:fixed;top:0;right:0;z-index:5;border:0;background:transparent;
+  padding:16px 20px;min-width:96px;min-height:58px;color:#fff;
+  font:600 17px/1 ui-monospace,SFMono-Regular,monospace;text-align:right}
+#clk span{display:inline-block;padding:6px 11px;border-radius:11px;
+  background:#0009;opacity:0;transition:opacity .25s}
+#clk.on span{opacity:.8}
 #dbg{position:fixed;left:0;right:0;bottom:0;z-index:99;background:#000c;color:#7f8;
   font:11px/1.5 ui-monospace,monospace;padding:7px 10px;display:none;white-space:pre-wrap}
 #dbg.on{display:block}
@@ -56,6 +62,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 <button id=tap><div class=play>&#9654;</div><b id=tapt>Tap to start</b><small id=taps></small></button>
 <div id=stage>
   <div id=yt></div>
+  <button id=clk><span>--:--</span></button>
   <div id=bye>
     <div class=wave>&#128075;</div>
     <p>All done!<br>Bye bye, Ms Rachel.</p>
@@ -143,6 +150,15 @@ function getPos(id){ try{ return parseFloat(localStorage.getItem(PK(id))) || 0; 
 function setPos(id,t){ try{ localStorage.setItem(PK(id), String(Math.max(0,t))); }catch(e){} }
 function fmt(t){ const m=Math.floor(t/60), sc=Math.floor(t%60); return m+':'+String(sc).padStart(2,'0'); }
 
+// ---- countdown: off by default, tap the top-right corner to toggle.
+// The corner stays tappable while hidden so it can be brought back.
+let clockOn = (()=>{ try{ return Q.get('clock')==='1' || localStorage.getItem('msrchl:clock')==='1'; }catch(e){ return false; } })();
+function paintClock(){ $('#clk').classList.toggle('on', clockOn); }
+$('#clk').onclick = e => { e.stopPropagation(); clockOn=!clockOn;
+  try{ localStorage.setItem('msrchl:clock', clockOn?'1':'0'); }catch(e){}
+  paintClock(); };
+paintClock();
+
 // ---- picker UI
 MINS.forEach(m=>{const b=document.createElement('button');
   b.className='chip'+(m.t?' test':'')+(m.s===chosen?' sel':'');b.textContent=m.l;
@@ -223,10 +239,12 @@ function run(){
       const v0=player.getVolume(),t0=Date.now();
       const vf=setInterval(()=>{const k=Math.min(1,(Date.now()-t0)/(FADE*1000));
         player.setVolume(Math.round(v0*(1-k)));if(k>=1)clearInterval(vf)},80);}
+    const secsLeft=Math.max(0,Math.ceil(left));
+    $('#clk').firstChild.textContent=Math.floor(secsLeft/60)+':'+String(secsLeft%60).padStart(2,'0');
     if(cur&&Math.floor(left)%5===0) save();
     if(left<=0){clearInterval(ticker); save();
       try{player.pauseVideo();player.setVolume(0)}catch(e){}
-      $('#bye').classList.add('on');log('done');
+      $('#bye').classList.add('on');$('#clk').style.display='none';log('done');
       if(wake)wake.release().catch(()=>{});}
   },100);
 }
