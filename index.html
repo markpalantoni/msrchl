@@ -189,15 +189,18 @@ function go(v){
     log('go '+v.id);
   }catch(e){ log('ERR '+e); }
   navigator.wakeLock?.request('screen').then(w=>wake=w).catch(()=>{});
-  // Safety net: if it did not actually start, put the tap target back rather
-  // than leaving a still frame on screen.
-  setTimeout(()=>{
-    const st = player&&player.getPlayerState?player.getPlayerState():-99;
-    log('check state '+st);
-    if(st!==1){ $('#stage').classList.remove('on'); $('#tapt').textContent='Tap again to play';
+  // Safety net: poll briefly for playback. States 1 (playing) and 3 (buffering)
+  // both mean it took; only a sustained failure puts the tap target back.
+  let waited=0;
+  const probe=setInterval(()=>{
+    let st=-99; try{ st=player.getPlayerState(); }catch(e){}
+    waited+=300;
+    if(st===1||st===3){ clearInterval(probe); log('playing (state '+st+')'); run(); return; }
+    if(waited>=6000){ clearInterval(probe); log('no playback, state '+st);
+      $('#stage').classList.remove('on');
+      $('#tapt').textContent='Tap again to play';
       $('#tap').classList.add('on'); }
-    else run();
-  },1800);
+  },300);
 }
 
 function run(){
