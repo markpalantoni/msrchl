@@ -135,6 +135,14 @@ let player=null, ready=false, ticker=null, pending=null, wake=null;
 function log(m){ if(!DEBUG) return; const d=$('#dbg'); d.classList.add('on');
   d.textContent=(new Date().toLocaleTimeString()+'  '+m+'\n'+d.textContent).slice(0,900); }
 
+
+// ---- resume: remember where each video stopped so repeat plays continue
+// rather than restarting. Wrapped because storage throws in private mode.
+const PK = id => 'msrchl:pos:' + id;
+function getPos(id){ try{ return parseFloat(localStorage.getItem(PK(id))) || 0; }catch(e){ return 0; } }
+function setPos(id,t){ try{ localStorage.setItem(PK(id), String(Math.max(0,t))); }catch(e){} }
+function fmt(t){ const m=Math.floor(t/60), sc=Math.floor(t%60); return m+':'+String(sc).padStart(2,'0'); }
+
 // ---- picker UI
 MINS.forEach(m=>{const b=document.createElement('button');
   b.className='chip'+(m.t?' test':'')+(m.s===chosen?' sel':'');b.textContent=m.l;
@@ -163,7 +171,8 @@ function arm(v){
   pending=v;
   $('#pick').classList.remove('on');
   $('#tapt').textContent='Tap to start';
-  $('#taps').textContent=v.t;
+  const p=getPos(v.id);
+  $('#taps').textContent = v.t + (p>5 ? '  \u00b7  resuming at '+fmt(p) : '');
   $('#tap').classList.add('on');
 }
 $('#tap').onclick=()=>{ if(pending) go(pending); };
@@ -173,7 +182,7 @@ function go(v){
   $('#tap').classList.remove('on');
   $('#stage').classList.add('on');
   try{
-    player.loadVideoById(v.id);
+    player.loadVideoById({videoId:v.id, startSeconds:getPos(v.id)});
     player.unMute();
     player.setVolume(100);
     player.playVideo();
@@ -192,6 +201,12 @@ function go(v){
 }
 
 function run(){
+  const cur = pending;
+  // If the last session left us near the end, start the next one over.
+  const save = () => { try{
+      const t=player.getCurrentTime(), d=player.getDuration();
+      setPos(cur.id, (d && t > d-30) ? 0 : t);
+    }catch(e){} };
   const end=Date.now()+chosen*1000;
   const WARN=Math.min(20,Math.max(3,chosen*0.15));
   const FADE=Math.min(6,Math.max(2,chosen*0.25));
@@ -205,7 +220,8 @@ function run(){
       const v0=player.getVolume(),t0=Date.now();
       const vf=setInterval(()=>{const k=Math.min(1,(Date.now()-t0)/(FADE*1000));
         player.setVolume(Math.round(v0*(1-k)));if(k>=1)clearInterval(vf)},80);}
-    if(left<=0){clearInterval(ticker);
+    if(cur&&Math.floor(left)%5===0) save();
+    if(left<=0){clearInterval(ticker); save();
       try{player.pauseVideo();player.setVolume(0)}catch(e){}
       $('#bye').classList.add('on');log('done');
       if(wake)wake.release().catch(()=>{});}
@@ -220,7 +236,7 @@ function chime(){try{const a=new (window.AudioContext||window.webkitAudioContext
 
 // ---- entry: deep link goes straight to the tap target, otherwise show picker
 const dl = wantedVideo();
-if(dl){ arm(dl); $('#taps').textContent=dl.t+'  ·  '+Math.round(chosen)+'s'; }
+if(dl){ arm(dl); }
 else { $('#pick').classList.add('on'); }
 if(DEBUG) log('params m='+Q.get('m')+' s='+Q.get('s')+' v='+Q.get('v')+' -> '+chosen+'s');
 </script>
