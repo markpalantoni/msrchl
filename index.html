@@ -150,7 +150,7 @@ $('#again').onclick=()=>location.reload();
 // iOS blocks playback started from an async callback; it only honours a gesture.
 function onYouTubeIframeAPIReady(){
   player=new YT.Player('yt',{videoId:VIDEOS[0].id,
-    playerVars:{playsinline:1,autoplay:0,controls:0,disablekb:1,fs:0,rel:0,modestbranding:1,iv_load_policy:3},
+    playerVars:{playsinline:1,autoplay:0,controls:0,disablekb:1,fs:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0},
     events:{
       onReady:()=>{ready=true;player.mute();log('player ready');},
       onStateChange:e=>log('state '+e.data)
