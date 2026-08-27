@@ -42,6 +42,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 #bye p{font-size:27px;font-weight:700}#bye small{opacity:.5;font-size:15px}
 #again{margin-top:26px;padding:15px 30px;border-radius:16px;border:2px solid #2f2b3d;
   background:transparent;color:#f4f1ea;font-size:15px}
+#veil{position:absolute;inset:0;z-index:3;background:transparent}
 #clk{position:fixed;top:0;right:0;z-index:5;border:0;background:transparent;
   padding:16px 20px;min-width:96px;min-height:58px;color:#fff;
   font:600 17px/1 ui-monospace,SFMono-Regular,monospace;text-align:right}
@@ -62,6 +63,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 <button id=tap><div class=play>&#9654;</div><b id=tapt>Tap to start</b><small id=taps></small></button>
 <div id=stage>
   <div id=yt></div>
+  <div id=veil></div>
   <button id=clk><span>--:--</span></button>
   <div id=bye>
     <div class=wave>&#128075;</div>
@@ -202,6 +204,7 @@ function go(v){
     player.unMute();
     player.setVolume(100);
     player.playVideo();
+    try{ player.unloadModule('captions'); player.unloadModule('cc'); }catch(e){}
     log('go '+v.id);
   }catch(e){ log('ERR '+e); }
   navigator.wakeLock?.request('screen').then(w=>wake=w).catch(()=>{});
