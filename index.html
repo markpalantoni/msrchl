@@ -9,8 +9,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#12101a;color:#f4f1ea;
   font:16px/1.4 ui-rounded,"SF Pro Rounded",system-ui,sans-serif;overscroll-behavior:none}
-body{display:flex;flex-direction:column}
-#pick{flex:1;overflow-y:auto;padding:24px;display:none}
+#pick{padding:24px;display:none}
 #pick.on{display:block}
 h1{font-size:26px;font-weight:700;margin-bottom:4px}
 .sub{opacity:.55;font-size:15px;margin-bottom:22px}
@@ -28,27 +27,35 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 #stage{position:fixed;inset:0;display:none;background:#000}
 #stage.on{display:block}
 #yt{position:absolute;inset:0;width:100%;height:100%;transition:opacity 6s ease-in-out}
-#veil{position:absolute;inset:0}
+#tap{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:22px;background:#12101a;z-index:20;padding:30px;text-align:center;border:0;color:#f4f1ea;width:100%}
+#tap.on{display:flex}
+#tap .play{width:132px;height:132px;border-radius:50%;background:#f0b429;color:#2a1f00;
+  font-size:54px;display:flex;align-items:center;justify-content:center;padding-left:10px}
+#tap b{font-size:25px}#tap small{opacity:.5;font-size:15px;max-width:22em}
 #bye{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:18px;background:#12101a;opacity:0;pointer-events:none;
-  transition:opacity 2.4s ease-in;text-align:center;padding:30px}
+  transition:opacity 2.4s ease-in;text-align:center;padding:30px;z-index:10}
 #bye.on{opacity:1;pointer-events:auto}
 #bye .wave{font-size:76px;animation:w 2.2s ease-in-out infinite}
 @keyframes w{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(18deg)}}
-#bye p{font-size:27px;font-weight:700}
-#bye small{opacity:.5;font-size:15px}
+#bye p{font-size:27px;font-weight:700}#bye small{opacity:.5;font-size:15px}
 #again{margin-top:26px;padding:15px 30px;border-radius:16px;border:2px solid #2f2b3d;
   background:transparent;color:#f4f1ea;font-size:15px}
+#dbg{position:fixed;left:0;right:0;bottom:0;z-index:99;background:#000c;color:#7f8;
+  font:11px/1.5 ui-monospace,monospace;padding:7px 10px;display:none;white-space:pre-wrap}
+#dbg.on{display:block}
 </style></head><body>
-<div id=pick class=on>
+<div id=pick>
   <h1>Ms Rachel</h1>
   <div class=sub>Pick how long, then pick a video.</div>
   <div class=mins id=mins></div>
   <button class=big id=surprise>Surprise me</button>
   <div class=grid id=grid></div>
 </div>
+<button id=tap><div class=play>&#9654;</div><b id=tapt>Tap to start</b><small id=taps></small></button>
 <div id=stage>
-  <div id=yt></div><div id=veil></div>
+  <div id=yt></div>
   <div id=bye>
     <div class=wave>&#128075;</div>
     <p>All done!<br>Bye bye, Ms Rachel.</p>
@@ -56,6 +63,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
     <button id=again>Grown-ups: start again</button>
   </div>
 </div>
+<div id=dbg></div>
 <script>
 const VIDEOS = [
   {id:"7K6YSmf0HdU", t:"Baby Music Class (full class)", len:"31:03"},
@@ -104,45 +112,94 @@ const VIDEOS = [
   {id:"kBuKdHQYPps", t:"Ms Rachel Halloween - Wheels on the Bus", len:"40:31"},
 ];
 const MINS=[{s:10,l:"10 sec",t:1},{s:120,l:"2 min"},{s:180,l:"3 min"},{s:240,l:"4 min"},{s:300,l:"5 min"}];
-let chosen=180, player=null, ticker=null;
 const $=s=>document.querySelector(s);
+const Q=new URLSearchParams(location.search);
 
+// ---- deep-link params: ?m=3 (minutes) ?s=10 (seconds) ?v=random|<id> ?debug=1
+const DEBUG = Q.has('debug');
+function wantedSeconds(){
+  if(Q.has('s')) return Math.max(3, parseInt(Q.get('s'),10)||0);
+  if(Q.has('m')) return Math.max(3, (parseFloat(Q.get('m'))||0)*60);
+  return null;
+}
+function wantedVideo(){
+  const v=Q.get('v');
+  if(!v) return null;
+  if(v==='random'||v==='any') return VIDEOS[Math.floor(Math.random()*VIDEOS.length)];
+  return VIDEOS.find(x=>x.id===v) || {id:v,t:v};
+}
+
+let chosen = wantedSeconds() || 180;
+let player=null, ready=false, ticker=null, pending=null, wake=null;
+
+function log(m){ if(!DEBUG) return; const d=$('#dbg'); d.classList.add('on');
+  d.textContent=(new Date().toLocaleTimeString()+'  '+m+'\n'+d.textContent).slice(0,900); }
+
+// ---- picker UI
 MINS.forEach(m=>{const b=document.createElement('button');
   b.className='chip'+(m.t?' test':'')+(m.s===chosen?' sel':'');b.textContent=m.l;
   b.onclick=()=>{chosen=m.s;[...$('#mins').children].forEach(c=>c.classList.remove('sel'));b.classList.add('sel')};
   $('#mins').appendChild(b)});
-
 VIDEOS.forEach(v=>{const b=document.createElement('button');b.className='card';
-  b.innerHTML=`<img loading=lazy src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt=""><span>${v.t}</span>`;
-  b.onclick=()=>start(v.id);$('#grid').appendChild(b)});
-$('#surprise').onclick=()=>start(VIDEOS[Math.floor(Math.random()*VIDEOS.length)].id);
+  b.innerHTML='<img loading=lazy src="https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg" alt=""><span>'+v.t+'</span>';
+  b.onclick=()=>arm(v);$('#grid').appendChild(b)});
+$('#surprise').onclick=()=>arm(VIDEOS[Math.floor(Math.random()*VIDEOS.length)]);
 $('#again').onclick=()=>location.reload();
 
-// Gentle two-note chime, synthesized so there are no audio assets to load.
-function chime(){try{const a=new (window.AudioContext||window.webkitAudioContext)();
-  [[880,0],[660,.28]].forEach(([f,d])=>{const o=a.createOscillator(),g=a.createGain();
-    o.type='sine';o.frequency.value=f;o.connect(g);g.connect(a.destination);
-    const t=a.currentTime+d;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.22,t+.05);
-    g.gain.exponentialRampToValueAtTime(.001,t+.9);o.start(t);o.stop(t+1)})}catch(e){}}
+// ---- pre-warm the player at load so playVideo() can run inside a real tap.
+// iOS blocks playback started from an async callback; it only honours a gesture.
+function onYouTubeIframeAPIReady(){
+  player=new YT.Player('yt',{videoId:VIDEOS[0].id,
+    playerVars:{playsinline:1,autoplay:0,controls:0,disablekb:1,fs:0,rel:0,modestbranding:1,iv_load_policy:3},
+    events:{
+      onReady:()=>{ready=true;player.mute();log('player ready');},
+      onStateChange:e=>log('state '+e.data)
+    }});
+}
+window.onYouTubeIframeAPIReady=onYouTubeIframeAPIReady;
 
-let wake=null;
-async function keepAwake(){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}
+// arm = choose a video and show the one tap iOS requires
+function arm(v){
+  pending=v;
+  $('#pick').classList.remove('on');
+  $('#tapt').textContent='Tap to start';
+  $('#taps').textContent=v.t;
+  $('#tap').classList.add('on');
+}
+$('#tap').onclick=()=>{ if(pending) go(pending); };
 
-function start(id){
-  $('#pick').classList.remove('on');$('#stage').classList.add('on');keepAwake();
-  player=new YT.Player('yt',{videoId:id,
-    playerVars:{playsinline:1,autoplay:1,controls:0,disablekb:1,fs:0,rel:0,modestbranding:1,iv_load_policy:3},
-    events:{onReady:e=>{e.target.setVolume(100);e.target.playVideo();run()}}});
+// go() runs synchronously inside the tap. That is what makes iOS allow sound.
+function go(v){
+  $('#tap').classList.remove('on');
+  $('#stage').classList.add('on');
+  try{
+    player.loadVideoById(v.id);
+    player.unMute();
+    player.setVolume(100);
+    player.playVideo();
+    log('go '+v.id);
+  }catch(e){ log('ERR '+e); }
+  navigator.wakeLock?.request('screen').then(w=>wake=w).catch(()=>{});
+  // Safety net: if it did not actually start, put the tap target back rather
+  // than leaving a still frame on screen.
+  setTimeout(()=>{
+    const st = player&&player.getPlayerState?player.getPlayerState():-99;
+    log('check state '+st);
+    if(st!==1){ $('#stage').classList.remove('on'); $('#tapt').textContent='Tap again to play';
+      $('#tap').classList.add('on'); }
+    else run();
+  },1800);
 }
 
 function run(){
   const end=Date.now()+chosen*1000;
-  const WARN=Math.min(20,Math.max(3,chosen*0.15));   // heads-up before the fade
-  const FADE=Math.min(6,Math.max(2,chosen*0.25));    // audio+picture fade
+  const WARN=Math.min(20,Math.max(3,chosen*0.15));
+  const FADE=Math.min(6,Math.max(2,chosen*0.25));
   let warned=false,fading=false;
+  clearInterval(ticker);
   ticker=setInterval(()=>{
     const left=(end-Date.now())/1000;
-    if(!warned&&left<=WARN){warned=true;chime();}
+    if(!warned&&left<=WARN){warned=true;chime();log('chime');}
     if(!fading&&left<=FADE){fading=true;
       $('#yt').style.transitionDuration=FADE+'s';$('#yt').style.opacity=0;
       const v0=player.getVolume(),t0=Date.now();
@@ -150,10 +207,22 @@ function run(){
         player.setVolume(Math.round(v0*(1-k)));if(k>=1)clearInterval(vf)},80);}
     if(left<=0){clearInterval(ticker);
       try{player.pauseVideo();player.setVolume(0)}catch(e){}
-      $('#bye').classList.add('on');
+      $('#bye').classList.add('on');log('done');
       if(wake)wake.release().catch(()=>{});}
   },100);
 }
+
+function chime(){try{const a=new (window.AudioContext||window.webkitAudioContext)();
+  [[880,0],[660,.28]].forEach(([f,d])=>{const o=a.createOscillator(),g=a.createGain();
+    o.type='sine';o.frequency.value=f;o.connect(g);g.connect(a.destination);
+    const t=a.currentTime+d;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.22,t+.05);
+    g.gain.exponentialRampToValueAtTime(.001,t+.9);o.start(t);o.stop(t+1)})}catch(e){}}
+
+// ---- entry: deep link goes straight to the tap target, otherwise show picker
+const dl = wantedVideo();
+if(dl){ arm(dl); $('#taps').textContent=dl.t+'  ·  '+Math.round(chosen)+'s'; }
+else { $('#pick').classList.add('on'); }
+if(DEBUG) log('params m='+Q.get('m')+' s='+Q.get('s')+' v='+Q.get('v')+' -> '+chosen+'s');
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
 </body></html>
