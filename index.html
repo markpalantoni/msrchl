@@ -142,7 +142,7 @@ const VIDEOS = [
   {id:"yBj9Qlpwjcs", t:"Learn Words and Colors for Toddlers", len:"30:16"},
   {id:"kBuKdHQYPps", t:"Ms Rachel Halloween - Wheels on the Bus", len:"40:31"},
 ];
-const MINS=[{s:10,l:"10 sec",t:1},{s:300,l:"5 min"},{s:600,l:"10 min"},{s:1800,l:"30 min"}];
+const MINS=[{s:120,l:"2 min"},{s:180,l:"3 min"},{s:300,l:"5 min"}];
 const WIND=20;
 const $=s=>document.querySelector(s);
 const Q=new URLSearchParams(location.search);
@@ -159,7 +159,7 @@ function wantedVideo(){
   return VIDEOS.find(x=>x.id===v)||{id:v,t:v};
 }
 
-let chosen=wantedSeconds()||1800;
+let chosen=wantedSeconds()||300;
 let player=null,ticker=null,pending=null,wake=null,endAt=0,winding=false;
 
 function log(m){ if(!DEBUG) return; const d=$('#dbg'); d.classList.add('on');
@@ -268,8 +268,10 @@ function scatterMotes(){
 }
 
 $('#cTR').onclick=()=>{ log('corner TR'); windDown(); };
-$('#cBR').onclick=()=>{ if(winding) return; endAt=Date.now()+(60+WIND)*1000;
-  log('corner BR: wind-down starts in 60s'); };
+// Back to the picker. A reload to the bare path is the cleanest reset: it
+// drops any deep-link params and clears player, timer and wind-down state.
+$('#cBR').onclick=()=>{ save(); log('corner BR: back to picker');
+  location.href=location.pathname; };
 $('#cTL').onclick=()=>{ clockOn=!clockOn;
   try{ localStorage.setItem('msrchl:clock',clockOn?'1':'0'); }catch(e){}
   paintClock(); log('corner TL: clock '+clockOn); };
