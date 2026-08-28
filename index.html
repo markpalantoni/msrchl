@@ -238,6 +238,7 @@ function run(){
 
 function windDown(){
   if(winding) return; winding=true;
+  endAt=Date.now()+WIND*1000;   // clock should count the wind-down, not the session
   log('wind-down');
   scatterMotes();
   const t0=Date.now(), v0=(()=>{ try{ return player.getVolume(); }catch(e){ return 100; } })();
