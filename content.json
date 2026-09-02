@@ -1,5 +1,5 @@
 {
-  "_readme": "Edit this file to change what the app shows. Each video is listed once with a provider and any number of topics. The app filters by provider, topic, or both. 'defaults' sets what the bare URL opens ('all' = no filter).",
+  "_readme": "Edit this file to change what the app shows. Each video is listed once with a provider and any number of topics; the app filters by provider, topic, or both. Sesame Street entries are pre-1995 only. 'src' notes official vs fan upload - fan uploads of classic material can be taken down, so a dead thumbnail means re-sourcing it.",
   "defaults": {
     "provider": "all",
     "topic": "all"
@@ -10,8 +10,8 @@
       "name": "Ms Rachel"
     },
     {
-      "id": "sesame",
-      "name": "Sesame Street"
+      "id": "sesame-classic",
+      "name": "Classic Sesame Street"
     }
   ],
   "topics": [
@@ -413,428 +413,480 @@
       "provider": "ms-rachel",
       "topics": []
     },
-    "Su1hnvQP4AI": {
-      "t": "Time for School! ABC's & 123's with Elmo",
-      "len": "1:03:51",
-      "provider": "sesame",
+    "z3vurvhLCzA": {
+      "t": "Episode 0158 (1970)",
+      "len": "54:14",
+      "provider": "sesame-classic",
       "topics": [
-        "counting",
-        "letters",
-        "music",
         "preschool"
-      ]
+      ],
+      "src": "fan"
     },
-    "bYLQW4_2UzY": {
-      "t": "Letters and Numbers with Elmo & Friends",
-      "len": "1:16:49",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "letters",
-        "preschool"
-      ]
-    },
-    "40OgmZj1rv8": {
-      "t": "Farm Songs with Elmo & Friends",
-      "len": "1:45:21",
-      "provider": "sesame",
-      "topics": [
-        "animals",
-        "music",
-        "preschool"
-      ]
-    },
-    "dcWYqrpx3Nk": {
-      "t": "New ABC Songs with Elmo & Friends",
-      "len": "24:03",
-      "provider": "sesame",
-      "topics": [
-        "letters",
-        "music",
-        "preschool"
-      ]
-    },
-    "Ksd59Te9ZEo": {
-      "t": "Learn Shapes with Elmo & Friends",
-      "len": "44:03",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "colors",
-        "preschool"
-      ]
-    },
-    "Ntog0BlwTYU": {
-      "t": "Animal Nursery Rhymes with Elmo and Friends",
-      "len": "1:00:38",
-      "provider": "sesame",
-      "topics": [
-        "animals",
-        "music",
-        "preschool"
-      ]
-    },
-    "iaidVGM27TU": {
-      "t": "Songs About Colors with Elmo & Friends",
-      "len": "53:39",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "colors",
-        "preschool"
-      ]
-    },
-    "Mhpt4FUheT0": {
-      "t": "Elmo's Letter & Number of the Day Song",
-      "len": "40:25",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "letters",
-        "music"
-      ]
-    },
-    "0ll7MVpDJbQ": {
-      "t": "Songs About Friendship with Abby & Elmo",
-      "len": "31:14",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "I3MOtV7J82o": {
-      "t": "Number of the Day Song with Elmo & Puppy - Count to 20",
-      "len": "23:32",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "music"
-      ]
-    },
-    "C_Qfr56WG48": {
-      "t": "Time to Count with Elmo and Friends",
-      "len": "2:41:58",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "preschool"
-      ]
-    },
-    "ECRFNwH_ZGI": {
-      "t": "Got To Go and MORE Music with Elmo & Friends",
-      "len": "17:33",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "Lt0Uy0Av02A": {
-      "t": "Make Music with Elmo & Friends",
-      "len": "2:12:10",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "XNT5J_h4iSs": {
-      "t": "Count to 10 with Elmo and Abby",
-      "len": "38:09",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "music"
-      ]
-    },
-    "U8cWhTW7oYM": {
-      "t": "Let's Dance with Elmo & Friends",
-      "len": "1:42:11",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "l1Ioh83gwQc": {
-      "t": "Do the Propeller & MORE Dance Songs",
-      "len": "54:21",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "iBpErs0DEy8": {
-      "t": "Party Songs with DJ Grover",
-      "len": "17:32",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "xCrU5MvKQDE": {
-      "t": "Farm Songs with Farmer Elmo",
-      "len": "20:29",
-      "provider": "sesame",
-      "topics": [
-        "animals",
-        "music"
-      ]
-    },
-    "GonnPOnzoA4": {
-      "t": "Nursery Rhymes with Elmo and Friends",
-      "len": "2:12:09",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "75-c7694BWI": {
-      "t": "Elmo's ABCs - Alphabet Songs for Kids",
-      "len": "1:33:13",
-      "provider": "sesame",
-      "topics": [
-        "letters",
-        "music"
-      ]
-    },
-    "6zuyNmIkEUc": {
-      "t": "Move Your Body with Elmo & Friends",
-      "len": "58:03",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "zAUKRunzl1g": {
-      "t": "Elmo Searches for Missing Letters",
-      "len": "1:42:10",
-      "provider": "sesame",
-      "topics": [
-        "letters",
-        "music"
-      ]
-    },
-    "ssb5urAPi34": {
-      "t": "20 Nursery Rhymes with Elmo & Friends",
-      "len": "45:27",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "FDnMAaWOWLA": {
-      "t": "Valentine's Day Songs with Elmo",
-      "len": "28:59",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "M8qQUjm47i8": {
-      "t": "Elmo Learns About Animals - Chickens + Dogs",
-      "len": "51:24",
-      "provider": "sesame",
-      "topics": [
-        "animals",
-        "preschool"
-      ]
-    },
-    "nj20FR7Z_yY": {
-      "t": "10 Party Songs with Elmo & Friends",
-      "len": "25:26",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "5z98X1IzLik": {
-      "t": "The Letter C Mystery & Alphabet Learning",
-      "len": "51:24",
-      "provider": "sesame",
-      "topics": [
-        "letters",
-        "preschool"
-      ]
-    },
-    "TkMISJ-tM1g": {
-      "t": "Good Morning Songs with Elmo and Friends",
-      "len": "14:01",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "rOt_s0vlCrk": {
-      "t": "Let's Count Kitties with Elmo and Friends",
-      "len": "1:16:49",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "preschool"
-      ]
-    },
-    "ojTvHD0qfqo": {
-      "t": "Winter Holiday Songs with Elmo and Friends",
-      "len": "41:48",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "7mZF_-lr-8c": {
-      "t": "Elmo Searches for Letters and Numbers",
-      "len": "51:24",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "letters"
-      ]
-    },
-    "zOOPdmPNcG4": {
-      "t": "Animal Songs and Stories with Elmo",
-      "len": "35:15",
-      "provider": "sesame",
-      "topics": [
-        "animals",
-        "music"
-      ]
-    },
-    "1I32RzPn6Xk": {
-      "t": "Elmo Songs About Friendship",
-      "len": "57:34",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "1l8fEpxZXgw": {
-      "t": "The Number of the Day is 12",
-      "len": "14:03",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "music"
-      ]
-    },
-    "ZbrV-EYWGuI": {
-      "t": "Elmo's World - Learn about the Farm",
-      "len": "35:08",
-      "provider": "sesame",
-      "topics": [
-        "animals",
-        "preschool"
-      ]
-    },
-    "8Dom9-DeIN8": {
-      "t": "Old MacElmo and MORE Farm Songs",
-      "len": "1:16:49",
-      "provider": "sesame",
-      "topics": [
-        "animals",
-        "music"
-      ]
-    },
-    "vDXdg7Mmt_U": {
-      "t": "Counting is Fun with Elmo",
-      "len": "1:01:22",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "music"
-      ]
-    },
-    "Nhc0hGFqtlw": {
-      "t": "Summer Camp Fun with Elmo and Friends",
-      "len": "1:45:45",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "O5FsMTnmfkI": {
-      "t": "Summer Party Songs with Elmo & Friends",
-      "len": "1:16:44",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "MNz39_Hf7HM": {
-      "t": "A Playdate with Elmo - Food, Animals, and Toys",
-      "len": "10:17",
-      "provider": "sesame",
-      "topics": [
-        "animals",
-        "preschool"
-      ]
-    },
-    "RR6JymgAuDk": {
-      "t": "Elmo's World ABCs - Arts & Crafts, Birthdays, Counting",
-      "len": "15:13",
-      "provider": "sesame",
-      "topics": [
-        "counting",
-        "letters"
-      ]
-    },
-    "QI1UPP7TPWE": {
-      "t": "Happy and You Know It Songs with Elmo",
-      "len": "21:12",
-      "provider": "sesame",
-      "topics": [
-        "music",
-        "preschool"
-      ]
-    },
-    "Oxd-IjhPgP4": {
-      "t": "Let's Learn the Alphabet with Elmo and Friends",
-      "len": "35:45",
-      "provider": "sesame",
-      "topics": [
-        "letters",
-        "preschool"
-      ]
-    },
-    "TZEObQidVpg": {
-      "t": "Elmo's Animal ABC's Compilation",
+    "dm2OGsEVTlc": {
+      "t": "Episode 594 (1974)",
       "len": "57:53",
-      "provider": "sesame",
+      "provider": "sesame-classic",
       "topics": [
-        "letters",
-        "animals"
-      ]
+        "preschool"
+      ],
+      "src": "fan"
     },
-    "tym2p4UZIso": {
-      "t": "Learn Green! Songs with Elmo and Oscar the Grouch",
-      "len": "57:56",
-      "provider": "sesame",
+    "F5n1I-jjvtc": {
+      "t": "Episode 1246 (1979)",
+      "len": "58:52",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "blVwmb4iC3w": {
+      "t": "Episode 1454 (1980)",
+      "len": "58:54",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "ZTIrlyEQDFQ": {
+      "t": "Episode 1459 (1980)",
+      "len": "1:00:09",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "M4NXCrxpugQ": {
+      "t": "Episode 1439 (1980)",
+      "len": "59:29",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "_I8QYRV6sbM": {
+      "t": "Episode 2033 (1985)",
+      "len": "56:52",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "7mDJbzXPORw": {
+      "t": "Episode 2405 (1988)",
+      "len": "58:45",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "YjxcgeYUzE8": {
+      "t": "Episode 1 (1969)",
+      "len": "57:07",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "BgCVhH7Ma_8": {
+      "t": "Cookie Monster Makes Grouchy Food",
+      "len": "57:35",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "4g0c8wM3bk8": {
+      "t": "Big Bird's Beach Plans",
+      "len": "58:41",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "nIw8LpsiA6o": {
+      "t": "Grover's Snow Friend",
+      "len": "57:45",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "3DJidaNnWlk": {
+      "t": "Apple Monster Visits",
+      "len": "55:32",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "va9N_PNimvA": {
+      "t": "Mister Rogers Visits Sesame Street",
+      "len": "56:45",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "YJZxPCk7rqI": {
+      "t": "Sing Along in Bert and Ernie's Bathroom",
+      "len": "58:06",
+      "provider": "sesame-classic",
       "topics": [
         "music",
         "preschool"
-      ]
+      ],
+      "src": "fan"
     },
-    "bzNJSHBSBFw": {
-      "t": "Elmo Songs about the Number 5",
-      "len": "20:41",
-      "provider": "sesame",
+    "lIpo9evMdpY": {
+      "t": "Swinging on the Tire Swing",
+      "len": "58:20",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "wNaE6vSBYL8": {
+      "t": "The Count Counts Streetlights",
+      "len": "58:40",
+      "provider": "sesame-classic",
+      "topics": [
+        "counting",
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "JHTp4ehYdR0": {
+      "t": "Just Another Quiet Day on Sesame Street",
+      "len": "58:28",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "mulgE1lI8F8": {
+      "t": "Classic Bert and Ernie Moments",
+      "len": "1:25:03",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "d_p_2fLLC2M": {
+      "t": "Monsterpiece Theater",
+      "len": "1:58:34",
+      "provider": "sesame-classic",
+      "topics": [
+        "letters",
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "tnGHw3tF5OE": {
+      "t": "Waiter Grover & Mr. Johnson",
+      "len": "56:31",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "yvNipF-8rtE": {
+      "t": "Kermit News Flash",
+      "len": "2:00:43",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "cfEiueTyM6A": {
+      "t": "Songs with The Count",
+      "len": "21:21",
+      "provider": "sesame-classic",
       "topics": [
         "counting",
         "music"
-      ]
+      ],
+      "src": "fan"
+    },
+    "is6Thx08K3M": {
+      "t": "10 Classic Sesame Street Songs",
+      "len": "22:29",
+      "provider": "sesame-classic",
+      "topics": [
+        "music"
+      ],
+      "src": "fan"
+    },
+    "bGhdmp2Q4Ts": {
+      "t": "Ernie and Bert Apartment Sketches, Season 1 (1969)",
+      "len": "1:55:29",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "tjx-4tMcfP0": {
+      "t": "Ernie and Bert Apartment Sketches, Season 2 (1970)",
+      "len": "1:09:26",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "IfcvAZueTc0": {
+      "t": "Typewriter Guy Animation Compilation",
+      "len": "13:26",
+      "provider": "sesame-classic",
+      "topics": [
+        "letters"
+      ],
+      "src": "fan"
+    },
+    "vPJnj4cXwf8": {
+      "t": "Classic Sesame Street Visiting New Mexico",
+      "len": "1:21:24",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "_Unv07MOp5c": {
+      "t": "Classic Sesame Street",
+      "len": "40:20",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "jwio5qGg8o4": {
+      "t": "Classic Animations Compilation",
+      "len": "1:00:10",
+      "provider": "sesame-classic",
+      "topics": [
+        "counting",
+        "letters"
+      ],
+      "src": "official"
+    },
+    "j2WhBtmpqCA": {
+      "t": "Cookie Monster Thinks the Moon is a Cookie",
+      "len": "54:54",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "official"
+    },
+    "hGtEVtub3Zw": {
+      "t": "Episode 838 (1976)",
+      "len": "53:56",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "S-QolN0EQf4": {
+      "t": "Episode 1449 (1980)",
+      "len": "58:46",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "iNYSxYPU1pQ": {
+      "t": "Episode 1784 (1983)",
+      "len": "58:47",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "pqrpewznAW0": {
+      "t": "Episode 1839 (1983)",
+      "len": "58:12",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "GGlhdVu7Lps": {
+      "t": "Best of Season 15 (1983-84)",
+      "len": "58:34",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "EW_ORDtYUlY": {
+      "t": "Episode 3137 (1993)",
+      "len": "54:54",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "6tH2Ly4SeeE": {
+      "t": "Big Bird Opens Hooper's Store (1970)",
+      "len": "6:50",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "_nWmAz0uPNI": {
+      "t": "A Cold Day on Sesame Street",
+      "len": "55:14",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "5s2Y2ZrBVR4": {
+      "t": "It's Nursery Rhyme Day",
+      "len": "56:36",
+      "provider": "sesame-classic",
+      "topics": [
+        "music",
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "I0r_Vb_R0K0": {
+      "t": "The Worm Summer Games",
+      "len": "58:42",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "3MDk6s9iMSo": {
+      "t": "Snuffleupagus Picnic in Central Park",
+      "len": "52:11",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "dUp6aWCblaw": {
+      "t": "Cookie Monster in Charge of Hooper's Store",
+      "len": "58:13",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "2KQ78ghwj2U": {
+      "t": "Big Bird Becomes a Superhero",
+      "len": "55:45",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "jWWP1f37kdc": {
+      "t": "Big Bird's Birthday",
+      "len": "58:47",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "IsEXYYVJfYE": {
+      "t": "Bert Leaves Ernie to Live with Big Bird and Oscar",
+      "len": "54:17",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "wCraF6Wbw3c": {
+      "t": "Big Bird Goes to School",
+      "len": "59:20",
+      "provider": "sesame-classic",
+      "topics": [
+        "letters",
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "unsv-6Saslg": {
+      "t": "Songs from Season 1 (1969-70)",
+      "len": "44:30",
+      "provider": "sesame-classic",
+      "topics": [
+        "music"
+      ],
+      "src": "fan"
+    },
+    "zSchxDkf_a0": {
+      "t": "Grover Is Angry (1976)",
+      "len": "5:27",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "R_QVPdWstIk": {
+      "t": "Grover as Oscar's Grouch Elevator Operator",
+      "len": "6:09",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "fan"
+    },
+    "mTr_HS_O4Ek": {
+      "t": "Pinball Number Count Animations",
+      "len": "12:33",
+      "provider": "sesame-classic",
+      "topics": [
+        "counting"
+      ],
+      "src": "official"
+    },
+    "i7jUMk7-37k": {
+      "t": "Bert Takes a Nap in Big Bird's Nest",
+      "len": "51:27",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "src": "official"
     }
   }
 }
