@@ -18,6 +18,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 .set{padding:9px 15px;border-radius:999px;border:2px solid #2f2b3d;background:#1b1826;color:#f4f1ea;font-size:14px;font-weight:600}
 .set.dom{opacity:.72;font-weight:500}
 .set.sel{background:#f0b429;border-color:#f0b429;color:#2a1f00;opacity:1}
+.set.zero{opacity:.22;text-decoration:line-through}
 .mins{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
 .chip{flex:1;min-width:74px;padding:18px 0;border-radius:18px;border:2px solid #2f2b3d;
   background:#1b1826;font-size:21px;font-weight:700;color:#f4f1ea;text-align:center}
@@ -161,12 +162,17 @@ $('#surprise').onclick=()=>{ if(VIDEOS.length) arm(VIDEOS[Math.floor(Math.random
 // "all", so a queue is provider-only, topic-only, or the intersection of the two.
 let curProv='all', curTopic='all';
 
-function chips(box, items, cur, onPick){
+function chips(box, items, cur, onPick, count){
   const el=$(box); el.innerHTML='';
   [{id:'all',name:box==='#provs'?'All shows':'All topics'}].concat(items).forEach(it=>{
+    const n=count(it.id);
     const b=document.createElement('button');
-    b.className='set'+(it.id===cur?' sel':'')+(it.id==='all'?'':' dom');
-    b.textContent=it.name; b.onclick=()=>onPick(it.id); el.appendChild(b);
+    b.className='set'+(it.id===cur?' sel':'')+(it.id==='all'?'':' dom')+(n?'':' zero');
+    b.textContent=it.name;
+    // A combination with nothing behind it is a dead end, so say so up front
+    // rather than showing an empty grid after the tap.
+    if(n||it.id===cur){ b.onclick=()=>onPick(it.id); } else { b.disabled=true; }
+    el.appendChild(b);
   });
 }
 function renderGrid(){
@@ -185,8 +191,13 @@ function applyFilter(prov,topic){
     .filter(([id,v])=>(curProv==='all'||v.provider===curProv)&&
                       (curTopic==='all'||(v.topics||[]).includes(curTopic)))
     .map(([id,v])=>Object.assign({id},v));
-  chips('#provs',DOC.providers,curProv,p=>applyFilter(p,curTopic));
-  chips('#tops',DOC.topics,curTopic,t=>applyFilter(curProv,t));
+  const V=Object.values(DOC.videos);
+  const nProv=p=>V.filter(v=>(p==='all'||v.provider===p)&&
+    (curTopic==='all'||(v.topics||[]).includes(curTopic))).length;
+  const nTopic=t=>V.filter(v=>(curProv==='all'||v.provider===curProv)&&
+    (t==='all'||(v.topics||[]).includes(t))).length;
+  chips('#provs',DOC.providers,curProv,p=>applyFilter(p,curTopic),nProv);
+  chips('#tops',DOC.topics,curTopic,t=>applyFilter(curProv,t),nTopic);
   renderGrid(); maybePlayer();
   log('filter '+curProv+'/'+curTopic+' -> '+VIDEOS.length);
 }
