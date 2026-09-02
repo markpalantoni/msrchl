@@ -66,6 +66,16 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 #clk span{display:inline-block;padding:6px 11px;border-radius:11px;background:#0009;
   color:#fff;opacity:0;transition:opacity .25s}
 #clk.on span{opacity:.75}
+#mark{position:fixed;top:11px;left:11px;z-index:9;width:7px;height:7px;border-radius:50%;
+  background:#f0b429;opacity:0;transition:opacity .6s ease;pointer-events:none}
+#mark.on{opacity:.22}
+#mark.flash{opacity:.80;transition:opacity .18s ease}
+body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
+  display:flex;align-items:center;justify-content:center;color:#f0b429;
+  font:700 13px/1.35 system-ui;text-align:center;padding:8px}
+#tgc{position:absolute;inset:0;z-index:7;display:none;align-items:center;justify-content:center;
+  pointer-events:none;color:#f0b429;font:700 13px/1.35 system-ui;text-align:center}
+body.tg #tgc{display:flex}
 #dbg{position:fixed;left:0;right:0;bottom:0;z-index:99;background:#000c;color:#7f8;
   font:11px/1.5 ui-monospace,monospace;padding:7px 10px;display:none;white-space:pre-wrap;
   pointer-events:none}
@@ -75,7 +85,8 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 <div id=pick>
   <h1>Ms Rachel</h1>
   <div class=sub id=sub>Loading…</div>
-  <div class=sets id=sets></div>
+  <div class=sets id=provs></div>
+  <div class=sets id=tops></div>
   <div class=mins id=mins></div>
   <button class=big id=surprise>Surprise me</button>
   <div class=grid id=grid></div>
@@ -93,6 +104,8 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
     <small>See you tomorrow.</small>
   </div>
   <div id=clk><span>--:--</span></div>
+  <div id=mark></div>
+  <div id=tgc></div>
   <button class=corner id=cTL></button>
   <button class=corner id=cTR></button>
   <button class=corner id=cBL></button>
@@ -110,6 +123,7 @@ const DEBUG=Q.has('debug');
 let VIDEOS=[],DOC=null,activeSet=null;
 let player=null,ticker=null,pending=null,wake=null,endAt=0,winding=false;
 let ytReady=false,paused=false,pausedAt=0,lastTap=0;
+let windFade=null,preWindEnd=0,trTaps=0,trTimer=null;
 
 function wantedSeconds(){
   if(Q.has('s')) return Math.max(3,parseInt(Q.get('s'),10)||0);
@@ -143,31 +157,47 @@ MINS.forEach(m=>{const b=document.createElement('button');
 
 $('#surprise').onclick=()=>{ if(VIDEOS.length) arm(VIDEOS[Math.floor(Math.random()*VIDEOS.length)]); };
 
-// ---- content sets, loaded from content.json so updating what the app shows
-// never means touching this file.
-function renderSets(){
-  const box=$('#sets'); box.innerHTML='';
-  const order=[...DOC.sets].sort((a,b)=>(a.kind==='provider'?0:1)-(b.kind==='provider'?0:1));
-  order.forEach(s=>{ const b=document.createElement('button');
-    b.className='set'+(s.id===activeSet.id?' sel':'')+(s.kind==='domain'?' dom':'');
-    b.textContent=s.name;
-    b.onclick=()=>applySet(s.id);
-    box.appendChild(b); });
+// ---- content: filter by provider, topic, or both. Either dimension can be
+// "all", so a queue is provider-only, topic-only, or the intersection of the two.
+let curProv='all', curTopic='all';
+
+function chips(box, items, cur, onPick){
+  const el=$(box); el.innerHTML='';
+  [{id:'all',name:box==='#provs'?'All shows':'All topics'}].concat(items).forEach(it=>{
+    const b=document.createElement('button');
+    b.className='set'+(it.id===cur?' sel':'')+(it.id==='all'?'':' dom');
+    b.textContent=it.name; b.onclick=()=>onPick(it.id); el.appendChild(b);
+  });
 }
 function renderGrid(){
   const g=$('#grid'); g.innerHTML='';
   VIDEOS.forEach(v=>{ const b=document.createElement('button'); b.className='card';
     b.innerHTML='<img loading=lazy src="https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg" alt=""><span>'+v.t+'</span>';
     b.onclick=()=>arm(v); g.appendChild(b); });
-  $('#sub').textContent=VIDEOS.length+' videos · pick how long, then pick one.';
+  $('#sub').textContent=VIDEOS.length?VIDEOS.length+' videos · pick how long, then pick one.'
+                                     :'Nothing matches that combination.';
 }
-function applySet(id){
-  const s=DOC.sets.find(x=>x.id===id)||DOC.sets[0];
-  activeSet=s;
-  try{ localStorage.setItem('msrchl:set',s.id); }catch(e){}
-  VIDEOS=s.videos.map(vid=>DOC.videos[vid]?Object.assign({id:vid},DOC.videos[vid]):null).filter(Boolean);
-  renderSets(); renderGrid(); maybePlayer();
-  log('set '+s.id+' ('+VIDEOS.length+')');
+function applyFilter(prov,topic){
+  curProv=prov||'all'; curTopic=topic||'all';
+  try{ localStorage.setItem('msrchl:prov',curProv);
+       localStorage.setItem('msrchl:topic',curTopic); }catch(e){}
+  VIDEOS=Object.entries(DOC.videos)
+    .filter(([id,v])=>(curProv==='all'||v.provider===curProv)&&
+                      (curTopic==='all'||(v.topics||[]).includes(curTopic)))
+    .map(([id,v])=>Object.assign({id},v));
+  chips('#provs',DOC.providers,curProv,p=>applyFilter(p,curTopic));
+  chips('#tops',DOC.topics,curTopic,t=>applyFilter(curProv,t));
+  renderGrid(); maybePlayer();
+  log('filter '+curProv+'/'+curTopic+' -> '+VIDEOS.length);
+}
+
+function showTargets(){
+  document.body.classList.add('tg');
+  $('#cTL').textContent='TOP LEFT\nshow / hide timer';
+  $('#cTR').textContent='TOP RIGHT\ntap: wind down\ndouble: cancel';
+  $('#cBL').textContent='BOTTOM LEFT\nunassigned';
+  $('#cBR').textContent='BOTTOM RIGHT\nback to picker';
+  $('#tgc').textContent='CENTRE — double tap to pause / resume';
 }
 
 function maybePlayer(){
@@ -242,26 +272,53 @@ function run(){
   },250);
 }
 
+// A dim 7px dot: confirmation for me that the tap registered, and that the
+// wind-down is running. Deliberately below what a toddler reads as a signal.
+function markWind(on){
+  const m=$('#mark');
+  if(on){ m.classList.add('on'); m.classList.add('flash');
+          setTimeout(()=>m.classList.remove('flash'),1100); }
+  else  { m.classList.remove('on'); m.classList.remove('flash'); }
+}
+
 function windDown(){
   if(winding) return; winding=true;
+  preWindEnd=endAt;
   endAt=Date.now()+WIND*1000;   // clock should count the wind-down, not the session
+  markWind(true);
   log('wind-down');
   scatterMotes();
   const t0=Date.now(), v0=(()=>{ try{ return player.getVolume(); }catch(e){ return 100; } })();
   $('#dusk').style.transition='opacity '+WIND+'s linear';
   $('#dusk').style.opacity=1;
-  const fade=setInterval(()=>{
+  windFade=setInterval(()=>{
     const k=Math.min(1,(Date.now()-t0)/(WIND*1000));
     const g=0.5*(1+Math.cos(Math.PI*k));
     try{ player.setVolume(Math.round(v0*g)); }catch(e){}
     if(k>0.55){ const j=(k-0.55)/0.45;
       $('#yt').style.filter='saturate('+(1-j*0.8).toFixed(3)+') brightness('+(1-j*0.75).toFixed(3)+')'; }
     if(k>0.70){ $('#night').style.transition='opacity 6s ease-in'; $('#night').style.opacity=1; }
-    if(k>=1){ clearInterval(fade); clearInterval(ticker); save();
+    if(k>=1){ clearInterval(windFade); windFade=null; clearInterval(ticker); save();
       try{ player.pauseVideo(); player.setVolume(0); }catch(e){}
-      $('#yt').style.opacity=0; $('#clk').style.display='none';
+      $('#yt').style.opacity=0; $('#clk').style.display='none'; markWind(false);
       if(wake) wake.release().catch(()=>{}); log('done'); }
   },80);
+}
+
+// Bail out of a wind-down started by mistake and put the session back.
+function cancelWind(){
+  if(!winding) return;
+  clearInterval(windFade); windFade=null; winding=false;
+  markWind(false);
+  $('#dusk').style.transition='opacity 1.1s ease'; $('#dusk').style.opacity=0;
+  $('#night').style.transition='opacity 1.1s ease'; $('#night').style.opacity=0;
+  $('#yt').style.filter=''; $('#yt').style.opacity=1;
+  document.querySelectorAll('.mote').forEach(m=>m.remove());
+  try{ player.setVolume(100); player.playVideo(); }catch(e){}
+  // Cancelling at the natural end would just retrigger on the old deadline,
+  // so hand back a fresh session instead of a stale one.
+  endAt=(preWindEnd-Date.now()>WIND*1000)?preWindEnd:Date.now()+chosen*1000;
+  log('wind-down cancelled');
 }
 
 function scatterMotes(){
@@ -272,7 +329,12 @@ function scatterMotes(){
     $('#night').appendChild(d); }
 }
 
-$('#cTR').onclick=()=>{ log('corner TR'); windDown(); };
+// Single tap winds down, double tap bails out. The 300ms wait is the cost of
+// telling the two apart.
+$('#cTR').onclick=()=>{
+  trTaps++; clearTimeout(trTimer);
+  trTimer=setTimeout(()=>{ if(trTaps>1) cancelWind(); else windDown(); trTaps=0; },300);
+};
 // Back to the picker. A reload to the bare path is the cleanest reset: it
 // drops any deep-link params and clears player, timer and wind-down state.
 $('#cBR').onclick=()=>{ save(); log('corner BR: back to picker');
@@ -286,11 +348,13 @@ fetch('content.json?_='+Date.now())
   .then(r=>{ if(!r.ok) throw new Error('content.json '+r.status); return r.json(); })
   .then(doc=>{
     DOC=doc;
-    const want=Q.get('set')||(()=>{try{return localStorage.getItem('msrchl:set')}catch(e){return null}})()||doc.defaultSet;
-    applySet(want);
+    const ls=k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
+    applyFilter(Q.get('provider')||ls('msrchl:prov')||doc.defaults.provider,
+                Q.get('topic')   ||ls('msrchl:topic')||doc.defaults.topic);
+    if(Q.get('targets')==='1') showTargets();
     const dl=wantedVideo();
     if(dl) arm(dl); else $('#pick').classList.add('on');
-    if(DEBUG) log('session '+chosen+'s, wind '+WIND+'s, set '+activeSet.id);
+    if(DEBUG) log('session '+chosen+'s, wind '+WIND+'s');
   })
   .catch(e=>{ $('#pick').classList.add('on');
     $('#sub').textContent='Could not load content.json — '+e.message; log('ERR '+e); });
