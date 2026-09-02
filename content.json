@@ -420,7 +420,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 158,
+      "season": 2,
+      "airs": "1970-71",
+      "dated": "episode-number"
     },
     "dm2OGsEVTlc": {
       "t": "Episode 594 (1974)",
@@ -429,7 +433,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 594,
+      "season": 5,
+      "airs": "1973-74",
+      "dated": "episode-number"
     },
     "F5n1I-jjvtc": {
       "t": "Episode 1246 (1979)",
@@ -438,7 +446,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 1246,
+      "season": 10,
+      "airs": "1978-79",
+      "dated": "episode-number"
     },
     "blVwmb4iC3w": {
       "t": "Episode 1454 (1980)",
@@ -447,7 +459,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 1454,
+      "season": 12,
+      "airs": "1980-81",
+      "dated": "episode-number"
     },
     "ZTIrlyEQDFQ": {
       "t": "Episode 1459 (1980)",
@@ -456,7 +472,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 1459,
+      "season": 12,
+      "airs": "1980-81",
+      "dated": "episode-number"
     },
     "M4NXCrxpugQ": {
       "t": "Episode 1439 (1980)",
@@ -465,7 +485,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 1439,
+      "season": 11,
+      "airs": "1979-80",
+      "dated": "episode-number"
     },
     "_I8QYRV6sbM": {
       "t": "Episode 2033 (1985)",
@@ -474,7 +498,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 2033,
+      "season": 16,
+      "airs": "1984-85",
+      "dated": "episode-number"
     },
     "7mDJbzXPORw": {
       "t": "Episode 2405 (1988)",
@@ -483,7 +511,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 2405,
+      "season": 19,
+      "airs": "1987-88",
+      "dated": "episode-number"
     },
     "YjxcgeYUzE8": {
       "t": "Episode 1 (1969)",
@@ -492,7 +524,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 1,
+      "season": 1,
+      "airs": "1969-70",
+      "dated": "episode-number"
     },
     "BgCVhH7Ma_8": {
       "t": "Cookie Monster Makes Grouchy Food",
@@ -547,7 +583,10 @@
         "music",
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "season": 7,
+      "airs": "1975-76",
+      "dated": "description"
     },
     "lIpo9evMdpY": {
       "t": "Swinging on the Tire Swing",
@@ -566,7 +605,10 @@
         "counting",
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "season": 6,
+      "airs": "1974-75",
+      "dated": "description"
     },
     "JHTp4ehYdR0": {
       "t": "Just Another Quiet Day on Sesame Street",
@@ -575,7 +617,10 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "season": 5,
+      "airs": "1973-74",
+      "dated": "description"
     },
     "mulgE1lI8F8": {
       "t": "Classic Bert and Ernie Moments",
@@ -640,7 +685,9 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "airs": "1969",
+      "dated": "title"
     },
     "tjx-4tMcfP0": {
       "t": "Ernie and Bert Apartment Sketches, Season 2 (1970)",
@@ -649,7 +696,9 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "airs": "1970",
+      "dated": "title"
     },
     "IfcvAZueTc0": {
       "t": "Typewriter Guy Animation Compilation",
@@ -704,7 +753,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 838,
+      "season": 7,
+      "airs": "1975-76",
+      "dated": "episode-number"
     },
     "S-QolN0EQf4": {
       "t": "Episode 1449 (1980)",
@@ -713,7 +766,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 1449,
+      "season": 12,
+      "airs": "1980-81",
+      "dated": "episode-number"
     },
     "iNYSxYPU1pQ": {
       "t": "Episode 1784 (1983)",
@@ -722,7 +779,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 1784,
+      "season": 14,
+      "airs": "1982-83",
+      "dated": "episode-number"
     },
     "pqrpewznAW0": {
       "t": "Episode 1839 (1983)",
@@ -731,7 +792,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 1839,
+      "season": 15,
+      "airs": "1983-84",
+      "dated": "episode-number"
     },
     "GGlhdVu7Lps": {
       "t": "Best of Season 15 (1983-84)",
@@ -740,7 +805,9 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "airs": "1983",
+      "dated": "title"
     },
     "EW_ORDtYUlY": {
       "t": "Episode 3137 (1993)",
@@ -749,7 +816,11 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "ep": 3137,
+      "season": 25,
+      "airs": "1993-94",
+      "dated": "episode-number"
     },
     "6tH2Ly4SeeE": {
       "t": "Big Bird Opens Hooper's Store (1970)",
@@ -758,7 +829,9 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "airs": "1970",
+      "dated": "title"
     },
     "_nWmAz0uPNI": {
       "t": "A Cold Day on Sesame Street",
@@ -841,7 +914,10 @@
         "letters",
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "season": 12,
+      "airs": "1980-81",
+      "dated": "description"
     },
     "unsv-6Saslg": {
       "t": "Songs from Season 1 (1969-70)",
@@ -850,7 +926,9 @@
       "topics": [
         "music"
       ],
-      "src": "fan"
+      "src": "fan",
+      "airs": "1969",
+      "dated": "title"
     },
     "zSchxDkf_a0": {
       "t": "Grover Is Angry (1976)",
@@ -859,7 +937,9 @@
       "topics": [
         "preschool"
       ],
-      "src": "fan"
+      "src": "fan",
+      "airs": "1976",
+      "dated": "title"
     },
     "R_QVPdWstIk": {
       "t": "Grover as Oscar's Grouch Elevator Operator",
@@ -888,5 +968,6 @@
       ],
       "src": "official"
     }
-  }
+  },
+  "_dating": "Sesame Street ran ~130 episodes a season from a November premiere, so an episode number gives the season and therefore the year: season N premieres in Nov of 1968+N. Episode <= 3395 is pre-1995. Entries without an 'airs' field are not dated yet."
 }
