@@ -1,343 +1,840 @@
 {
-  "_readme": "Edit this file to change what the app shows. 'videos' holds each video once (keyed by YouTube id); 'sets' reference those ids, so a video can belong to several sets. 'defaultSet' is what the bare URL opens.",
-  "defaultSet": "ms-rachel",
-  "videos": {
-    "7K6YSmf0HdU": {
-      "t": "Baby Music Class (full class)",
-      "len": "31:03"
-    },
-    "bIWT6RCMk-o": {
-      "t": "Teaching Toddlers In and Out Through Play & Song",
-      "len": "6:23"
-    },
-    "oLw8KBBjc9E": {
-      "t": "Toddler Music Class 2",
-      "len": "31:12"
-    },
-    "WbpKj0F-Z3s": {
-      "t": "Farm Animal Sounds for Toddlers",
-      "len": "7:26"
-    },
-    "Ok1rDrnxh0A": {
-      "t": "Kids Music Class - full class",
-      "len": "30:06"
-    },
-    "ZA9DTkaR6ao": {
-      "t": "Letter Sounds Phonics Song + more",
-      "len": "35:47"
-    },
-    "CWxH4evJY5g": {
-      "t": "Kids Music Class Online",
-      "len": "25:38"
-    },
-    "ZcX0gl-NFFg": {
-      "t": "ABCs, Colors, Letters, Numbers - The Toddler Teacher",
-      "len": "30:33"
-    },
-    "BOOQLQUnMas": {
-      "t": "Toddler Learning - Preschool Online",
-      "len": "30:02"
-    },
-    "LZES_sSMuVs": {
-      "t": "Music Class for Kids Online",
-      "len": "34:22"
-    },
-    "CY25TFuY8qA": {
-      "t": "Preschool - Letter B, No David Read Aloud, Days of the Week",
-      "len": "30:14"
-    },
-    "ZizzobSlWkg": {
-      "t": "Icky Sticky Bubble Gum + More Nursery Rhymes",
-      "len": "30:16"
-    },
-    "t8ifczgtldM": {
-      "t": "Toddler Frozen Music Class",
-      "len": "32:53"
-    },
-    "hWRH7OWKMwI": {
-      "t": "Preschool Music & Movement - Number Songs, Counting, Dance",
-      "len": "31:23"
-    },
-    "hs4c0YrP-h8": {
-      "t": "Kids Music Class - Jammin' with Jules",
-      "len": "30:17"
-    },
-    "eZ4roKAkOEg": {
-      "t": "Count to 20 Song + Counting & Number Songs",
-      "len": "31:12"
-    },
-    "2vYqjQnm3WY": {
-      "t": "Preschool for Littles - full virtual preschool",
-      "len": "2:00:12"
-    },
-    "VX2bE7y_33g": {
-      "t": "Old MacDonald + other Animal Songs",
-      "len": "45:26"
-    },
-    "k0qrPENQgrY": {
-      "t": "5 Little Ducks and More Learning Songs",
-      "len": "1:01:06"
-    },
-    "vzuo-C0hzpE": {
-      "t": "Preschool for Littles - Circle Time, Songs, Movement",
-      "len": "1:06:41"
-    },
-    "I4o7caGRmwk": {
-      "t": "Preschool for Littles - Letter B Part 2 - Ms Rachel Visits the Beach",
-      "len": "1:08:02"
-    },
-    "3Cif-tnRxjg": {
-      "t": "Sink or Float - science experiment for kids",
-      "len": "1:04:05"
-    },
-    "eetwPz7PHvY": {
-      "t": "Preschool - Circle Time, Songs, Reading, Movement",
-      "len": "1:14:37"
-    },
-    "OQ9BL6_cexw": {
-      "t": "Preschool Songs - Action and Movement",
-      "len": "2:00:06"
-    },
-    "mGgDKEVZXw8": {
-      "t": "Banana Phone by Raffi and More Toddler Songs",
-      "len": "40:56"
-    },
-    "icUL7bjce8c": {
-      "t": "Preschool Learning, Activities and Songs",
-      "len": "2:02:20"
-    },
-    "B7AuefmcT6A": {
-      "t": "Halloween Songs for Kids - Circle Time",
-      "len": "1:19:09"
-    },
-    "38io5l3Z024": {
-      "t": "Kids Dance Songs - Whip Your Tail Like A Dinosaur - Brain Breaks",
-      "len": "1:04:26"
-    },
-    "hJw7uWLMeC8": {
-      "t": "Learn at the Playground",
-      "len": "1:04:14"
-    },
-    "uLsC9aK32QA": {
-      "t": "Animal Sounds - Talking Time on the Farm",
-      "len": "1:08:35"
-    },
-    "noJrVwp6akE": {
-      "t": "Circle Time, Phonics, Colors, Numbers - Dinosaurs",
-      "len": "1:19:35"
-    },
-    "7siu3eOW1VQ": {
-      "t": "Happy Birthday Song Circle Time Special",
-      "len": "1:13:10"
-    },
-    "OyUoskE7Ogk": {
-      "t": "Bedtime Routine - Bedtime Stories for Toddlers",
-      "len": "31:00"
-    },
-    "559QxICEleA": {
-      "t": "Animal Sounds, Farm Animals, Colors, Numbers, Words",
-      "len": "3:00:47"
-    },
-    "az9c0l-IfgM": {
-      "t": "Hop Little Bunnies + More Nursery Rhymes",
-      "len": "1:10:01"
-    },
-    "_R0xRT2y7Uo": {
-      "t": "Learn The Alphabet, Letters, Phonics Song",
-      "len": "1:00:18"
-    },
-    "TyV-OhCrVDA": {
-      "t": "Learn Colors, Fruits and Vegetables",
-      "len": "1:00:15"
-    },
-    "hOHrqPI9bVk": {
-      "t": "Learn Numbers, Colors, Counting and Shapes",
-      "len": "1:00:04"
-    },
-    "HsT3iI6dT5U": {
-      "t": "Songs for Littles Christmas Movie",
-      "len": "1:10:21"
-    },
-    "47MNn4bsmSw": {
-      "t": "Learn Animals - Animal Sounds, Farm Animals, Nursery Rhymes",
-      "len": "2:00:10"
-    },
-    "ozsgl_sLnHQ": {
-      "t": "Learn About Emotions and Feelings",
-      "len": "1:20:13"
-    },
-    "bOiYN7iU-W8": {
-      "t": "Wheels On The Bus + More Nursery Rhymes",
-      "len": "1:00:20"
-    },
-    "yBj9Qlpwjcs": {
-      "t": "Learn Words and Colors for Toddlers",
-      "len": "30:16"
-    },
-    "kBuKdHQYPps": {
-      "t": "Ms Rachel Halloween - Wheels on the Bus",
-      "len": "40:31"
-    }
+  "_readme": "Edit this file to change what the app shows. Each video is listed once with a provider and any number of topics. The app filters by provider, topic, or both. 'defaults' sets what the bare URL opens ('all' = no filter).",
+  "defaults": {
+    "provider": "all",
+    "topic": "all"
   },
-  "sets": [
+  "providers": [
     {
       "id": "ms-rachel",
-      "name": "Ms Rachel",
-      "kind": "provider",
-      "videos": [
-        "7K6YSmf0HdU",
-        "bIWT6RCMk-o",
-        "oLw8KBBjc9E",
-        "WbpKj0F-Z3s",
-        "Ok1rDrnxh0A",
-        "ZA9DTkaR6ao",
-        "CWxH4evJY5g",
-        "ZcX0gl-NFFg",
-        "BOOQLQUnMas",
-        "LZES_sSMuVs",
-        "CY25TFuY8qA",
-        "ZizzobSlWkg",
-        "t8ifczgtldM",
-        "hWRH7OWKMwI",
-        "hs4c0YrP-h8",
-        "eZ4roKAkOEg",
-        "2vYqjQnm3WY",
-        "VX2bE7y_33g",
-        "k0qrPENQgrY",
-        "vzuo-C0hzpE",
-        "I4o7caGRmwk",
-        "3Cif-tnRxjg",
-        "eetwPz7PHvY",
-        "OQ9BL6_cexw",
-        "mGgDKEVZXw8",
-        "icUL7bjce8c",
-        "B7AuefmcT6A",
-        "38io5l3Z024",
-        "hJw7uWLMeC8",
-        "uLsC9aK32QA",
-        "noJrVwp6akE",
-        "7siu3eOW1VQ",
-        "OyUoskE7Ogk",
-        "559QxICEleA",
-        "az9c0l-IfgM",
-        "_R0xRT2y7Uo",
-        "TyV-OhCrVDA",
-        "hOHrqPI9bVk",
-        "HsT3iI6dT5U",
-        "47MNn4bsmSw",
-        "ozsgl_sLnHQ",
-        "bOiYN7iU-W8",
-        "yBj9Qlpwjcs",
-        "kBuKdHQYPps"
-      ]
+      "name": "Ms Rachel"
     },
     {
+      "id": "sesame",
+      "name": "Sesame Street"
+    }
+  ],
+  "topics": [
+    {
       "id": "counting",
-      "name": "Counting & Numbers",
-      "kind": "domain",
-      "videos": [
-        "ZcX0gl-NFFg",
-        "hWRH7OWKMwI",
-        "eZ4roKAkOEg",
-        "noJrVwp6akE",
-        "559QxICEleA",
-        "hOHrqPI9bVk"
-      ]
+      "name": "Counting & Numbers"
     },
     {
       "id": "letters",
-      "name": "Letters & Phonics",
-      "kind": "domain",
-      "videos": [
-        "ZA9DTkaR6ao",
-        "ZcX0gl-NFFg",
-        "CY25TFuY8qA",
-        "I4o7caGRmwk",
-        "noJrVwp6akE",
-        "_R0xRT2y7Uo"
-      ]
-    },
-    {
-      "id": "animals",
-      "name": "Animals",
-      "kind": "domain",
-      "videos": [
-        "WbpKj0F-Z3s",
-        "VX2bE7y_33g",
-        "k0qrPENQgrY",
-        "38io5l3Z024",
-        "uLsC9aK32QA",
-        "noJrVwp6akE",
-        "559QxICEleA",
-        "47MNn4bsmSw"
-      ]
-    },
-    {
-      "id": "music",
-      "name": "Music & Movement",
-      "kind": "domain",
-      "videos": [
-        "7K6YSmf0HdU",
-        "bIWT6RCMk-o",
-        "oLw8KBBjc9E",
-        "Ok1rDrnxh0A",
-        "ZA9DTkaR6ao",
-        "CWxH4evJY5g",
-        "LZES_sSMuVs",
-        "ZizzobSlWkg",
-        "t8ifczgtldM",
-        "hWRH7OWKMwI",
-        "hs4c0YrP-h8",
-        "eZ4roKAkOEg",
-        "VX2bE7y_33g",
-        "k0qrPENQgrY",
-        "vzuo-C0hzpE",
-        "eetwPz7PHvY",
-        "OQ9BL6_cexw",
-        "mGgDKEVZXw8",
-        "icUL7bjce8c",
-        "B7AuefmcT6A",
-        "38io5l3Z024",
-        "7siu3eOW1VQ",
-        "az9c0l-IfgM",
-        "_R0xRT2y7Uo",
-        "HsT3iI6dT5U",
-        "47MNn4bsmSw",
-        "bOiYN7iU-W8"
-      ]
+      "name": "Letters & Phonics"
     },
     {
       "id": "colors",
-      "name": "Colors & Shapes",
-      "kind": "domain",
-      "videos": [
-        "ZcX0gl-NFFg",
-        "noJrVwp6akE",
-        "559QxICEleA",
-        "TyV-OhCrVDA",
-        "hOHrqPI9bVk",
-        "yBj9Qlpwjcs"
-      ]
+      "name": "Colors & Shapes"
+    },
+    {
+      "id": "animals",
+      "name": "Animals"
+    },
+    {
+      "id": "music",
+      "name": "Music & Movement"
     },
     {
       "id": "preschool",
-      "name": "Preschool",
-      "kind": "domain",
-      "videos": [
-        "BOOQLQUnMas",
-        "CY25TFuY8qA",
-        "hWRH7OWKMwI",
-        "2vYqjQnm3WY",
-        "vzuo-C0hzpE",
-        "I4o7caGRmwk",
-        "3Cif-tnRxjg",
-        "eetwPz7PHvY",
-        "OQ9BL6_cexw",
-        "icUL7bjce8c",
-        "B7AuefmcT6A",
-        "noJrVwp6akE",
-        "7siu3eOW1VQ"
+      "name": "Preschool"
+    }
+  ],
+  "videos": {
+    "7K6YSmf0HdU": {
+      "t": "Baby Music Class (full class)",
+      "len": "31:03",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "bIWT6RCMk-o": {
+      "t": "Teaching Toddlers In and Out Through Play & Song",
+      "len": "6:23",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "oLw8KBBjc9E": {
+      "t": "Toddler Music Class 2",
+      "len": "31:12",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "WbpKj0F-Z3s": {
+      "t": "Farm Animal Sounds for Toddlers",
+      "len": "7:26",
+      "provider": "ms-rachel",
+      "topics": [
+        "animals"
+      ]
+    },
+    "Ok1rDrnxh0A": {
+      "t": "Kids Music Class - full class",
+      "len": "30:06",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "ZA9DTkaR6ao": {
+      "t": "Letter Sounds Phonics Song + more",
+      "len": "35:47",
+      "provider": "ms-rachel",
+      "topics": [
+        "letters",
+        "music"
+      ]
+    },
+    "CWxH4evJY5g": {
+      "t": "Kids Music Class Online",
+      "len": "25:38",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "ZcX0gl-NFFg": {
+      "t": "ABCs, Colors, Letters, Numbers - The Toddler Teacher",
+      "len": "30:33",
+      "provider": "ms-rachel",
+      "topics": [
+        "counting",
+        "letters",
+        "colors"
+      ]
+    },
+    "BOOQLQUnMas": {
+      "t": "Toddler Learning - Preschool Online",
+      "len": "30:02",
+      "provider": "ms-rachel",
+      "topics": [
+        "preschool"
+      ]
+    },
+    "LZES_sSMuVs": {
+      "t": "Music Class for Kids Online",
+      "len": "34:22",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "CY25TFuY8qA": {
+      "t": "Preschool - Letter B, No David Read Aloud, Days of the Week",
+      "len": "30:14",
+      "provider": "ms-rachel",
+      "topics": [
+        "letters",
+        "preschool"
+      ]
+    },
+    "ZizzobSlWkg": {
+      "t": "Icky Sticky Bubble Gum + More Nursery Rhymes",
+      "len": "30:16",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "t8ifczgtldM": {
+      "t": "Toddler Frozen Music Class",
+      "len": "32:53",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "hWRH7OWKMwI": {
+      "t": "Preschool Music & Movement - Number Songs, Counting, Dance",
+      "len": "31:23",
+      "provider": "ms-rachel",
+      "topics": [
+        "counting",
+        "music",
+        "preschool"
+      ]
+    },
+    "hs4c0YrP-h8": {
+      "t": "Kids Music Class - Jammin' with Jules",
+      "len": "30:17",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "eZ4roKAkOEg": {
+      "t": "Count to 20 Song + Counting & Number Songs",
+      "len": "31:12",
+      "provider": "ms-rachel",
+      "topics": [
+        "counting",
+        "music"
+      ]
+    },
+    "2vYqjQnm3WY": {
+      "t": "Preschool for Littles - full virtual preschool",
+      "len": "2:00:12",
+      "provider": "ms-rachel",
+      "topics": [
+        "preschool"
+      ]
+    },
+    "VX2bE7y_33g": {
+      "t": "Old MacDonald + other Animal Songs",
+      "len": "45:26",
+      "provider": "ms-rachel",
+      "topics": [
+        "animals",
+        "music"
+      ]
+    },
+    "k0qrPENQgrY": {
+      "t": "5 Little Ducks and More Learning Songs",
+      "len": "1:01:06",
+      "provider": "ms-rachel",
+      "topics": [
+        "animals",
+        "music"
+      ]
+    },
+    "vzuo-C0hzpE": {
+      "t": "Preschool for Littles - Circle Time, Songs, Movement",
+      "len": "1:06:41",
+      "provider": "ms-rachel",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "I4o7caGRmwk": {
+      "t": "Preschool for Littles - Letter B Part 2 - Ms Rachel Visits the Beach",
+      "len": "1:08:02",
+      "provider": "ms-rachel",
+      "topics": [
+        "letters",
+        "preschool"
+      ]
+    },
+    "3Cif-tnRxjg": {
+      "t": "Sink or Float - science experiment for kids",
+      "len": "1:04:05",
+      "provider": "ms-rachel",
+      "topics": [
+        "preschool"
+      ]
+    },
+    "eetwPz7PHvY": {
+      "t": "Preschool - Circle Time, Songs, Reading, Movement",
+      "len": "1:14:37",
+      "provider": "ms-rachel",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "OQ9BL6_cexw": {
+      "t": "Preschool Songs - Action and Movement",
+      "len": "2:00:06",
+      "provider": "ms-rachel",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "mGgDKEVZXw8": {
+      "t": "Banana Phone by Raffi and More Toddler Songs",
+      "len": "40:56",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "icUL7bjce8c": {
+      "t": "Preschool Learning, Activities and Songs",
+      "len": "2:02:20",
+      "provider": "ms-rachel",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "B7AuefmcT6A": {
+      "t": "Halloween Songs for Kids - Circle Time",
+      "len": "1:19:09",
+      "provider": "ms-rachel",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "38io5l3Z024": {
+      "t": "Kids Dance Songs - Whip Your Tail Like A Dinosaur - Brain Breaks",
+      "len": "1:04:26",
+      "provider": "ms-rachel",
+      "topics": [
+        "animals",
+        "music"
+      ]
+    },
+    "hJw7uWLMeC8": {
+      "t": "Learn at the Playground",
+      "len": "1:04:14",
+      "provider": "ms-rachel",
+      "topics": []
+    },
+    "uLsC9aK32QA": {
+      "t": "Animal Sounds - Talking Time on the Farm",
+      "len": "1:08:35",
+      "provider": "ms-rachel",
+      "topics": [
+        "animals"
+      ]
+    },
+    "noJrVwp6akE": {
+      "t": "Circle Time, Phonics, Colors, Numbers - Dinosaurs",
+      "len": "1:19:35",
+      "provider": "ms-rachel",
+      "topics": [
+        "counting",
+        "letters",
+        "colors",
+        "animals",
+        "preschool"
+      ]
+    },
+    "7siu3eOW1VQ": {
+      "t": "Happy Birthday Song Circle Time Special",
+      "len": "1:13:10",
+      "provider": "ms-rachel",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "OyUoskE7Ogk": {
+      "t": "Bedtime Routine - Bedtime Stories for Toddlers",
+      "len": "31:00",
+      "provider": "ms-rachel",
+      "topics": []
+    },
+    "559QxICEleA": {
+      "t": "Animal Sounds, Farm Animals, Colors, Numbers, Words",
+      "len": "3:00:47",
+      "provider": "ms-rachel",
+      "topics": [
+        "counting",
+        "colors",
+        "animals"
+      ]
+    },
+    "az9c0l-IfgM": {
+      "t": "Hop Little Bunnies + More Nursery Rhymes",
+      "len": "1:10:01",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "_R0xRT2y7Uo": {
+      "t": "Learn The Alphabet, Letters, Phonics Song",
+      "len": "1:00:18",
+      "provider": "ms-rachel",
+      "topics": [
+        "letters",
+        "music"
+      ]
+    },
+    "TyV-OhCrVDA": {
+      "t": "Learn Colors, Fruits and Vegetables",
+      "len": "1:00:15",
+      "provider": "ms-rachel",
+      "topics": [
+        "colors"
+      ]
+    },
+    "hOHrqPI9bVk": {
+      "t": "Learn Numbers, Colors, Counting and Shapes",
+      "len": "1:00:04",
+      "provider": "ms-rachel",
+      "topics": [
+        "counting",
+        "colors"
+      ]
+    },
+    "HsT3iI6dT5U": {
+      "t": "Songs for Littles Christmas Movie",
+      "len": "1:10:21",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "47MNn4bsmSw": {
+      "t": "Learn Animals - Animal Sounds, Farm Animals, Nursery Rhymes",
+      "len": "2:00:10",
+      "provider": "ms-rachel",
+      "topics": [
+        "animals",
+        "music"
+      ]
+    },
+    "ozsgl_sLnHQ": {
+      "t": "Learn About Emotions and Feelings",
+      "len": "1:20:13",
+      "provider": "ms-rachel",
+      "topics": [
+        "preschool"
+      ]
+    },
+    "bOiYN7iU-W8": {
+      "t": "Wheels On The Bus + More Nursery Rhymes",
+      "len": "1:00:20",
+      "provider": "ms-rachel",
+      "topics": [
+        "music"
+      ]
+    },
+    "yBj9Qlpwjcs": {
+      "t": "Learn Words and Colors for Toddlers",
+      "len": "30:16",
+      "provider": "ms-rachel",
+      "topics": [
+        "colors"
+      ]
+    },
+    "kBuKdHQYPps": {
+      "t": "Ms Rachel Halloween - Wheels on the Bus",
+      "len": "40:31",
+      "provider": "ms-rachel",
+      "topics": []
+    },
+    "Su1hnvQP4AI": {
+      "t": "Time for School! ABC's & 123's with Elmo",
+      "len": "1:03:51",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "letters",
+        "music",
+        "preschool"
+      ]
+    },
+    "bYLQW4_2UzY": {
+      "t": "Letters and Numbers with Elmo & Friends",
+      "len": "1:16:49",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "letters",
+        "preschool"
+      ]
+    },
+    "40OgmZj1rv8": {
+      "t": "Farm Songs with Elmo & Friends",
+      "len": "1:45:21",
+      "provider": "sesame",
+      "topics": [
+        "animals",
+        "music",
+        "preschool"
+      ]
+    },
+    "dcWYqrpx3Nk": {
+      "t": "New ABC Songs with Elmo & Friends",
+      "len": "24:03",
+      "provider": "sesame",
+      "topics": [
+        "letters",
+        "music",
+        "preschool"
+      ]
+    },
+    "Ksd59Te9ZEo": {
+      "t": "Learn Shapes with Elmo & Friends",
+      "len": "44:03",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "colors",
+        "preschool"
+      ]
+    },
+    "Ntog0BlwTYU": {
+      "t": "Animal Nursery Rhymes with Elmo and Friends",
+      "len": "1:00:38",
+      "provider": "sesame",
+      "topics": [
+        "animals",
+        "music",
+        "preschool"
+      ]
+    },
+    "iaidVGM27TU": {
+      "t": "Songs About Colors with Elmo & Friends",
+      "len": "53:39",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "colors",
+        "preschool"
+      ]
+    },
+    "Mhpt4FUheT0": {
+      "t": "Elmo's Letter & Number of the Day Song",
+      "len": "40:25",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "letters",
+        "music"
+      ]
+    },
+    "0ll7MVpDJbQ": {
+      "t": "Songs About Friendship with Abby & Elmo",
+      "len": "31:14",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "I3MOtV7J82o": {
+      "t": "Number of the Day Song with Elmo & Puppy - Count to 20",
+      "len": "23:32",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "music"
+      ]
+    },
+    "C_Qfr56WG48": {
+      "t": "Time to Count with Elmo and Friends",
+      "len": "2:41:58",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "preschool"
+      ]
+    },
+    "ECRFNwH_ZGI": {
+      "t": "Got To Go and MORE Music with Elmo & Friends",
+      "len": "17:33",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "Lt0Uy0Av02A": {
+      "t": "Make Music with Elmo & Friends",
+      "len": "2:12:10",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "XNT5J_h4iSs": {
+      "t": "Count to 10 with Elmo and Abby",
+      "len": "38:09",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "music"
+      ]
+    },
+    "U8cWhTW7oYM": {
+      "t": "Let's Dance with Elmo & Friends",
+      "len": "1:42:11",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "l1Ioh83gwQc": {
+      "t": "Do the Propeller & MORE Dance Songs",
+      "len": "54:21",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "iBpErs0DEy8": {
+      "t": "Party Songs with DJ Grover",
+      "len": "17:32",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "xCrU5MvKQDE": {
+      "t": "Farm Songs with Farmer Elmo",
+      "len": "20:29",
+      "provider": "sesame",
+      "topics": [
+        "animals",
+        "music"
+      ]
+    },
+    "GonnPOnzoA4": {
+      "t": "Nursery Rhymes with Elmo and Friends",
+      "len": "2:12:09",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "75-c7694BWI": {
+      "t": "Elmo's ABCs - Alphabet Songs for Kids",
+      "len": "1:33:13",
+      "provider": "sesame",
+      "topics": [
+        "letters",
+        "music"
+      ]
+    },
+    "6zuyNmIkEUc": {
+      "t": "Move Your Body with Elmo & Friends",
+      "len": "58:03",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "zAUKRunzl1g": {
+      "t": "Elmo Searches for Missing Letters",
+      "len": "1:42:10",
+      "provider": "sesame",
+      "topics": [
+        "letters",
+        "music"
+      ]
+    },
+    "ssb5urAPi34": {
+      "t": "20 Nursery Rhymes with Elmo & Friends",
+      "len": "45:27",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "FDnMAaWOWLA": {
+      "t": "Valentine's Day Songs with Elmo",
+      "len": "28:59",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "M8qQUjm47i8": {
+      "t": "Elmo Learns About Animals - Chickens + Dogs",
+      "len": "51:24",
+      "provider": "sesame",
+      "topics": [
+        "animals",
+        "preschool"
+      ]
+    },
+    "nj20FR7Z_yY": {
+      "t": "10 Party Songs with Elmo & Friends",
+      "len": "25:26",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "5z98X1IzLik": {
+      "t": "The Letter C Mystery & Alphabet Learning",
+      "len": "51:24",
+      "provider": "sesame",
+      "topics": [
+        "letters",
+        "preschool"
+      ]
+    },
+    "TkMISJ-tM1g": {
+      "t": "Good Morning Songs with Elmo and Friends",
+      "len": "14:01",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "rOt_s0vlCrk": {
+      "t": "Let's Count Kitties with Elmo and Friends",
+      "len": "1:16:49",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "preschool"
+      ]
+    },
+    "ojTvHD0qfqo": {
+      "t": "Winter Holiday Songs with Elmo and Friends",
+      "len": "41:48",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "7mZF_-lr-8c": {
+      "t": "Elmo Searches for Letters and Numbers",
+      "len": "51:24",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "letters"
+      ]
+    },
+    "zOOPdmPNcG4": {
+      "t": "Animal Songs and Stories with Elmo",
+      "len": "35:15",
+      "provider": "sesame",
+      "topics": [
+        "animals",
+        "music"
+      ]
+    },
+    "1I32RzPn6Xk": {
+      "t": "Elmo Songs About Friendship",
+      "len": "57:34",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "1l8fEpxZXgw": {
+      "t": "The Number of the Day is 12",
+      "len": "14:03",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "music"
+      ]
+    },
+    "ZbrV-EYWGuI": {
+      "t": "Elmo's World - Learn about the Farm",
+      "len": "35:08",
+      "provider": "sesame",
+      "topics": [
+        "animals",
+        "preschool"
+      ]
+    },
+    "8Dom9-DeIN8": {
+      "t": "Old MacElmo and MORE Farm Songs",
+      "len": "1:16:49",
+      "provider": "sesame",
+      "topics": [
+        "animals",
+        "music"
+      ]
+    },
+    "vDXdg7Mmt_U": {
+      "t": "Counting is Fun with Elmo",
+      "len": "1:01:22",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "music"
+      ]
+    },
+    "Nhc0hGFqtlw": {
+      "t": "Summer Camp Fun with Elmo and Friends",
+      "len": "1:45:45",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "O5FsMTnmfkI": {
+      "t": "Summer Party Songs with Elmo & Friends",
+      "len": "1:16:44",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "MNz39_Hf7HM": {
+      "t": "A Playdate with Elmo - Food, Animals, and Toys",
+      "len": "10:17",
+      "provider": "sesame",
+      "topics": [
+        "animals",
+        "preschool"
+      ]
+    },
+    "RR6JymgAuDk": {
+      "t": "Elmo's World ABCs - Arts & Crafts, Birthdays, Counting",
+      "len": "15:13",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "letters"
+      ]
+    },
+    "QI1UPP7TPWE": {
+      "t": "Happy and You Know It Songs with Elmo",
+      "len": "21:12",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "Oxd-IjhPgP4": {
+      "t": "Let's Learn the Alphabet with Elmo and Friends",
+      "len": "35:45",
+      "provider": "sesame",
+      "topics": [
+        "letters",
+        "preschool"
+      ]
+    },
+    "TZEObQidVpg": {
+      "t": "Elmo's Animal ABC's Compilation",
+      "len": "57:53",
+      "provider": "sesame",
+      "topics": [
+        "letters",
+        "animals"
+      ]
+    },
+    "tym2p4UZIso": {
+      "t": "Learn Green! Songs with Elmo and Oscar the Grouch",
+      "len": "57:56",
+      "provider": "sesame",
+      "topics": [
+        "music",
+        "preschool"
+      ]
+    },
+    "bzNJSHBSBFw": {
+      "t": "Elmo Songs about the Number 5",
+      "len": "20:41",
+      "provider": "sesame",
+      "topics": [
+        "counting",
+        "music"
       ]
     }
-  ]
+  }
 }
