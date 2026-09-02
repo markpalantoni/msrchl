@@ -14,6 +14,10 @@ button{-webkit-appearance:none;font-family:inherit}
 #pick{padding:24px;display:none}#pick.on{display:block}
 h1{font-size:26px;font-weight:700;margin-bottom:4px}
 .sub{opacity:.55;font-size:15px;margin-bottom:22px}
+.sets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.set{padding:9px 15px;border-radius:999px;border:2px solid #2f2b3d;background:#1b1826;color:#f4f1ea;font-size:14px;font-weight:600}
+.set.dom{opacity:.72;font-weight:500}
+.set.sel{background:#f0b429;border-color:#f0b429;color:#2a1f00;opacity:1}
 .mins{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
 .chip{flex:1;min-width:74px;padding:18px 0;border-radius:18px;border:2px solid #2f2b3d;
   background:#1b1826;font-size:21px;font-weight:700;color:#f4f1ea;text-align:center}
@@ -70,7 +74,8 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 
 <div id=pick>
   <h1>Ms Rachel</h1>
-  <div class=sub>Pick how long, then pick a video.</div>
+  <div class=sub id=sub>Loading…</div>
+  <div class=sets id=sets></div>
   <div class=mins id=mins></div>
   <button class=big id=surprise>Surprise me</button>
   <div class=grid id=grid></div>
@@ -96,71 +101,28 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 <div id=dbg></div>
 
 <script>
-const VIDEOS = [
-  {id:"7K6YSmf0HdU", t:"Baby Music Class (full class)", len:"31:03"},
-  {id:"bIWT6RCMk-o", t:"Teaching Toddlers In and Out Through Play & Song", len:"6:23"},
-  {id:"oLw8KBBjc9E", t:"Toddler Music Class 2", len:"31:12"},
-  {id:"WbpKj0F-Z3s", t:"Farm Animal Sounds for Toddlers", len:"7:26"},
-  {id:"Ok1rDrnxh0A", t:"Kids Music Class - full class", len:"30:06"},
-  {id:"ZA9DTkaR6ao", t:"Letter Sounds Phonics Song + more", len:"35:47"},
-  {id:"CWxH4evJY5g", t:"Kids Music Class Online", len:"25:38"},
-  {id:"ZcX0gl-NFFg", t:"ABCs, Colors, Letters, Numbers - The Toddler Teacher", len:"30:33"},
-  {id:"BOOQLQUnMas", t:"Toddler Learning - Preschool Online", len:"30:02"},
-  {id:"LZES_sSMuVs", t:"Music Class for Kids Online", len:"34:22"},
-  {id:"CY25TFuY8qA", t:"Preschool - Letter B, No David Read Aloud, Days of the Week", len:"30:14"},
-  {id:"ZizzobSlWkg", t:"Icky Sticky Bubble Gum + More Nursery Rhymes", len:"30:16"},
-  {id:"t8ifczgtldM", t:"Toddler Frozen Music Class", len:"32:53"},
-  {id:"hWRH7OWKMwI", t:"Preschool Music & Movement - Number Songs, Counting, Dance", len:"31:23"},
-  {id:"hs4c0YrP-h8", t:"Kids Music Class - Jammin' with Jules", len:"30:17"},
-  {id:"eZ4roKAkOEg", t:"Count to 20 Song + Counting & Number Songs", len:"31:12"},
-  {id:"2vYqjQnm3WY", t:"Preschool for Littles - full virtual preschool", len:"2:00:12"},
-  {id:"VX2bE7y_33g", t:"Old MacDonald + other Animal Songs", len:"45:26"},
-  {id:"k0qrPENQgrY", t:"5 Little Ducks and More Learning Songs", len:"1:01:06"},
-  {id:"vzuo-C0hzpE", t:"Preschool for Littles - Circle Time, Songs, Movement", len:"1:06:41"},
-  {id:"I4o7caGRmwk", t:"Preschool for Littles - Letter B Part 2 - Ms Rachel Visits the Beach", len:"1:08:02"},
-  {id:"3Cif-tnRxjg", t:"Sink or Float - science experiment for kids", len:"1:04:05"},
-  {id:"eetwPz7PHvY", t:"Preschool - Circle Time, Songs, Reading, Movement", len:"1:14:37"},
-  {id:"OQ9BL6_cexw", t:"Preschool Songs - Action and Movement", len:"2:00:06"},
-  {id:"mGgDKEVZXw8", t:"Banana Phone by Raffi and More Toddler Songs", len:"40:56"},
-  {id:"icUL7bjce8c", t:"Preschool Learning, Activities and Songs", len:"2:02:20"},
-  {id:"B7AuefmcT6A", t:"Halloween Songs for Kids - Circle Time", len:"1:19:09"},
-  {id:"38io5l3Z024", t:"Kids Dance Songs - Whip Your Tail Like A Dinosaur - Brain Breaks", len:"1:04:26"},
-  {id:"hJw7uWLMeC8", t:"Learn at the Playground", len:"1:04:14"},
-  {id:"uLsC9aK32QA", t:"Animal Sounds - Talking Time on the Farm", len:"1:08:35"},
-  {id:"noJrVwp6akE", t:"Circle Time, Phonics, Colors, Numbers - Dinosaurs", len:"1:19:35"},
-  {id:"7siu3eOW1VQ", t:"Happy Birthday Song Circle Time Special", len:"1:13:10"},
-  {id:"OyUoskE7Ogk", t:"Bedtime Routine - Bedtime Stories for Toddlers", len:"31:00"},
-  {id:"559QxICEleA", t:"Animal Sounds, Farm Animals, Colors, Numbers, Words", len:"3:00:47"},
-  {id:"az9c0l-IfgM", t:"Hop Little Bunnies + More Nursery Rhymes", len:"1:10:01"},
-  {id:"_R0xRT2y7Uo", t:"Learn The Alphabet, Letters, Phonics Song", len:"1:00:18"},
-  {id:"TyV-OhCrVDA", t:"Learn Colors, Fruits and Vegetables", len:"1:00:15"},
-  {id:"hOHrqPI9bVk", t:"Learn Numbers, Colors, Counting and Shapes", len:"1:00:04"},
-  {id:"HsT3iI6dT5U", t:"Songs for Littles Christmas Movie", len:"1:10:21"},
-  {id:"47MNn4bsmSw", t:"Learn Animals - Animal Sounds, Farm Animals, Nursery Rhymes", len:"2:00:10"},
-  {id:"ozsgl_sLnHQ", t:"Learn About Emotions and Feelings", len:"1:20:13"},
-  {id:"bOiYN7iU-W8", t:"Wheels On The Bus + More Nursery Rhymes", len:"1:00:20"},
-  {id:"yBj9Qlpwjcs", t:"Learn Words and Colors for Toddlers", len:"30:16"},
-  {id:"kBuKdHQYPps", t:"Ms Rachel Halloween - Wheels on the Bus", len:"40:31"},
-];
 const MINS=[{s:120,l:"2 min"},{s:180,l:"3 min"},{s:300,l:"5 min"}];
 const WIND=20;
 const $=s=>document.querySelector(s);
 const Q=new URLSearchParams(location.search);
 const DEBUG=Q.has('debug');
 
+let VIDEOS=[],DOC=null,activeSet=null;
+let player=null,ticker=null,pending=null,wake=null,endAt=0,winding=false;
+let ytReady=false,paused=false,pausedAt=0,lastTap=0;
+
 function wantedSeconds(){
   if(Q.has('s')) return Math.max(3,parseInt(Q.get('s'),10)||0);
   if(Q.has('m')) return Math.max(3,(parseFloat(Q.get('m'))||0)*60);
   return null;
 }
+let chosen=wantedSeconds()||300;
+
 function wantedVideo(){
   const v=Q.get('v'); if(!v) return null;
   if(v==='random'||v==='any') return VIDEOS[Math.floor(Math.random()*VIDEOS.length)];
-  return VIDEOS.find(x=>x.id===v)||{id:v,t:v};
+  return VIDEOS.find(x=>x.id===v)||(DOC&&DOC.videos[v]?Object.assign({id:v},DOC.videos[v]):{id:v,t:v});
 }
-
-let chosen=wantedSeconds()||300;
-let player=null,ticker=null,pending=null,wake=null,endAt=0,winding=false;
 
 function log(m){ if(!DEBUG) return; const d=$('#dbg'); d.classList.add('on');
   d.textContent=(new Date().toLocaleTimeString()+'  '+m+'\n'+d.textContent).slice(0,900); }
@@ -175,21 +137,48 @@ function paintClock(){ $('#clk').classList.toggle('on',clockOn); }
 paintClock();
 
 MINS.forEach(m=>{const b=document.createElement('button');
-  b.className='chip'+(m.t?' test':'')+(m.s===chosen?' sel':'');b.textContent=m.l;
+  b.className='chip'+(m.s===chosen?' sel':'');b.textContent=m.l;
   b.onclick=()=>{chosen=m.s;[...$('#mins').children].forEach(c=>c.classList.remove('sel'));b.classList.add('sel')};
   $('#mins').appendChild(b)});
-VIDEOS.forEach(v=>{const b=document.createElement('button');b.className='card';
-  b.innerHTML='<img loading=lazy src="https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg" alt=""><span>'+v.t+'</span>';
-  b.onclick=()=>arm(v);$('#grid').appendChild(b)});
-$('#surprise').onclick=()=>arm(VIDEOS[Math.floor(Math.random()*VIDEOS.length)]);
 
-window.onYouTubeIframeAPIReady=function(){
+$('#surprise').onclick=()=>{ if(VIDEOS.length) arm(VIDEOS[Math.floor(Math.random()*VIDEOS.length)]); };
+
+// ---- content sets, loaded from content.json so updating what the app shows
+// never means touching this file.
+function renderSets(){
+  const box=$('#sets'); box.innerHTML='';
+  const order=[...DOC.sets].sort((a,b)=>(a.kind==='provider'?0:1)-(b.kind==='provider'?0:1));
+  order.forEach(s=>{ const b=document.createElement('button');
+    b.className='set'+(s.id===activeSet.id?' sel':'')+(s.kind==='domain'?' dom':'');
+    b.textContent=s.name;
+    b.onclick=()=>applySet(s.id);
+    box.appendChild(b); });
+}
+function renderGrid(){
+  const g=$('#grid'); g.innerHTML='';
+  VIDEOS.forEach(v=>{ const b=document.createElement('button'); b.className='card';
+    b.innerHTML='<img loading=lazy src="https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg" alt=""><span>'+v.t+'</span>';
+    b.onclick=()=>arm(v); g.appendChild(b); });
+  $('#sub').textContent=VIDEOS.length+' videos · pick how long, then pick one.';
+}
+function applySet(id){
+  const s=DOC.sets.find(x=>x.id===id)||DOC.sets[0];
+  activeSet=s;
+  try{ localStorage.setItem('msrchl:set',s.id); }catch(e){}
+  VIDEOS=s.videos.map(vid=>DOC.videos[vid]?Object.assign({id:vid},DOC.videos[vid]):null).filter(Boolean);
+  renderSets(); renderGrid(); maybePlayer();
+  log('set '+s.id+' ('+VIDEOS.length+')');
+}
+
+function maybePlayer(){
+  if(player||!ytReady||!VIDEOS.length) return;
   player=new YT.Player('yt',{videoId:VIDEOS[0].id,
     playerVars:{playsinline:1,autoplay:0,controls:0,disablekb:1,fs:0,rel:0,
                 modestbranding:1,iv_load_policy:3,cc_load_policy:0},
     events:{onReady:()=>{player.mute();log('ready');},
             onStateChange:e=>log('state '+e.data)}});
-};
+}
+window.onYouTubeIframeAPIReady=function(){ ytReady=true; maybePlayer(); };
 
 function arm(v){
   pending=v; $('#pick').classList.remove('on');
@@ -226,10 +215,26 @@ function go(v){
 function save(){ try{ const t=player.getCurrentTime(),d=player.getDuration();
   setPos(pending.id,(d&&t>d-30)?0:t); }catch(e){} }
 
+// Double tap anywhere off the corners toggles pause. The countdown pauses with
+// it, so pausing to talk to him does not eat into the session.
+$('#veil').addEventListener('click',()=>{
+  const now=Date.now();
+  if(now-lastTap<320){ lastTap=0; togglePause(); } else lastTap=now;
+});
+function togglePause(){
+  if(winding||!ticker) return;
+  try{
+    if(paused){ player.playVideo(); endAt+=Date.now()-pausedAt; paused=false; log('resume'); }
+    else{ player.pauseVideo(); pausedAt=Date.now(); paused=true; save(); log('pause'); }
+  }catch(e){ log('ERR '+e); }
+}
+
 function run(){
   endAt=Date.now()+chosen*1000;
+  paused=false;
   clearInterval(ticker);
   ticker=setInterval(()=>{
+    if(paused) return;
     const left=(endAt-Date.now())/1000;
     $('#clk').firstChild.textContent=fmt(left);
     if(Math.floor(left)%5===0) save();
@@ -277,9 +282,18 @@ $('#cTL').onclick=()=>{ clockOn=!clockOn;
   paintClock(); log('corner TL: clock '+clockOn); };
 $('#cBL').onclick=()=>log('corner BL: unassigned');
 
-const dl=wantedVideo();
-if(dl) arm(dl); else $('#pick').classList.add('on');
-if(DEBUG) log('session '+chosen+'s, wind '+WIND+'s');
+fetch('content.json?_='+Date.now())
+  .then(r=>{ if(!r.ok) throw new Error('content.json '+r.status); return r.json(); })
+  .then(doc=>{
+    DOC=doc;
+    const want=Q.get('set')||(()=>{try{return localStorage.getItem('msrchl:set')}catch(e){return null}})()||doc.defaultSet;
+    applySet(want);
+    const dl=wantedVideo();
+    if(dl) arm(dl); else $('#pick').classList.add('on');
+    if(DEBUG) log('session '+chosen+'s, wind '+WIND+'s, set '+activeSet.id);
+  })
+  .catch(e=>{ $('#pick').classList.add('on');
+    $('#sub').textContent='Could not load content.json — '+e.message; log('ERR '+e); });
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
 </body></html>
