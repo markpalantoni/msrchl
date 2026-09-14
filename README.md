@@ -7,6 +7,11 @@ Pick a show, a topic, and a length (2, 3 or 5 minutes), then pick a video or
 hit Surprise me. It plays with no player controls, no recommendations and no
 way out. Over the last 20 seconds the sound and picture fade to a goodbye card.
 
+The wind-down is deliberately quiet: the only cue is a dim gold dot in the
+top-left corner, which flashes once when the wind-down starts and stays on
+until the end. The countdown hides itself for the duration even if it was
+showing, so nothing on screen reads as "it's about to stop".
+
 ## While a video plays
 
 The corners are invisible tap targets (add `?targets=1` to see them):
