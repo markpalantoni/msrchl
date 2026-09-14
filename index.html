@@ -43,7 +43,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
   transition:opacity 1.6s linear, filter 1.6s linear}
 #veil{position:absolute;inset:0;z-index:3;background:transparent}
 #curtain{position:absolute;inset:0;z-index:2;background:#000;pointer-events:none;opacity:0;
-  transition:opacity 1.4s ease;display:flex;align-items:center;justify-content:center}
+  transition:opacity 1s ease;display:flex;align-items:center;justify-content:center}
 #curtain.on{opacity:1;transition:none}
 #curtain span{font-size:64px;color:#f4f1ea;opacity:0;transition:opacity .4s}
 #curtain.paused span{opacity:.55}
@@ -130,8 +130,8 @@ const DEBUG=Q.has('debug');
 let VIDEOS=[],DOC=null,activeSet=null;
 let player=null,ticker=null,pending=null,wake=null,endAt=0,winding=false;
 let ytReady=false,paused=false,pausedAt=0,lastTap=0;
-let windFade=null,preWindEnd=0,trTaps=0,trTimer=null,tlTaps=0,tlTimer=null,helpTimer=null,curtainTimer=null;
-let remote=null;
+let windFade=null,preWindEnd=0,trTaps=0,trTimer=null,tlTaps=0,tlTimer=null,helpTimer=null;
+let remote=null,lastSave=0;
 
 function wantedSeconds(){
   if(Q.has('s')) return Math.max(3,parseInt(Q.get('s'),10)||0);
@@ -247,14 +247,11 @@ function showHelp(on,sticky){
   if(on&&!sticky) helpTimer=setTimeout(()=>showHelp(false),12000);
 }
 
-// YouTube paints its own title bar and play bezel for a few seconds whenever
-// playback starts or resumes. The curtain hides that, and doubles as the
-// pause card so the paused player's chrome never shows either.
+// Black until playback is confirmed, then a one second fade so the picture
+// lands on the frame that was showing when it last stopped. Also the pause card.
 function curtain(on,paused){
-  clearTimeout(curtainTimer);
   const c=$('#curtain'); c.classList.toggle('paused',!!paused);
-  if(on) c.classList.add('on');
-  else curtainTimer=setTimeout(()=>c.classList.remove('on'),4500);
+  c.classList.toggle('on',on);
 }
 
 function maybePlayer(){
@@ -284,7 +281,7 @@ function go(v){
   $('#tap').classList.remove('on'); $('#stage').classList.add('on');
   setLast(v.id); curtain(true);
   try{
-    player.loadVideoById({videoId:v.id,startSeconds:getPos(v.id)});
+    player.loadVideoById({videoId:v.id,startSeconds:Math.max(0,getPos(v.id)-1)});
     player.unMute(); player.setVolume(100); player.playVideo();
     killCaptions(); log('go '+v.id);
   }catch(e){ log('ERR '+e); }
@@ -327,7 +324,7 @@ function run(){
     if(paused) return;
     const left=(endAt-Date.now())/1000;
     $('#clk').firstChild.textContent=fmt(left);
-    if(Math.floor(left)%5===0) save();
+    if(Date.now()-lastSave>=1000){ save(); lastSave=Date.now(); }
     if(!winding&&left<=WIND) windDown();
   },250);
 }
