@@ -67,11 +67,6 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
   background:transparent;border:0;padding:0;opacity:0}
 #cTR{top:0;right:0}#cBR{bottom:0;right:0}#cTL{top:0;left:0}#cBL{bottom:0;left:0}
 
-#clk{position:fixed;top:0;right:0;z-index:5;padding:16px 20px;pointer-events:none;
-  font:600 17px/1 ui-monospace,SFMono-Regular,monospace;text-align:right}
-#clk span{display:inline-block;padding:6px 11px;border-radius:11px;background:#0009;
-  color:#fff;opacity:0;transition:opacity .25s}
-#clk.on span{opacity:.75}
 #mark{position:fixed;top:11px;left:11px;z-index:9;width:7px;height:7px;border-radius:50%;
   background:#f0b429;opacity:0;transition:opacity .6s ease;pointer-events:none}
 #mark.on{opacity:.22}
@@ -110,7 +105,6 @@ body.tg #tgc{display:flex}
     <h2>Night night</h2>
     <small>See you tomorrow.</small>
   </div>
-  <div id=clk><span>--:--</span></div>
   <div id=mark></div>
   <div id=tgc></div>
   <button class=corner id=cTL></button>
@@ -179,10 +173,6 @@ function getLast(){ try{ return localStorage.getItem('msrchl:last'); }catch(e){ 
 function setLast(id){ try{ localStorage.setItem('msrchl:last',id); }catch(e){} }
 function fmt(t){ t=Math.max(0,Math.round(t)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
 
-let clockOn=(()=>{ try{ return Q.get('clock')==='1'||localStorage.getItem('msrchl:clock')==='1'; }catch(e){ return false; } })();
-// Never during a wind-down: the dot is the only cue a kid should be able to see.
-function paintClock(){ $('#clk').classList.toggle('on',clockOn&&!winding); }
-paintClock();
 
 MINS.forEach(m=>{const b=document.createElement('button');
   b.className='chip'+(m.s===chosen?' sel':'');b.textContent=m.l;
@@ -235,7 +225,7 @@ function applyFilter(prov,topic){
   log('filter '+curProv+'/'+curTopic+' -> '+VIDEOS.length);
 }
 
-$('#cTL').textContent='TOP LEFT\ntap: show / hide timer\ntriple tap: this guide';
+$('#cTL').textContent='TOP LEFT\ntriple tap: this guide';
 $('#cTR').textContent='TOP RIGHT\ntap: wind down now\ndouble tap: cancel wind-down';
 $('#cBL').textContent='BOTTOM LEFT\ntap: pause / resume';
 $('#cBR').textContent='BOTTOM RIGHT\nback to the picker';
@@ -302,7 +292,7 @@ function save(){ try{ const t=player.getCurrentTime(),d=player.getDuration();
 // Killing the app between ticks would otherwise lose up to 5s of position.
 addEventListener('pagehide',()=>{ if(ticker) save(); });
 
-// Double tap anywhere off the corners toggles pause. The countdown pauses with
+// Double tap anywhere off the corners toggles pause. The session timer pauses with
 // it, so pausing to talk to him does not eat into the session.
 $('#veil').addEventListener('click',()=>{
   const now=Date.now();
@@ -323,7 +313,6 @@ function run(){
   ticker=setInterval(()=>{
     if(paused) return;
     const left=(endAt-Date.now())/1000;
-    $('#clk').firstChild.textContent=fmt(left);
     if(Date.now()-lastSave>=1000){ save(); lastSave=Date.now(); }
     if(!winding&&left<=WIND) windDown();
   },250);
@@ -342,7 +331,7 @@ function windDown(){
   if(winding) return; winding=true;
   preWindEnd=endAt;
   endAt=Date.now()+WIND*1000;
-  paintClock(); markWind(true);
+  markWind(true);
   log('wind-down');
   scatterMotes();
   const t0=Date.now(), v0=(()=>{ try{ return player.getVolume(); }catch(e){ return 100; } })();
@@ -357,7 +346,7 @@ function windDown(){
     if(k>0.70){ $('#night').style.transition='opacity 6s ease-in'; $('#night').style.opacity=1; }
     if(k>=1){ clearInterval(windFade); windFade=null; clearInterval(ticker); save();
       try{ player.pauseVideo(); player.setVolume(0); }catch(e){}
-      $('#yt').style.opacity=0; $('#clk').style.display='none'; markWind(false);
+      $('#yt').style.opacity=0; markWind(false);
       if(remote){ remote.close(); remote=null; }
       if(wake) wake.release().catch(()=>{}); log('done'); }
   },80);
@@ -367,7 +356,7 @@ function windDown(){
 function cancelWind(){
   if(!winding) return;
   clearInterval(windFade); windFade=null; winding=false;
-  paintClock(); markWind(false);
+  markWind(false);
   $('#dusk').style.transition='opacity 1.1s ease'; $('#dusk').style.opacity=0;
   $('#night').style.transition='opacity 1.1s ease'; $('#night').style.opacity=0;
   $('#yt').style.filter=''; $('#yt').style.opacity=1;
@@ -397,12 +386,9 @@ $('#cTR').onclick=()=>{
 // drops any deep-link params and clears player, timer and wind-down state.
 $('#cBR').onclick=()=>{ save(); log('corner BR: back to picker');
   location.href=location.pathname; };
-function toggleClock(){ clockOn=!clockOn;
-  try{ localStorage.setItem('msrchl:clock',clockOn?'1':'0'); }catch(e){}
-  paintClock(); log('corner TL: clock '+clockOn); }
 $('#cTL').onclick=()=>{
   tlTaps++; clearTimeout(tlTimer);
-  tlTimer=setTimeout(()=>{ if(tlTaps>=3) showHelp(!document.body.classList.contains('tg')); else toggleClock(); tlTaps=0; },350);
+  tlTimer=setTimeout(()=>{ if(tlTaps>=3) showHelp(!document.body.classList.contains('tg')); tlTaps=0; },350);
 };
 $('#cBL').onclick=()=>{ log('corner BL: pause toggle'); togglePause(); };
 

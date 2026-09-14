@@ -36,7 +36,7 @@ that has not reached `main` has not shipped.
 
 Serve the directory with any static server and load it in a browser:
 `python3 -m http.server 8765`. Deep-link params for testing without the picker:
-`v=<id>|random|last`, `m=<minutes>` or `s=<seconds>`, `clock=1` (show the
-countdown), `targets=1` (label the invisible corner targets), `debug=1`
+`v=<id>|random|last`, `m=<minutes>` or `s=<seconds>`, `targets=1` (label the
+invisible corner targets), `debug=1`
 (on-screen log), `provider=` and `topic=`. UI changes are verified by playing a
 video in a real browser, not by reading the code.
