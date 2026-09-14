@@ -134,7 +134,8 @@ function wantedSeconds(){
 let chosen=wantedSeconds()||300;
 
 function wantedVideo(){
-  const v=Q.get('v'); if(!v) return null;
+  let v=Q.get('v'); if(!v) return null;
+  if(v==='last'){ const id=getLast(); v=(id&&DOC.videos[id])?id:'random'; }
   if(v==='random'||v==='any') return VIDEOS[Math.floor(Math.random()*VIDEOS.length)];
   return VIDEOS.find(x=>x.id===v)||(DOC&&DOC.videos[v]?Object.assign({id:v},DOC.videos[v]):{id:v,t:v});
 }
@@ -145,6 +146,8 @@ function log(m){ if(!DEBUG) return; const d=$('#dbg'); d.classList.add('on');
 const PK=id=>'msrchl:pos:'+id;
 function getPos(id){ try{ return parseFloat(localStorage.getItem(PK(id)))||0; }catch(e){ return 0; } }
 function setPos(id,t){ try{ localStorage.setItem(PK(id),String(Math.max(0,t))); }catch(e){} }
+function getLast(){ try{ return localStorage.getItem('msrchl:last'); }catch(e){ return null; } }
+function setLast(id){ try{ localStorage.setItem('msrchl:last',id); }catch(e){} }
 function fmt(t){ t=Math.max(0,Math.round(t)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
 
 let clockOn=(()=>{ try{ return Q.get('clock')==='1'||localStorage.getItem('msrchl:clock')==='1'; }catch(e){ return false; } })();
@@ -236,6 +239,7 @@ function killCaptions(){ let n=0; const t=setInterval(()=>{
 
 function go(v){
   $('#tap').classList.remove('on'); $('#stage').classList.add('on');
+  setLast(v.id);
   try{
     player.loadVideoById({videoId:v.id,startSeconds:getPos(v.id)});
     player.unMute(); player.setVolume(100); player.playVideo();
@@ -255,6 +259,8 @@ function go(v){
 
 function save(){ try{ const t=player.getCurrentTime(),d=player.getDuration();
   setPos(pending.id,(d&&t>d-30)?0:t); }catch(e){} }
+// Killing the app between ticks would otherwise lose up to 5s of position.
+addEventListener('pagehide',()=>{ if(ticker) save(); });
 
 // Double tap anywhere off the corners toggles pause. The countdown pauses with
 // it, so pausing to talk to him does not eat into the session.
