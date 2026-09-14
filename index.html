@@ -131,6 +131,7 @@ let VIDEOS=[],DOC=null,activeSet=null;
 let player=null,ticker=null,pending=null,wake=null,endAt=0,winding=false;
 let ytReady=false,paused=false,pausedAt=0,lastTap=0;
 let windFade=null,preWindEnd=0,trTaps=0,trTimer=null,tlTaps=0,tlTimer=null,helpTimer=null,curtainTimer=null;
+let remote=null;
 
 function wantedSeconds(){
   if(Q.has('s')) return Math.max(3,parseInt(Q.get('s'),10)||0);
@@ -152,6 +153,28 @@ function log(m){ if(!DEBUG) return; const d=$('#dbg'); d.classList.add('on');
 const PK=id=>'msrchl:pos:'+id;
 function getPos(id){ try{ return parseFloat(localStorage.getItem(PK(id)))||0; }catch(e){ return 0; } }
 function setPos(id,t){ try{ localStorage.setItem(PK(id),String(Math.max(0,t))); }catch(e){} }
+// Remote control over ntfy.sh. The topic is the only credential, so it never
+// appears in this file: it arrives once as ?remote=<topic> and is remembered.
+const remoteTopic=(()=>{ try{
+  const q=Q.get('remote');
+  if(q==='off'){ localStorage.removeItem('msrchl:remote'); return null; }
+  if(q){ localStorage.setItem('msrchl:remote',q); return q; }
+  return localStorage.getItem('msrchl:remote'); }catch(e){ return Q.get('remote'); } })();
+function listenRemote(){
+  if(!remoteTopic||remote) return;
+  remote=new EventSource('https://ntfy.sh/'+encodeURIComponent(remoteTopic)+'/sse');
+  remote.onmessage=e=>{
+    let cmd=''; try{ cmd=(JSON.parse(e.data).message||'').trim().toLowerCase(); }catch(err){ return; }
+    log('remote: '+cmd); markWind(true);
+    if(cmd==='wind') windDown();
+    else if(cmd==='cancel') cancelWind();
+    else if(cmd==='pause'&&!paused) togglePause();
+    else if(cmd==='resume'&&paused) togglePause();
+    else if(cmd==='toggle') togglePause();
+  };
+  remote.onerror=()=>log('remote: reconnecting');
+  log('remote: listening');
+}
 function getLast(){ try{ return localStorage.getItem('msrchl:last'); }catch(e){ return null; } }
 function setLast(id){ try{ localStorage.setItem('msrchl:last',id); }catch(e){} }
 function fmt(t){ t=Math.max(0,Math.round(t)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
@@ -269,7 +292,7 @@ function go(v){
   const probe=setInterval(()=>{
     let st=-99; try{ st=player.getPlayerState(); }catch(e){}
     waited+=300;
-    if(st===1||st===3){ clearInterval(probe); log('playing'); curtain(false); run(); return; }
+    if(st===1||st===3){ clearInterval(probe); log('playing'); curtain(false); run(); listenRemote(); return; }
     if(waited>=6000){ clearInterval(probe); log('no playback, state '+st);
       $('#stage').classList.remove('on'); $('#tapt').textContent='Tap again to play';
       $('#tap').classList.add('on'); }
@@ -337,6 +360,7 @@ function windDown(){
     if(k>=1){ clearInterval(windFade); windFade=null; clearInterval(ticker); save();
       try{ player.pauseVideo(); player.setVolume(0); }catch(e){}
       $('#yt').style.opacity=0; $('#clk').style.display='none'; markWind(false);
+      if(remote){ remote.close(); remote=null; }
       if(wake) wake.release().catch(()=>{}); log('done'); }
   },80);
 }

@@ -38,6 +38,19 @@ last, where it left off, for a 5 minute session.
 | `targets=1` | label the corner targets |
 | `debug=1` | on-screen log |
 
+## Remote control
+
+The session can be wound down from another device, over [ntfy.sh](https://ntfy.sh).
+Launch the playing device once with `?remote=<topic>` and it remembers the
+topic (`?remote=off` forgets it). While a video plays it listens on that topic
+for `wind`, `cancel`, `pause`, `resume` or `toggle`. From a phone, one tap on
+
+    https://ntfy.sh/<topic>/publish?message=wind
+
+sends the command; a Shortcut or a bookmark works. The topic is the only
+credential: make it a long random string, keep it out of this repo, and
+change it in both places to rotate it.
+
 ## Content
 
 `content.json` is the whole catalog: each video once, tagged with a provider
