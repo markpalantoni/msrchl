@@ -74,9 +74,6 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   display:flex;align-items:center;justify-content:center;color:#f0b429;
   font:700 13px/1.35 system-ui;text-align:center;padding:8px;white-space:pre-line}
-#tgc{position:absolute;inset:0;z-index:7;display:none;align-items:center;justify-content:center;
-  pointer-events:none;color:#f0b429;font:700 13px/1.35 system-ui;text-align:center;white-space:pre-line}
-body.tg #tgc{display:flex}
 #dbg{position:fixed;left:0;right:0;bottom:0;z-index:99;background:#000c;color:#7f8;
   font:11px/1.5 ui-monospace,monospace;padding:7px 10px;display:none;white-space:pre-wrap;
   pointer-events:none}
@@ -106,7 +103,6 @@ body.tg #tgc{display:flex}
     <small>See you tomorrow.</small>
   </div>
   <div id=mark></div>
-  <div id=tgc></div>
   <button class=corner id=cTL></button>
   <button class=corner id=cTR></button>
   <button class=corner id=cBL></button>
@@ -123,7 +119,7 @@ const DEBUG=Q.has('debug');
 
 let VIDEOS=[],DOC=null,activeSet=null;
 let player=null,ticker=null,pending=null,wake=null,endAt=0,winding=false;
-let ytReady=false,paused=false,pausedAt=0,lastTap=0;
+let ytReady=false,paused=false,pausedAt=0;
 let windFade=null,preWindEnd=0,trTaps=0,trTimer=null,tlTaps=0,tlTimer=null,helpTimer=null;
 let remote=null,lastSave=0;
 
@@ -229,7 +225,6 @@ $('#cTL').textContent='TOP LEFT\ntriple tap: this guide';
 $('#cTR').textContent='TOP RIGHT\ntap: wind down now\ndouble tap: cancel wind-down';
 $('#cBL').textContent='BOTTOM LEFT\ntap: pause / resume';
 $('#cBR').textContent='BOTTOM RIGHT\nback to the picker';
-$('#tgc').textContent='CENTER\ndouble tap: pause / resume';
 // The guide labels the live targets, so it hides itself before a kid can
 // learn from it. sticky is for ?targets=1 while debugging.
 function showHelp(on,sticky){
@@ -292,16 +287,12 @@ function save(){ try{ const t=player.getCurrentTime(),d=player.getDuration();
 // Killing the app between ticks would otherwise lose up to 5s of position.
 addEventListener('pagehide',()=>{ if(ticker) save(); });
 
-// Double tap anywhere off the corners toggles pause. The session timer pauses with
-// it, so pausing to talk to him does not eat into the session.
-$('#veil').addEventListener('click',()=>{
-  const now=Date.now();
-  if(now-lastTap<320){ lastTap=0; togglePause(); } else lastTap=now;
-});
+// The session timer pauses too, so pausing to talk to him does not eat into
+// the session.
 function togglePause(){
   if(winding||!ticker) return;
   try{
-    if(paused){ player.playVideo(); endAt+=Date.now()-pausedAt; paused=false; curtain(true); curtain(false); log('resume'); }
+    if(paused){ player.playVideo(); endAt+=Date.now()-pausedAt; paused=false; curtain(false); log('resume'); }
     else{ player.pauseVideo(); pausedAt=Date.now(); paused=true; save(); curtain(true,true); log('pause'); }
   }catch(e){ log('ERR '+e); }
 }

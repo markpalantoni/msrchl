@@ -21,7 +21,8 @@ The corners are invisible tap targets (add `?targets=1` to see them):
 - top-right: tap to wind down now, double-tap to cancel a wind-down
 - bottom-left: pause and resume; the session timer pauses too
 - bottom-right: back to the picker
-- double-tap anywhere else: also pause and resume
+
+Taps anywhere else do nothing.
 
 YouTube's own title bar and play bezel are hidden behind a short black curtain
 whenever playback starts or resumes, and a pause card covers the player while
