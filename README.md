@@ -11,10 +11,16 @@ way out. Over the last 20 seconds the sound and picture fade to a goodbye card.
 
 The corners are invisible tap targets (add `?targets=1` to see them):
 
-- top-left: show or hide the countdown
+- top-left: show or hide the countdown; triple-tap for an on-screen guide to
+  these controls (it hides itself after a few seconds)
 - top-right: tap to wind down now, double-tap to cancel a wind-down
+- bottom-left: pause and resume; the countdown pauses too
 - bottom-right: back to the picker
-- double-tap anywhere else: pause and resume; the countdown pauses too
+- double-tap anywhere else: also pause and resume
+
+YouTube's own title bar and play bezel are hidden behind a short black curtain
+whenever playback starts or resumes, and a pause card covers the player while
+paused.
 
 Every video remembers where it stopped and resumes from there next time.
 

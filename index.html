@@ -42,6 +42,11 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 #yt{position:absolute;inset:0;width:100%;height:100%;
   transition:opacity 1.6s linear, filter 1.6s linear}
 #veil{position:absolute;inset:0;z-index:3;background:transparent}
+#curtain{position:absolute;inset:0;z-index:2;background:#000;pointer-events:none;opacity:0;
+  transition:opacity 1.4s ease;display:flex;align-items:center;justify-content:center}
+#curtain.on{opacity:1;transition:none}
+#curtain span{font-size:64px;color:#f4f1ea;opacity:0;transition:opacity .4s}
+#curtain.paused span{opacity:.55}
 
 #dusk{position:absolute;inset:0;z-index:4;opacity:0;pointer-events:none;
   background:radial-gradient(ellipse at 50% 45%,transparent 18%,#2a1e3d99 62%,#0d0a18 100%)}
@@ -73,9 +78,9 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 #mark.flash{opacity:.80;transition:opacity .18s ease}
 body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   display:flex;align-items:center;justify-content:center;color:#f0b429;
-  font:700 13px/1.35 system-ui;text-align:center;padding:8px}
+  font:700 13px/1.35 system-ui;text-align:center;padding:8px;white-space:pre-line}
 #tgc{position:absolute;inset:0;z-index:7;display:none;align-items:center;justify-content:center;
-  pointer-events:none;color:#f0b429;font:700 13px/1.35 system-ui;text-align:center}
+  pointer-events:none;color:#f0b429;font:700 13px/1.35 system-ui;text-align:center;white-space:pre-line}
 body.tg #tgc{display:flex}
 #dbg{position:fixed;left:0;right:0;bottom:0;z-index:99;background:#000c;color:#7f8;
   font:11px/1.5 ui-monospace,monospace;padding:7px 10px;display:none;white-space:pre-wrap;
@@ -97,6 +102,7 @@ body.tg #tgc{display:flex}
 
 <div id=stage>
   <div id=yt></div>
+  <div id=curtain><span>&#10074;&#10074;</span></div>
   <div id=veil></div>
   <div id=dusk></div>
   <div id=night>
@@ -124,7 +130,7 @@ const DEBUG=Q.has('debug');
 let VIDEOS=[],DOC=null,activeSet=null;
 let player=null,ticker=null,pending=null,wake=null,endAt=0,winding=false;
 let ytReady=false,paused=false,pausedAt=0,lastTap=0;
-let windFade=null,preWindEnd=0,trTaps=0,trTimer=null;
+let windFade=null,preWindEnd=0,trTaps=0,trTimer=null,tlTaps=0,tlTimer=null,helpTimer=null,curtainTimer=null;
 
 function wantedSeconds(){
   if(Q.has('s')) return Math.max(3,parseInt(Q.get('s'),10)||0);
@@ -205,13 +211,26 @@ function applyFilter(prov,topic){
   log('filter '+curProv+'/'+curTopic+' -> '+VIDEOS.length);
 }
 
-function showTargets(){
-  document.body.classList.add('tg');
-  $('#cTL').textContent='TOP LEFT\nshow / hide timer';
-  $('#cTR').textContent='TOP RIGHT\ntap: wind down\ndouble: cancel';
-  $('#cBL').textContent='BOTTOM LEFT\nunassigned';
-  $('#cBR').textContent='BOTTOM RIGHT\nback to picker';
-  $('#tgc').textContent='CENTRE — double tap to pause / resume';
+$('#cTL').textContent='TOP LEFT\ntap: show / hide timer\ntriple tap: this guide';
+$('#cTR').textContent='TOP RIGHT\ntap: wind down now\ndouble tap: cancel wind-down';
+$('#cBL').textContent='BOTTOM LEFT\ntap: pause / resume';
+$('#cBR').textContent='BOTTOM RIGHT\nback to the picker';
+$('#tgc').textContent='CENTER\ndouble tap: pause / resume';
+// The guide labels the live targets, so it hides itself before a kid can
+// learn from it. sticky is for ?targets=1 while debugging.
+function showHelp(on,sticky){
+  document.body.classList.toggle('tg',on); clearTimeout(helpTimer);
+  if(on&&!sticky) helpTimer=setTimeout(()=>showHelp(false),12000);
+}
+
+// YouTube paints its own title bar and play bezel for a few seconds whenever
+// playback starts or resumes. The curtain hides that, and doubles as the
+// pause card so the paused player's chrome never shows either.
+function curtain(on,paused){
+  clearTimeout(curtainTimer);
+  const c=$('#curtain'); c.classList.toggle('paused',!!paused);
+  if(on) c.classList.add('on');
+  else curtainTimer=setTimeout(()=>c.classList.remove('on'),4500);
 }
 
 function maybePlayer(){
@@ -239,7 +258,7 @@ function killCaptions(){ let n=0; const t=setInterval(()=>{
 
 function go(v){
   $('#tap').classList.remove('on'); $('#stage').classList.add('on');
-  setLast(v.id);
+  setLast(v.id); curtain(true);
   try{
     player.loadVideoById({videoId:v.id,startSeconds:getPos(v.id)});
     player.unMute(); player.setVolume(100); player.playVideo();
@@ -250,7 +269,7 @@ function go(v){
   const probe=setInterval(()=>{
     let st=-99; try{ st=player.getPlayerState(); }catch(e){}
     waited+=300;
-    if(st===1||st===3){ clearInterval(probe); log('playing'); run(); return; }
+    if(st===1||st===3){ clearInterval(probe); log('playing'); curtain(false); run(); return; }
     if(waited>=6000){ clearInterval(probe); log('no playback, state '+st);
       $('#stage').classList.remove('on'); $('#tapt').textContent='Tap again to play';
       $('#tap').classList.add('on'); }
@@ -271,8 +290,8 @@ $('#veil').addEventListener('click',()=>{
 function togglePause(){
   if(winding||!ticker) return;
   try{
-    if(paused){ player.playVideo(); endAt+=Date.now()-pausedAt; paused=false; log('resume'); }
-    else{ player.pauseVideo(); pausedAt=Date.now(); paused=true; save(); log('pause'); }
+    if(paused){ player.playVideo(); endAt+=Date.now()-pausedAt; paused=false; curtain(true); curtain(false); log('resume'); }
+    else{ player.pauseVideo(); pausedAt=Date.now(); paused=true; save(); curtain(true,true); log('pause'); }
   }catch(e){ log('ERR '+e); }
 }
 
@@ -356,10 +375,14 @@ $('#cTR').onclick=()=>{
 // drops any deep-link params and clears player, timer and wind-down state.
 $('#cBR').onclick=()=>{ save(); log('corner BR: back to picker');
   location.href=location.pathname; };
-$('#cTL').onclick=()=>{ clockOn=!clockOn;
+function toggleClock(){ clockOn=!clockOn;
   try{ localStorage.setItem('msrchl:clock',clockOn?'1':'0'); }catch(e){}
-  paintClock(); log('corner TL: clock '+clockOn); };
-$('#cBL').onclick=()=>log('corner BL: unassigned');
+  paintClock(); log('corner TL: clock '+clockOn); }
+$('#cTL').onclick=()=>{
+  tlTaps++; clearTimeout(tlTimer);
+  tlTimer=setTimeout(()=>{ if(tlTaps>=3) showHelp(!document.body.classList.contains('tg')); else toggleClock(); tlTaps=0; },350);
+};
+$('#cBL').onclick=()=>{ log('corner BL: pause toggle'); togglePause(); };
 
 fetch('content.json?_='+Date.now())
   .then(r=>{ if(!r.ok) throw new Error('content.json '+r.status); return r.json(); })
@@ -368,7 +391,7 @@ fetch('content.json?_='+Date.now())
     const ls=k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
     applyFilter(Q.get('provider')||ls('msrchl:prov')||doc.defaults.provider,
                 Q.get('topic')   ||ls('msrchl:topic')||doc.defaults.topic);
-    if(Q.get('targets')==='1') showTargets();
+    if(Q.get('targets')==='1') showHelp(true,true);
     const dl=wantedVideo();
     if(dl) arm(dl); else $('#pick').classList.add('on');
     if(DEBUG) log('session '+chosen+'s, wind '+WIND+'s');
