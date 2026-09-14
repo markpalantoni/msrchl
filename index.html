@@ -180,7 +180,8 @@ function setLast(id){ try{ localStorage.setItem('msrchl:last',id); }catch(e){} }
 function fmt(t){ t=Math.max(0,Math.round(t)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
 
 let clockOn=(()=>{ try{ return Q.get('clock')==='1'||localStorage.getItem('msrchl:clock')==='1'; }catch(e){ return false; } })();
-function paintClock(){ $('#clk').classList.toggle('on',clockOn); }
+// Never during a wind-down: the dot is the only cue a kid should be able to see.
+function paintClock(){ $('#clk').classList.toggle('on',clockOn&&!winding); }
 paintClock();
 
 MINS.forEach(m=>{const b=document.createElement('button');
@@ -343,8 +344,8 @@ function markWind(on){
 function windDown(){
   if(winding) return; winding=true;
   preWindEnd=endAt;
-  endAt=Date.now()+WIND*1000;   // clock should count the wind-down, not the session
-  markWind(true);
+  endAt=Date.now()+WIND*1000;
+  paintClock(); markWind(true);
   log('wind-down');
   scatterMotes();
   const t0=Date.now(), v0=(()=>{ try{ return player.getVolume(); }catch(e){ return 100; } })();
@@ -369,7 +370,7 @@ function windDown(){
 function cancelWind(){
   if(!winding) return;
   clearInterval(windFade); windFade=null; winding=false;
-  markWind(false);
+  paintClock(); markWind(false);
   $('#dusk').style.transition='opacity 1.1s ease'; $('#dusk').style.opacity=0;
   $('#night').style.transition='opacity 1.1s ease'; $('#night').style.opacity=0;
   $('#yt').style.filter=''; $('#yt').style.opacity=1;
