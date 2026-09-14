@@ -1,0 +1,5 @@
+.claude/launch.json
+.env*
+*.pem
+*.key
+.DS_Store

@@ -13,6 +13,10 @@ commit it on `main`, push. GitHub Pages serves `main` at the repo root
 that has not reached `main` has not shipped.
 
 - Conventional commit messages, no AI attribution (global rules still apply).
+- The repo is public. `hooks/scan-sensitive` runs as pre-commit and pre-push
+  (after `git config core.hooksPath hooks`, once per clone) and refuses
+  secrets, emails, phone numbers, home paths, and commits authored with a work
+  address. A false positive means rewording, never bypassing.
 - If a worktree got created anyway, fast-forward `main` to it and push `main`;
   do not leave the work on a branch.
 
