@@ -27,7 +27,7 @@ that has not reached `main` has not shipped.
   Wiki episode guide: in the street story, or in two or more inserts) and
   optional `cues` giving the second a character first appears; the app filters
   on show, topic, era (from `airs`) and character. The `_readme` and `_dating` keys in the
-  file carry the catalog rules (Sesame Street is pre-1995 only, episode
+  file carry the catalog rules (Sesame Street aired 1999 or earlier, episode
   numbering gives the season and year).
 - Before adding a video, confirm it is live and embeddable, then play it
   through the app once. Fan uploads of classic material get taken down, so a

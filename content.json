@@ -1,5 +1,5 @@
 {
-  "_readme": "Edit this file to change what the app shows. Each video is listed once with a provider, any number of topics, and for Sesame Street a 'cast' of character ids from 'characters'; the app filters by any combination of show, topic, era and character. Era comes from the first year in 'airs'. 'cues' maps a character id to the second where that character first shows up, for videos where that is known; the app starts there when that character is the filter. Sesame Street entries are pre-1995 only. 'src' notes official vs fan upload - fan uploads of classic material can be taken down, so a dead thumbnail means re-sourcing it.",
+  "_readme": "Edit this file to change what the app shows. Each video is listed once with a provider, any number of topics, and for Sesame Street a 'cast' of character ids from 'characters'; the app filters by any combination of show, topic, era and character. Era comes from the first year in 'airs'. 'cues' maps a character id to the second where that character first shows up, for videos where that is known; the app starts there when that character is the filter. Sesame Street entries aired in 1999 or earlier. 'src' notes official vs fan upload - fan uploads of classic material can be taken down, so a dead thumbnail means re-sourcing it.",
   "defaults": {
     "provider": "all",
     "topic": "all"
@@ -648,6 +648,22 @@
       "dated": "episode-number",
       "season": 3,
       "ep": 349
+    },
+    "4g0c8wM3bk8": {
+      "t": "Big Bird's Beach Plans",
+      "len": "58:41",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3636
     },
     "nIw8LpsiA6o": {
       "t": "Grover's Snow Friend",
@@ -4949,7 +4965,1052 @@
       "dated": "episode-number",
       "season": 26,
       "ep": 3291
+    },
+    "DcCvy6YprIQ": {
+      "t": "Episode 3409 (1995): Benny Rabbit tries to avoid a surprise birthday party",
+      "len": "52:48",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird"
+      ],
+      "src": "fan",
+      "airs": "1995-96",
+      "dated": "episode-number",
+      "season": 27,
+      "ep": 3409
+    },
+    "ipNWBafCYq8": {
+      "t": "Episode 3434 (1996): Big Bird has the birdy pox!",
+      "len": "55:37",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "elmo",
+        "snuffy",
+        "count"
+      ],
+      "src": "fan",
+      "airs": "1995-96",
+      "dated": "episode-number",
+      "season": 27,
+      "ep": 3434
+    },
+    "ObYdrIuaLp8": {
+      "t": "Episode 3438 (1996): Oscar and Telly have to share a magic lamp",
+      "len": "59:05",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "oscar",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1995-96",
+      "dated": "episode-number",
+      "season": 27,
+      "ep": 3438
+    },
+    "Qok906UC6kU": {
+      "t": "Episode 3502 (1996): Biff has a bowling ball stuck on his hand",
+      "len": "52:31",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1995-96",
+      "dated": "episode-number",
+      "season": 27,
+      "ep": 3502
+    },
+    "7reDCTT-AJU": {
+      "t": "Episode 3525 (1996): Shari Lewis and Lamb Chop visit Sesame Street, Sooey the pig needs confidence",
+      "len": "54:04",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird"
+      ],
+      "src": "fan",
+      "airs": "1995-96",
+      "dated": "episode-number",
+      "season": 27,
+      "ep": 3525
+    },
+    "fl0NriFAPos": {
+      "t": "Episode 3526 (1996): Maria goes to the hospital",
+      "len": "58:16",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3526
+    },
+    "NGbpLfOoHsk": {
+      "t": "Episode 3557 (1996): Elmo wants to show Maria his wiggle",
+      "len": "52:48",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3557
+    },
+    "6BzEIc6oyGo": {
+      "t": "Episode 3559 (1997): Telly wants to join the girls club",
+      "len": "58:46",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "ernie-bert",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3559
+    },
+    "vQyXaAOY0QE": {
+      "t": "Episode 3560 (1997): Big Bird spends the day with Ruthie",
+      "len": "57:54",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "snuffy"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3560
+    },
+    "gTNmhkNqhuI": {
+      "t": "Episode 3562 (1997): Kingston's Crew 4",
+      "len": "54:44",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3562
+    },
+    "gmFv9T191Xs": {
+      "t": "Episode 3564 (1997): Big Bird and the Cuckoos",
+      "len": "56:38",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "cookie-monster"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3564
+    },
+    "JB5pmg-LJWk": {
+      "t": "Episode 3565 (1997): Alice won't get off of Snuffy's book",
+      "len": "56:58",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "snuffy",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3565
+    },
+    "hadPkIRJ39Y": {
+      "t": "Episode 3566 (1997): Elmo rollerskates",
+      "len": "56:34",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3566
+    },
+    "RzqNa67bzu8": {
+      "t": "Episode 3569 (1997): Where are all the triangle lovers?",
+      "len": "58:51",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3569
+    },
+    "1HzNySkiNtU": {
+      "t": "Episode 3575 (1997): Elmo and Zoe learn the waltz",
+      "len": "59:26",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3575
+    },
+    "OCaWsVidsSQ": {
+      "t": "Episode 3576 (1997): Dances from All Over Day",
+      "len": "56:09",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3576
+    },
+    "pS7s1mIztOo": {
+      "t": "Episode 3581 (1997): Rosita's crayon",
+      "len": "58:46",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "ernie-bert",
+        "count"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3581
+    },
+    "XXsQ9_it46M": {
+      "t": "Episode 3587 (1997): Elmo is sad",
+      "len": "55:07",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3587
+    },
+    "5-qhidfy9pI": {
+      "t": "Episode 3592 (1997): Snuffy has Snuffle-itis",
+      "len": "58:46",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "snuffy"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3592
+    },
+    "RMNSOzLPdTA": {
+      "t": "Episode 3598 (1997): Big Bird earns a dollar",
+      "len": "57:08",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "ernie-bert"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3598
+    },
+    "TesYDaVNIdY": {
+      "t": "Episode 3600 (1997): The Worm Summer Games",
+      "len": "58:47",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "oscar"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3600
+    },
+    "xbrWi5yU7Os": {
+      "t": "Episode 3641 (1997): Many Monsters!",
+      "len": "49:10",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3641
+    },
+    "7XdNY7odJbI": {
+      "t": "Episode 3659 (1997): X doesn't want to be the Letter of the Day",
+      "len": "58:48",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3659
+    },
+    "A1ZnwxA4bZY": {
+      "t": "Episode 3670 (1997): Little Miss Muffet visits",
+      "len": "1:00:21",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "elmo",
+        "snuffy"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3670
+    },
+    "k8FqRGC4DfQ": {
+      "t": "Episode 3679 (1997): Big Bird and Gabi play airplanes",
+      "len": "58:47",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "ernie-bert",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3679
+    },
+    "wazXvJYW4Y4": {
+      "t": "Episode 3684 (1997): Baby Bear gets honey",
+      "len": "58:06",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3684
+    },
+    "l8jev1V8EQc": {
+      "t": "Episode 3698 (1998): Slimey to the Moon: Slimey goes into space",
+      "len": "58:10",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "oscar",
+        "elmo",
+        "snuffy",
+        "count",
+        "telly",
+        "kermit"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3698
+    },
+    "4NIQ3O7ZyXg": {
+      "t": "Episode 3722 (1998): Snuffy has trouble tap dancing",
+      "len": "59:44",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "snuffy"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3722
+    },
+    "rVgYr8CWZAI": {
+      "t": "Episode 3741 (1998): Frazzle sleeps over at Big Bird's",
+      "len": "49:58",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3741
+    },
+    "iIFkNBEIlrY": {
+      "t": "Episode 3771 (1998): Elmo gets a boo-boo",
+      "len": "53:33",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3771
+    },
+    "sXms8F12CRs": {
+      "t": "Episode 3772 (1998): Ribbons abound!",
+      "len": "58:48",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "elmo",
+        "snuffy",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3772
+    },
+    "ffqp9aW2toU": {
+      "t": "Episode 3780 (1998): Rosita coaches Telly for a contest",
+      "len": "58:41",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "cookie-monster",
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3780
+    },
+    "bWQBMxBhMBQ": {
+      "t": "Episode 3781 (1998): Alice learns to control her snuffle-blowing",
+      "len": "59:50",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "elmo",
+        "snuffy"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3781
+    },
+    "psHEMIeP6aU": {
+      "t": "Episode 3785 (1998): Slimey to the Moon: Slimey returns from the moon",
+      "len": "53:42",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "oscar",
+        "cookie-monster",
+        "ernie-bert",
+        "elmo",
+        "snuffy",
+        "count",
+        "telly",
+        "kermit"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3785
+    },
+    "Gde4CtRlLa0": {
+      "t": "Episode 3786 (1998): Alan, Hooper's new storekeeper, caters a Birdketeer meeting",
+      "len": "51:59",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "ernie-bert",
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3786
+    },
+    "wddSs2TUeC0": {
+      "t": "Episode 3788 (1998): Big Bird and Elmo play hide-and-seek",
+      "len": "57:43",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3788
+    },
+    "XPNJbVRlonk": {
+      "t": "Episode 3789 (1998): Zoe's new Zoemobile",
+      "len": "58:55",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "oscar",
+        "cookie-monster",
+        "ernie-bert",
+        "elmo",
+        "count"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3789
+    },
+    "A0a5-g2IDIg": {
+      "t": "Episode 3792 (1998): A duck has a case of the Moos",
+      "len": "58:37",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3792
+    },
+    "kC8Q1f3z3pQ": {
+      "t": "Episode 3794 (1998): Luis teaches Rosita to play the guitar",
+      "len": "1:00:12",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "oscar",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3794
+    },
+    "my--u7o9X1s": {
+      "t": "Episode 3796 (1998): Telly and Baby Bear take turns wearing Papa Bear's hat",
+      "len": "58:10",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "ernie-bert",
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3796
+    },
+    "JWYk7aqB8L8": {
+      "t": "Episode 3797 (1998): The Countketeers",
+      "len": "57:54",
+      "provider": "sesame-classic",
+      "topics": [
+        "counting",
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "oscar",
+        "ernie-bert",
+        "elmo",
+        "count",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3797
+    },
+    "PeORO22-P4c": {
+      "t": "Episode 3800 (1998): V-Day",
+      "len": "53:17",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "oscar",
+        "ernie-bert",
+        "elmo",
+        "snuffy",
+        "count"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3800
+    },
+    "nrVhQvSWPWM": {
+      "t": "Episode 3803 (1998): Gordon wants to practice his flute",
+      "len": "58:57",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "ernie-bert",
+        "elmo",
+        "snuffy"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3803
+    },
+    "yziT2678R4k": {
+      "t": "Episode 3806 (1999): Linda's Birthday",
+      "len": "59:00",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "oscar",
+        "ernie-bert",
+        "elmo",
+        "snuffy"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3806
+    },
+    "dNt6C1rrtzs": {
+      "t": "Episode 3810 (1999): The Best Friends Pageant",
+      "len": "57:20",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "oscar",
+        "ernie-bert",
+        "elmo",
+        "snuffy",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3810
+    },
+    "6z8yZIkPDoE": {
+      "t": "Episode 3811 (1999): Irvine's bath",
+      "len": "57:50",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "oscar",
+        "ernie-bert",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3811
+    },
+    "B7EdB7Tn8Go": {
+      "t": "Episode 3814 (1999): Elmo and Miles play basketball",
+      "len": "58:57",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "ernie-bert",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3814
+    },
+    "oK1nK1P8aTA": {
+      "t": "Episode 3817 (1999): Exploring the land of Luluputti",
+      "len": "58:56",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "oscar",
+        "ernie-bert",
+        "elmo",
+        "snuffy"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3817
+    },
+    "4-J1yvNEt0c": {
+      "t": "Episode 3819 (1999): Big Bird follows an ant",
+      "len": "59:30",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "oscar",
+        "elmo",
+        "count",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3819
+    },
+    "7CsgmuftuOI": {
+      "t": "Episode 3822 (1999): Big Bird sits on the steps all day",
+      "len": "1:00:12",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3822
+    },
+    "3WWgnNiN0mM": {
+      "t": "Episode 3824 (1999): The Ding-Along",
+      "len": "58:50",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "cookie-monster",
+        "ernie-bert",
+        "elmo",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3824
+    },
+    "Nmv-G3aer9k": {
+      "t": "Episode 3825 (1999): Big Bird has breakfast with Luis and Maria",
+      "len": "58:54",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3825
+    },
+    "aJMhd_bFzT8": {
+      "t": "Episode 3831 (1999): Building the USS Terrific",
+      "len": "55:28",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "oscar",
+        "ernie-bert",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3831
+    },
+    "uv2FEDl3t7c": {
+      "t": "Episode 3841 (1999): The Porridge Lovers Club",
+      "len": "58:57",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3841
+    },
+    "UaSlbnDIfws": {
+      "t": "Episode 3842 (1999): Telly and Rosita go on a scavenger hunt",
+      "len": "59:30",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "cookie-monster",
+        "ernie-bert",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3842
+    },
+    "DxGoPbUUpeo": {
+      "t": "Episode 3846 (1999): Rosita tries to use her wings, but can't fly",
+      "len": "59:39",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "ernie-bert",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3846
+    },
+    "kbZ8UwSAIt0": {
+      "t": "Episode 3847 (1999): Big Bird and Snuffy pretend to be a train",
+      "len": "57:23",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "grover",
+        "elmo",
+        "snuffy"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3847
     }
   },
-  "_dating": "Sesame Street ran ~130 episodes a season from a November premiere, so an episode number gives the season and therefore the year: season N premieres in Nov of 1968+N. Episode <= 3395 is pre-1995. Entries without an 'airs' field are not dated yet."
+  "_dating": "Sesame Street ran ~130 episodes a season from a November premiere, so an episode number gives the season and therefore the year: season N premieres in Nov of 1968+N. Season 30 ends at episode 3915 (May 1999); the first stretch of season 31 (autumn 1999) also qualifies. Entries without an 'airs' field are not dated yet."
 }

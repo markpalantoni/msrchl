@@ -64,8 +64,8 @@ change it in both places to rotate it.
 `content.json` is the whole catalog: each video once, tagged with a provider,
 topics, and for Sesame Street a cast of characters (from the episode guides on
 Muppet Wiki) plus, where known, the second each character first shows up. The
-era filter comes from the air year. Sesame Street entries are pre-1995 only;
-the notes in the file explain how episode numbers give the year.
+era filter comes from the air year. Sesame Street entries aired in 1999 or
+earlier; the notes in the file explain how episode numbers give the year.
 
 ## Working on it
 
