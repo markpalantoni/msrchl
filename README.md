@@ -3,8 +3,9 @@
 Kids video player for a fixed, hand-picked playlist. Live at
 https://markpalantoni.github.io/msrchl/
 
-Pick a show, a topic, and a length (2, 3 or 5 minutes), then pick a video or
-hit Surprise me. It plays with no player controls, no recommendations and no
+Pick a show, a topic, an era, a character, and a length (2, 3 or 5 minutes),
+then pick a video or hit Surprise me. With a character picked, a video that
+knows where that character first appears starts there. It plays with no player controls, no recommendations and no
 way out. Over the last 20 seconds the sound and picture fade to a goodbye card.
 
 The wind-down is deliberately quiet: the only cue is a dim gold dot in the
@@ -40,6 +41,8 @@ last, where it left off, for a 5 minute session.
 | `v` | a video id, `random`, or `last` |
 | `m` / `s` | session length in minutes / seconds |
 | `provider`, `topic` | preselect a filter |
+| `era` | `70s`, `80s` or `90s` |
+| `char` | a character id from `content.json`, e.g. `big-bird` |
 | `targets=1` | label the corner targets |
 | `debug=1` | on-screen log |
 
@@ -58,9 +61,11 @@ change it in both places to rotate it.
 
 ## Content
 
-`content.json` is the whole catalog: each video once, tagged with a provider
-and topics. Sesame Street entries are pre-1995 only; the notes in the file
-explain how episode numbers give the year.
+`content.json` is the whole catalog: each video once, tagged with a provider,
+topics, and for Sesame Street a cast of characters (from the episode guides on
+Muppet Wiki) plus, where known, the second each character first shows up. The
+era filter comes from the air year. Sesame Street entries are pre-1995 only;
+the notes in the file explain how episode numbers give the year.
 
 ## Working on it
 

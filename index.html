@@ -28,6 +28,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 .card{border:0;padding:0;background:#1b1826;border-radius:16px;overflow:hidden;text-align:left;color:inherit}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#241f33}
 .card span{display:block;padding:10px 12px;font-size:13px;line-height:1.35;opacity:.85}
+.card em{display:block;font-style:normal;color:#f0b429;margin-top:3px}
 .big{width:100%;margin-bottom:14px;padding:22px;border-radius:20px;border:0;
   background:#f0b429;color:#2a1f00;font-size:22px;font-weight:800}
 
@@ -85,6 +86,8 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   <div class=sub id=sub>Loading…</div>
   <div class=sets id=provs></div>
   <div class=sets id=tops></div>
+  <div class=sets id=eras></div>
+  <div class=sets id=chars></div>
   <div class=mins id=mins></div>
   <button class=big id=surprise>Surprise me</button>
   <div class=grid id=grid></div>
@@ -177,49 +180,71 @@ MINS.forEach(m=>{const b=document.createElement('button');
 
 $('#surprise').onclick=()=>{ if(VIDEOS.length) arm(VIDEOS[Math.floor(Math.random()*VIDEOS.length)]); };
 
-// ---- content: filter by provider, topic, or both. Either dimension can be
-// "all", so a queue is provider-only, topic-only, or the intersection of the two.
-let curProv='all', curTopic='all';
+// ---- content: four independent filters (show, topic, era, character), each
+// of which can be "all", so a queue is the intersection of whatever is set.
+const ERAS=[{id:'70s',name:"'70s"},{id:'80s',name:"'80s"},{id:'90s',name:"'90s"}];
+function era(v){ const y=parseInt(v.airs,10); return y?(y<1980?'70s':y<1990?'80s':'90s'):null; }
+const DIMS=[
+  {key:'prov', box:'#provs', all:'All shows', q:'provider', ls:'msrchl:prov',
+   items:()=>DOC.providers, has:(v,id)=>v.provider===id},
+  {key:'topic',box:'#tops',  all:'All topics',q:'topic',    ls:'msrchl:topic',
+   items:()=>DOC.topics,    has:(v,id)=>(v.topics||[]).includes(id)},
+  {key:'era',  box:'#eras',  all:'Any era',   q:'era',      ls:'msrchl:era',
+   items:()=>ERAS,          has:(v,id)=>era(v)===id},
+  {key:'char', box:'#chars', all:'Anyone',    q:'char',     ls:'msrchl:char',
+   items:()=>DOC.characters||[], has:(v,id)=>(v.cast||[]).includes(id)},
+];
+const cur={prov:'all',topic:'all',era:'all',char:'all'};
+const matches=(v,sel)=>DIMS.every(d=>sel[d.key]==='all'||d.has(v,sel[d.key]));
+const charName=id=>((DOC.characters||[]).find(c=>c.id===id)||{}).name||id;
 
-function chips(box, items, cur, onPick, count){
+function chips(box, allName, items, sel, onPick, count){
   const el=$(box); el.innerHTML='';
-  [{id:'all',name:box==='#provs'?'All shows':'All topics'}].concat(items).forEach(it=>{
+  let any=false;
+  [{id:'all',name:allName}].concat(items).forEach(it=>{
     const n=count(it.id);
+    if(n&&it.id!=='all') any=true;
     const b=document.createElement('button');
-    b.className='set'+(it.id===cur?' sel':'')+(it.id==='all'?'':' dom')+(n?'':' zero');
+    b.className='set'+(it.id===sel?' sel':'')+(it.id==='all'?'':' dom')+(n?'':' zero');
     b.textContent=it.name;
     // A combination with nothing behind it is a dead end, so say so up front
     // rather than showing an empty grid after the tap.
-    if(n||it.id===cur){ b.onclick=()=>onPick(it.id); } else { b.disabled=true; }
+    if(n||it.id===sel){ b.onclick=()=>onPick(it.id); } else { b.disabled=true; }
     el.appendChild(b);
   });
+  // A row where nothing but "all" is reachable (Ms Rachel has no era or
+  // cast) is noise, so it hides until another pick brings it back.
+  el.style.display=(any||sel!=='all')?'':'none';
 }
 function renderGrid(){
   const g=$('#grid'); g.innerHTML='';
   VIDEOS.forEach(v=>{ const b=document.createElement('button'); b.className='card';
-    b.innerHTML='<img loading=lazy src="https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg" alt=""><span>'+v.t+'</span>';
+    const c=cueFor(v);
+    b.innerHTML='<img loading=lazy src="https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg" alt=""><span>'+v.t+
+      (c?'<em>'+charName(cur.char)+' at '+fmt(c)+'</em>':'')+'</span>';
     b.onclick=()=>arm(v); g.appendChild(b); });
   $('#sub').textContent=VIDEOS.length?VIDEOS.length+' videos · pick how long, then pick one.'
                                      :'Nothing matches that combination.';
 }
-function applyFilter(prov,topic){
-  curProv=prov||'all'; curTopic=topic||'all';
-  try{ localStorage.setItem('msrchl:prov',curProv);
-       localStorage.setItem('msrchl:topic',curTopic); }catch(e){}
-  VIDEOS=Object.entries(DOC.videos)
-    .filter(([id,v])=>(curProv==='all'||v.provider===curProv)&&
-                      (curTopic==='all'||(v.topics||[]).includes(curTopic)))
+function applyFilter(sel){
+  Object.assign(cur,sel);
+  DIMS.forEach(d=>{ try{ localStorage.setItem(d.ls,cur[d.key]); }catch(e){} });
+  VIDEOS=Object.entries(DOC.videos).filter(([id,v])=>matches(v,cur))
     .map(([id,v])=>Object.assign({id},v));
   const V=Object.values(DOC.videos);
-  const nProv=p=>V.filter(v=>(p==='all'||v.provider===p)&&
-    (curTopic==='all'||(v.topics||[]).includes(curTopic))).length;
-  const nTopic=t=>V.filter(v=>(curProv==='all'||v.provider===curProv)&&
-    (t==='all'||(v.topics||[]).includes(t))).length;
-  chips('#provs',DOC.providers,curProv,p=>applyFilter(p,curTopic),nProv);
-  chips('#tops',DOC.topics,curTopic,t=>applyFilter(curProv,t),nTopic);
+  DIMS.forEach(d=>{
+    const count=id=>V.filter(v=>matches(v,Object.assign({},cur,{[d.key]:id}))).length;
+    chips(d.box,d.all,d.items(),cur[d.key],id=>applyFilter({[d.key]:id}),count);
+  });
   renderGrid(); maybePlayer();
-  log('filter '+curProv+'/'+curTopic+' -> '+VIDEOS.length);
+  log('filter '+DIMS.map(d=>cur[d.key]).join('/')+' -> '+VIDEOS.length);
 }
+
+// Where the chosen character first shows up in this video, if the catalog
+// knows; 0 means from the top.
+function cueFor(v){ const c=v.cues&&v.cues[cur.char]; return (cur.char!=='all'&&c>0)?c:0; }
+// Resume where it stopped, unless a character cue is further in.
+function startFor(v){ return Math.max(getPos(v.id),cueFor(v)); }
 
 $('#cTL').textContent='TOP LEFT\ntriple tap: this guide';
 $('#cTR').textContent='TOP RIGHT\ntap: wind down now\ndouble tap: cancel wind-down';
@@ -251,9 +276,10 @@ window.onYouTubeIframeAPIReady=function(){ ytReady=true; maybePlayer(); };
 
 function arm(v){
   pending=v; $('#pick').classList.remove('on');
-  const p=getPos(v.id);
+  const p=getPos(v.id), c=cueFor(v);
   $('#tapt').textContent='Tap to start';
-  $('#taps').textContent=v.t+(p>5?'  ·  resuming at '+fmt(p):'');
+  $('#taps').textContent=v.t+(c>p?'  ·  '+charName(cur.char)+' from '+fmt(c)
+                              :p>5?'  ·  resuming at '+fmt(p):'');
   $('#tap').classList.add('on');
 }
 $('#tap').onclick=()=>{ if(pending) go(pending); };
@@ -266,7 +292,7 @@ function go(v){
   $('#tap').classList.remove('on'); $('#stage').classList.add('on');
   setLast(v.id); curtain(true);
   try{
-    player.loadVideoById({videoId:v.id,startSeconds:Math.max(0,getPos(v.id)-1)});
+    player.loadVideoById({videoId:v.id,startSeconds:Math.max(0,startFor(v)-1)});
     player.unMute(); player.setVolume(100); player.playVideo();
     killCaptions(); log('go '+v.id);
   }catch(e){ log('ERR '+e); }
@@ -388,8 +414,11 @@ fetch('content.json?_='+Date.now())
   .then(doc=>{
     DOC=doc;
     const ls=k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
-    applyFilter(Q.get('provider')||ls('msrchl:prov')||doc.defaults.provider,
-                Q.get('topic')   ||ls('msrchl:topic')||doc.defaults.topic);
+    const sel={}; DIMS.forEach(d=>sel[d.key]=Q.get(d.q)||ls(d.ls)||doc.defaults[d.q]||'all');
+    applyFilter(sel);
+    // A remembered combination the catalog no longer satisfies is a dead
+    // picker, so fall back to everything rather than an empty grid.
+    if(!VIDEOS.length){ DIMS.forEach(d=>sel[d.key]='all'); applyFilter(sel); }
     if(Q.get('targets')==='1') showHelp(true,true);
     const dl=wantedVideo();
     if(dl) arm(dl); else $('#pick').classList.add('on');
