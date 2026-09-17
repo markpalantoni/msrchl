@@ -5018,6 +5018,23 @@
       "season": 27,
       "ep": 3438
     },
+    "tUhxkCPLhkQ": {
+      "t": "Episode 3466 (1996): Rosita at the Furry Arms",
+      "len": "59:23",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "count"
+      ],
+      "src": "fan",
+      "airs": "1995-96",
+      "dated": "episode-number",
+      "season": 27,
+      "ep": 3466
+    },
     "Qok906UC6kU": {
       "t": "Episode 3502 (1996): Biff has a bowling ball stuck on his hand",
       "len": "52:31",
@@ -5033,6 +5050,23 @@
       "dated": "episode-number",
       "season": 27,
       "ep": 3502
+    },
+    "oamRw79jz6c": {
+      "t": "Episode 3520 (1996): Baby Bear draws Gabi",
+      "len": "1:08:55",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1995-96",
+      "dated": "episode-number",
+      "season": 27,
+      "ep": 3520
     },
     "7reDCTT-AJU": {
       "t": "Episode 3525 (1996): Shari Lewis and Lamb Chop visit Sesame Street, Sooey the pig needs confidence",
@@ -5204,6 +5238,55 @@
       "dated": "episode-number",
       "season": 28,
       "ep": 3569
+    },
+    "Nf-tkPEZ2M8": {
+      "t": "Episode 3570 (1997): Rosita and Grundgetta play together",
+      "len": "58:46",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3570
+    },
+    "pTW45fCoSCo": {
+      "t": "Episode 3571 (1997): The Tree Who Wanted to Leave the Park",
+      "len": "58:46",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "snuffy",
+        "count",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3571
+    },
+    "Rjm8XsZXoI0": {
+      "t": "Episode 3574 (1997): Baby Bear invents a porridge cooler",
+      "len": "57:07",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1996-97",
+      "dated": "episode-number",
+      "season": 28,
+      "ep": 3574
     },
     "1HzNySkiNtU": {
       "t": "Episode 3575 (1997): Elmo and Zoe learn the waltz",
@@ -5412,6 +5495,22 @@
       "season": 29,
       "ep": 3684
     },
+    "LcnXPbKr1WQ": {
+      "t": "Episode 3695 (1998): Grundgetta’s Grouch Beauty Salon",
+      "len": "58:53",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "oscar"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3695
+    },
     "l8jev1V8EQc": {
       "t": "Episode 3698 (1998): Slimey to the Moon: Slimey goes into space",
       "len": "58:10",
@@ -5435,6 +5534,24 @@
       "season": 29,
       "ep": 3698
     },
+    "dyFWt4Ea_lk": {
+      "t": "Episode 3711 (1998): Baby Bear and Goldilocks make a mobile",
+      "len": "58:58",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "ernie-bert",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": "1997-98",
+      "dated": "episode-number",
+      "season": 29,
+      "ep": 3711
+    },
     "4NIQ3O7ZyXg": {
       "t": "Episode 3722 (1998): Snuffy has trouble tap dancing",
       "len": "59:44",
@@ -5451,6 +5568,24 @@
       "dated": "episode-number",
       "season": 29,
       "ep": 3722
+    },
+    "I4isfitcyGU": {
+      "t": "Episode 3725 (1998): Prairie gives Maria the gift of music",
+      "len": "51:40",
+      "provider": "sesame-classic",
+      "topics": [
+        "music",
+        "preschool"
+      ],
+      "cast": [
+        "grover",
+        "elmo"
+      ],
+      "src": "fan",
+      "airs": null,
+      "dated": "episode-number",
+      "season": null,
+      "ep": 3725
     },
     "rVgYr8CWZAI": {
       "t": "Episode 3741 (1998): Frazzle sleeps over at Big Bird's",
@@ -5917,6 +6052,24 @@
       "dated": "episode-number",
       "season": 30,
       "ep": 3825
+    },
+    "YNt4Ce0OM6k": {
+      "t": "Episode 3828 (1999): Natasha wants her \"hoongie\"",
+      "len": "56:39",
+      "provider": "sesame-classic",
+      "topics": [
+        "preschool"
+      ],
+      "cast": [
+        "big-bird",
+        "oscar",
+        "telly"
+      ],
+      "src": "fan",
+      "airs": "1998-99",
+      "dated": "episode-number",
+      "season": 30,
+      "ep": 3828
     },
     "aJMhd_bFzT8": {
       "t": "Episode 3831 (1999): Building the USS Terrific",
