@@ -4,8 +4,14 @@ Kids video player for a fixed, hand-picked playlist. Live at
 https://markpalantoni.github.io/msrchl/
 
 Pick a show, a topic, an era, a character, and a length (2, 3 or 5 minutes),
-then pick a video or hit Surprise me. With a character picked, a video that
-knows where that character first appears starts there. It plays with no player controls, no recommendations and no
+then pick a video. With a character picked, a video that knows where that
+character first appears starts there.
+
+Surprise me draws from its own saved set of filters, whatever the picker is
+showing, so a home-screen shortcut can stay on what the toddler likes this
+month. The set starts as `defaults.surprise` in `content.json`; to change it on
+the device, set the filters you want and tap "Make Surprise me pick from the
+filters above". The button shows what it will pick from. It plays with no player controls, no recommendations and no
 way out. Over the last 20 seconds the sound and picture fade to a goodbye card.
 
 The wind-down is deliberately quiet: the only cue is a dim gold dot in the
@@ -38,7 +44,7 @@ last, where it left off, for a 5 minute session.
 
 | param | values |
 |---|---|
-| `v` | a video id, `random`, or `last` |
+| `v` | a video id, `last`, `random` (from the Surprise set) or `any` (from the filters in the URL) |
 | `m` / `s` | session length in minutes / seconds |
 | `provider`, `topic` | preselect a filter |
 | `era` | `70s`, `80s` or `90s` |

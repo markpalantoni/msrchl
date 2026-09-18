@@ -29,8 +29,11 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#241f33}
 .card span{display:block;padding:10px 12px;font-size:13px;line-height:1.35;opacity:.85}
 .card em{display:block;font-style:normal;color:#f0b429;margin-top:3px}
-.big{width:100%;margin-bottom:14px;padding:22px;border-radius:20px;border:0;
+.big{width:100%;margin-bottom:14px;padding:18px 22px;border-radius:20px;border:0;
   background:#f0b429;color:#2a1f00;font-size:22px;font-weight:800}
+.big small{display:block;font-size:14px;font-weight:600;opacity:.75;margin-top:3px}
+.pin{display:block;margin:-4px auto 18px;background:none;border:0;color:#f0b429;
+  font-size:14px;font-weight:600;text-decoration:underline;opacity:.85;padding:6px 10px}
 
 #tap{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
   gap:22px;background:#12101a;z-index:40;padding:30px;text-align:center;border:0;color:#f4f1ea;width:100%}
@@ -90,6 +93,7 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   <div class=sets id=chars></div>
   <div class=mins id=mins></div>
   <button class=big id=surprise>Surprise me</button>
+  <button class=pin id=pin>Make Surprise me pick from the filters above</button>
   <div class=grid id=grid></div>
 </div>
 
@@ -136,7 +140,8 @@ let chosen=wantedSeconds()||300;
 function wantedVideo(){
   let v=Q.get('v'); if(!v) return null;
   if(v==='last'){ const id=getLast(); v=(id&&DOC.videos[id])?id:'random'; }
-  if(v==='random'||v==='any') return VIDEOS[Math.floor(Math.random()*VIDEOS.length)];
+  if(v==='random') return surprisePick();
+  if(v==='any') return VIDEOS[Math.floor(Math.random()*VIDEOS.length)];
   return VIDEOS.find(x=>x.id===v)||(DOC&&DOC.videos[v]?Object.assign({id:v},DOC.videos[v]):{id:v,t:v});
 }
 
@@ -178,7 +183,6 @@ MINS.forEach(m=>{const b=document.createElement('button');
   b.onclick=()=>{chosen=m.s;[...$('#mins').children].forEach(c=>c.classList.remove('sel'));b.classList.add('sel')};
   $('#mins').appendChild(b)});
 
-$('#surprise').onclick=()=>{ if(VIDEOS.length) arm(VIDEOS[Math.floor(Math.random()*VIDEOS.length)]); };
 
 // ---- content: four independent filters (show, topic, era, character), each
 // of which can be "all", so a queue is the intersection of whatever is set.
@@ -236,15 +240,38 @@ function applyFilter(sel){
     const count=id=>V.filter(v=>matches(v,Object.assign({},cur,{[d.key]:id}))).length;
     chips(d.box,d.all,d.items(),cur[d.key],id=>applyFilter({[d.key]:id}),count);
   });
-  renderGrid(); maybePlayer();
+  renderGrid(); renderSurprise(); maybePlayer();
   log('filter '+DIMS.map(d=>cur[d.key]).join('/')+' -> '+VIDEOS.length);
 }
 
-// Where the chosen character first shows up in this video, if the catalog
-// knows; 0 means from the top.
-function cueFor(v){ const c=v.cues&&v.cues[cur.char]; return (cur.char!=='all'&&c>0)?c:0; }
+// Where a character first shows up in this video, if the catalog knows; 0
+// means from the top. A video armed by Surprise me carries its own character.
+function cueFor(v,ch){ ch=ch||v.ch||cur.char; const c=v.cues&&v.cues[ch]; return (ch!=='all'&&c>0)?c:0; }
 // Resume where it stopped, unless a character cue is further in.
 function startFor(v){ return Math.max(getPos(v.id),cueFor(v)); }
+
+// The Surprise set: a saved filter combination that Surprise me and ?v=random
+// draw from, whatever the picker shows. content.json seeds it; pinning on the
+// device overrides it.
+const SK='msrchl:surprise';
+function surpriseSet(){
+  try{ const s=JSON.parse(localStorage.getItem(SK)); if(s) return s; }catch(e){}
+  const s={}; DIMS.forEach(d=>s[d.key]=(DOC.defaults.surprise||{})[d.q]||'all'); return s;
+}
+function surprisePool(){ const s=surpriseSet();
+  return Object.entries(DOC.videos).filter(([id,v])=>matches(v,s)).map(([id,v])=>Object.assign({id,ch:s.char},v)); }
+function surprisePick(){ const p=surprisePool(); return p.length?p[Math.floor(Math.random()*p.length)]:null; }
+function describe(sel){
+  const names=DIMS.map(d=>sel[d.key]==='all'?null:(d.items().find(i=>i.id===sel[d.key])||{}).name).filter(Boolean);
+  return names.length?names.join(' · '):'everything';
+}
+function renderSurprise(){
+  const s=surpriseSet(), n=surprisePool().length;
+  $('#surprise').innerHTML='Surprise me<small>'+describe(s)+' · '+n+' videos</small>';
+  $('#pin').style.display=DIMS.every(d=>s[d.key]===cur[d.key])?'none':'';
+}
+$('#surprise').onclick=()=>{ const v=surprisePick(); if(v) arm(v); };
+$('#pin').onclick=()=>{ try{ localStorage.setItem(SK,JSON.stringify(cur)); }catch(e){} renderSurprise(); log('surprise set pinned'); };
 
 $('#cTL').textContent='TOP LEFT\ntriple tap: this guide';
 $('#cTR').textContent='TOP RIGHT\ntap: wind down now\ndouble tap: cancel wind-down';
@@ -278,7 +305,7 @@ function arm(v){
   pending=v; $('#pick').classList.remove('on');
   const p=getPos(v.id), c=cueFor(v);
   $('#tapt').textContent='Tap to start';
-  $('#taps').textContent=v.t+(c>p?'  ·  '+charName(cur.char)+' from '+fmt(c)
+  $('#taps').textContent=v.t+(c>p?'  ·  '+charName(v.ch||cur.char)+' from '+fmt(c)
                               :p>5?'  ·  resuming at '+fmt(p):'');
   $('#tap').classList.add('on');
 }

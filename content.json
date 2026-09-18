@@ -1,8 +1,13 @@
 {
-  "_readme": "Edit this file to change what the app shows. Each video is listed once with a provider, any number of topics, and for Sesame Street a 'cast' of character ids from 'characters'; the app filters by any combination of show, topic, era and character. Era comes from the first year in 'airs'. 'cues' maps a character id to the second where that character first shows up, for videos where that is known; the app starts there when that character is the filter. Sesame Street entries aired in 1999 or earlier. 'src' notes official vs fan upload - fan uploads of classic material can be taken down, so a dead thumbnail means re-sourcing it.",
+  "_readme": "Edit this file to change what the app shows. Each video is listed once with a provider, any number of topics, and for Sesame Street a 'cast' of character ids from 'characters'; the app filters by any combination of show, topic, era and character. Era comes from the first year in 'airs'. 'cues' maps a character id to the second where that character first shows up, for videos where that is known; the app starts there when that character is the filter. 'defaults.surprise' is the filter combination Surprise me (and ?v=random) draws from until the device pins its own from the picker. Sesame Street entries aired in 1999 or earlier. 'src' notes official vs fan upload - fan uploads of classic material can be taken down, so a dead thumbnail means re-sourcing it.",
   "defaults": {
     "provider": "all",
-    "topic": "all"
+    "topic": "all",
+    "surprise": {
+      "provider": "sesame-classic",
+      "char": "big-bird",
+      "era": "80s"
+    }
   },
   "providers": [
     {
