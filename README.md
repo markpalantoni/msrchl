@@ -3,9 +3,12 @@
 Kids video player for a fixed, hand-picked playlist. Live at
 https://markpalantoni.github.io/msrchl/
 
-Pick a show, a topic, an era, a character, and a length (2, 3 or 5 minutes),
-then pick a video. With a character picked, a video that knows where that
-character first appears starts there.
+Pick a show, a topic, and a length (2, 3, 5 or 20 minutes; 20 unless a link
+says otherwise), then pick a video and it starts. Era and character belong to
+a show: they sit under the show row, only list what that show has (none for Ms
+Rachel), picking Big Bird selects Sesame Street, and switching shows clears
+them. Topics cut across shows. With a character picked, a video that knows
+where that character first appears starts there.
 
 Surprise me draws from its own saved set of filters, whatever the picker is
 showing, so a home-screen shortcut can stay on what the toddler likes this
@@ -14,9 +17,9 @@ the device, set the filters you want and tap "Make Surprise me pick from the
 filters above". The button shows what it will pick from. It plays with no player controls, no recommendations and no
 way out. Over the last 20 seconds the sound and picture fade to a goodbye card.
 
-The wind-down is deliberately quiet: the only cue is a dim gold dot in the
-top-left corner, which flashes once when the wind-down starts and stays on
-until the end. There is no countdown on screen, so nothing reads as "it's
+The wind-down is deliberately quiet: the only cue is a small white ring with a
+dark outline at the top-left edge, readable on any background, which flashes
+once when the wind-down starts and stays on until the end. There is no countdown on screen, so nothing reads as "it's
 about to stop".
 
 ## While a video plays
@@ -39,14 +42,25 @@ Every video remembers where it stopped and resumes from there next time.
 
 ## Deep links
 
-Useful for a home-screen shortcut, e.g. `?v=last&m=5` reopens whatever played
-last, where it left off, for a 5 minute session.
+Useful for a home-screen shortcut, e.g. `?v=last` reopens whatever played
+last, where it left off, for a 20 minute session.
+
+A link with `v` starts playing on its own. Browsers only allow sound after a
+tap (iOS always enforces this), so where sound is refused it plays muted with
+a "Tap for sound" pill, and a tap anywhere off the corners turns sound on. If
+nothing plays at all, it falls back to a "Tap to start" screen.
+
+The address bar always carries the picker's filters and length, and "Share a
+link that plays these filters" copies (or shares) one that plays a random
+match, e.g. `?provider=ms-rachel&topic=colors&m=5&v=any`. A link that names
+any filter names all of them: what it leaves out means "all", not whatever the
+device picked last.
 
 | param | values |
 |---|---|
 | `v` | a video id, `last`, `random` (from the Surprise set) or `any` (from the filters in the URL) |
 | `m` / `s` | session length in minutes / seconds |
-| `provider`, `topic` | preselect a filter |
+| `provider`, `topic` | preselect a filter, e.g. `ms-rachel`, `colors` |
 | `era` | `70s`, `80s` or `90s` |
 | `char` | a character id from `content.json`, e.g. `big-bird` |
 | `targets=1` | label the corner targets |

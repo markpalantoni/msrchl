@@ -19,6 +19,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 .set.dom{opacity:.72;font-weight:500}
 .set.sel{background:#f0b429;border-color:#f0b429;color:#2a1f00;opacity:1}
 .set.zero{opacity:.22;text-decoration:line-through}
+.sets.child{margin:-8px 0 18px 6px;padding-left:12px;border-left:2px solid #2f2b3d}
 .mins{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
 .chip{flex:1;min-width:74px;padding:18px 0;border-radius:18px;border:2px solid #2f2b3d;
   background:#1b1826;font-size:21px;font-weight:700;color:#f4f1ea;text-align:center}
@@ -71,10 +72,15 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
   background:transparent;border:0;padding:0;opacity:0}
 #cTR{top:0;right:0}#cBR{bottom:0;right:0}#cTL{top:0;left:0}#cBL{bottom:0;left:0}
 
-#mark{position:fixed;top:11px;left:11px;z-index:9;width:7px;height:7px;border-radius:50%;
-  background:#f0b429;opacity:0;transition:opacity .6s ease;pointer-events:none}
-#mark.on{opacity:.22}
-#mark.flash{opacity:.80;transition:opacity .18s ease}
+#mark{position:fixed;top:max(5px,env(safe-area-inset-top));left:max(5px,env(safe-area-inset-left));
+  z-index:9;width:12px;height:12px;border-radius:50%;border:2px solid #fff;
+  box-shadow:0 0 0 1px #000a,inset 0 0 0 1px #000a;opacity:0;transition:opacity .6s ease;pointer-events:none}
+#mark.on{opacity:.55}
+#mark.flash{opacity:.95;transition:opacity .18s ease}
+#snd{position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);
+  z-index:5;display:none;padding:9px 16px;border-radius:999px;border:0;background:#000a;color:#fff;
+  font-size:15px;font-weight:600;opacity:.75}
+#snd.on{display:block}
 body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   display:flex;align-items:center;justify-content:center;color:#f0b429;
   font:700 13px/1.35 system-ui;text-align:center;padding:8px;white-space:pre-line}
@@ -88,12 +94,13 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   <h1>Ms Rachel</h1>
   <div class=sub id=sub>Loading…</div>
   <div class=sets id=provs></div>
+  <div class="sets child" id=eras></div>
+  <div class="sets child" id=chars></div>
   <div class=sets id=tops></div>
-  <div class=sets id=eras></div>
-  <div class=sets id=chars></div>
   <div class=mins id=mins></div>
   <button class=big id=surprise>Surprise me</button>
   <button class=pin id=pin>Make Surprise me pick from the filters above</button>
+  <button class=pin id=share>Share a link that plays these filters</button>
   <div class=grid id=grid></div>
 </div>
 
@@ -103,6 +110,7 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   <div id=yt></div>
   <div id=curtain><span>&#10074;&#10074;</span></div>
   <div id=veil></div>
+  <button id=snd>&#128263; Tap for sound</button>
   <div id=dusk></div>
   <div id=night>
     <div class=hand>&#128075;</div>
@@ -118,7 +126,7 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
 <div id=dbg></div>
 
 <script>
-const MINS=[{s:120,l:"2 min"},{s:180,l:"3 min"},{s:300,l:"5 min"}];
+const MINS=[{s:120,l:"2 min"},{s:180,l:"3 min"},{s:300,l:"5 min"},{s:1200,l:"20 min"}];
 const WIND=20;
 const $=s=>document.querySelector(s);
 const Q=new URLSearchParams(location.search);
@@ -126,7 +134,7 @@ const DEBUG=Q.has('debug');
 
 let VIDEOS=[],DOC=null,activeSet=null;
 let player=null,ticker=null,pending=null,wake=null,endAt=0,winding=false;
-let ytReady=false,paused=false,pausedAt=0;
+let ytReady=false,playerReady=false,autoV=null,autoGuard=0,paused=false,pausedAt=0;
 let windFade=null,preWindEnd=0,trTaps=0,trTimer=null,tlTaps=0,tlTimer=null,helpTimer=null;
 let remote=null,lastSave=0;
 
@@ -135,7 +143,7 @@ function wantedSeconds(){
   if(Q.has('m')) return Math.max(3,(parseFloat(Q.get('m'))||0)*60);
   return null;
 }
-let chosen=wantedSeconds()||300;
+let chosen=wantedSeconds()||1200;
 
 function wantedVideo(){
   let v=Q.get('v'); if(!v) return null;
@@ -180,7 +188,7 @@ function fmt(t){ t=Math.max(0,Math.round(t)); return Math.floor(t/60)+':'+String
 
 MINS.forEach(m=>{const b=document.createElement('button');
   b.className='chip'+(m.s===chosen?' sel':'');b.textContent=m.l;
-  b.onclick=()=>{chosen=m.s;[...$('#mins').children].forEach(c=>c.classList.remove('sel'));b.classList.add('sel')};
+  b.onclick=()=>{chosen=m.s;[...$('#mins').children].forEach(c=>c.classList.remove('sel'));b.classList.add('sel');syncUrl()};
   $('#mins').appendChild(b)});
 
 
@@ -193,13 +201,25 @@ const DIMS=[
    items:()=>DOC.providers, has:(v,id)=>v.provider===id},
   {key:'topic',box:'#tops',  all:'All topics',q:'topic',    ls:'msrchl:topic',
    items:()=>DOC.topics,    has:(v,id)=>(v.topics||[]).includes(id)},
-  {key:'era',  box:'#eras',  all:'Any era',   q:'era',      ls:'msrchl:era',
+  {key:'era',  box:'#eras',  all:'Any era',   q:'era',      ls:'msrchl:era',   show:true,
    items:()=>ERAS,          has:(v,id)=>era(v)===id},
-  {key:'char', box:'#chars', all:'Anyone',    q:'char',     ls:'msrchl:char',
+  {key:'char', box:'#chars', all:'Anyone',    q:'char',     ls:'msrchl:char',  show:true,
    items:()=>DOC.characters||[], has:(v,id)=>(v.cast||[]).includes(id)},
 ];
 const cur={prov:'all',topic:'all',era:'all',char:'all'};
 const matches=(v,sel)=>DIMS.every(d=>sel[d.key]==='all'||d.has(v,sel[d.key]));
+// Era and character belong to a show; topic cuts across shows. A show-level
+// value exists only where some video of the selected show carries it.
+const inShow=(d,id,prov)=>Object.values(DOC.videos).some(v=>(prov==='all'||v.provider===prov)&&d.has(v,id));
+function normalize(sel,key){
+  if(key==='prov'&&sel.prov==='all') DIMS.forEach(c=>{ if(c.show) sel[c.key]='all'; });
+  DIMS.forEach(c=>{ if(c.show&&sel[c.key]!=='all'&&!inShow(c,sel[c.key],sel.prov)) sel[c.key]='all'; });
+  // Picking Big Bird under "All shows" means Sesame Street, so say so.
+  if(sel.prov==='all') DIMS.forEach(c=>{ if(!c.show||sel[c.key]==='all') return;
+    const shows=new Set(Object.values(DOC.videos).filter(v=>c.has(v,sel[c.key])).map(v=>v.provider));
+    if(shows.size===1) sel.prov=[...shows][0]; });
+  return sel;
+}
 const charName=id=>((DOC.characters||[]).find(c=>c.id===id)||{}).name||id;
 
 function chips(box, allName, items, sel, onPick, count){
@@ -226,21 +246,23 @@ function renderGrid(){
     const c=cueFor(v);
     b.innerHTML='<img loading=lazy src="https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg" alt=""><span>'+v.t+
       (c?'<em>'+charName(cur.char)+' at '+fmt(c)+'</em>':'')+'</span>';
-    b.onclick=()=>arm(v); g.appendChild(b); });
+    b.onclick=()=>start(v); g.appendChild(b); });
   $('#sub').textContent=VIDEOS.length?VIDEOS.length+' videos · pick how long, then pick one.'
                                      :'Nothing matches that combination.';
 }
-function applyFilter(sel){
-  Object.assign(cur,sel);
+function applyFilter(sel,key){
+  normalize(Object.assign(cur,sel),key);
   DIMS.forEach(d=>{ try{ localStorage.setItem(d.ls,cur[d.key]); }catch(e){} });
   VIDEOS=Object.entries(DOC.videos).filter(([id,v])=>matches(v,cur))
     .map(([id,v])=>Object.assign({id},v));
   const V=Object.values(DOC.videos);
   DIMS.forEach(d=>{
-    const count=id=>V.filter(v=>matches(v,Object.assign({},cur,{[d.key]:id}))).length;
-    chips(d.box,d.all,d.items(),cur[d.key],id=>applyFilter({[d.key]:id}),count);
+    const count=id=>{ const sel=normalize(Object.assign({},cur,{[d.key]:id}),d.key);
+      return V.filter(v=>matches(v,sel)).length; };
+    const items=d.show?d.items().filter(it=>inShow(d,it.id,cur.prov)):d.items();
+    chips(d.box,d.all,items,cur[d.key],id=>applyFilter({[d.key]:id},d.key),count);
   });
-  renderGrid(); renderSurprise(); maybePlayer();
+  renderGrid(); renderSurprise(); syncUrl(); maybePlayer();
   log('filter '+DIMS.map(d=>cur[d.key]).join('/')+' -> '+VIDEOS.length);
 }
 
@@ -270,7 +292,23 @@ function renderSurprise(){
   $('#surprise').innerHTML='Surprise me<small>'+describe(s)+' · '+n+' videos</small>';
   $('#pin').style.display=DIMS.every(d=>s[d.key]===cur[d.key])?'none':'';
 }
-$('#surprise').onclick=()=>{ const v=surprisePick(); if(v) arm(v); };
+$('#surprise').onclick=()=>{ const v=surprisePick(); if(v) start(v); };
+
+// The address bar always says what the picker shows, so a copied link lands
+// on the same filters. The remote topic is a credential and never stays in it.
+function filterParams(p){
+  DIMS.forEach(d=>cur[d.key]==='all'?p.delete(d.q):p.set(d.q,cur[d.key]));
+  p.delete('s'); p.set('m',String(+(chosen/60).toFixed(2))); p.delete('remote'); return p;
+}
+function syncUrl(){ const p=filterParams(new URLSearchParams(location.search));
+  try{ history.replaceState(null,'',location.pathname+'?'+p); }catch(e){} }
+$('#share').onclick=()=>{
+  const p=filterParams(new URLSearchParams()); p.set('v','any');
+  const url=location.origin+location.pathname+'?'+p, b=$('#share');
+  const done=t=>{ b.textContent=t; setTimeout(()=>b.textContent='Share a link that plays these filters',2500); };
+  if(navigator.share) navigator.share({url}).catch(()=>{});
+  else navigator.clipboard.writeText(url).then(()=>done('Link copied'),()=>done(url));
+};
 $('#pin').onclick=()=>{ try{ localStorage.setItem(SK,JSON.stringify(cur)); }catch(e){} renderSurprise(); log('surprise set pinned'); };
 
 $('#cTL').textContent='TOP LEFT\ntriple tap: this guide';
@@ -296,8 +334,10 @@ function maybePlayer(){
   player=new YT.Player('yt',{videoId:VIDEOS[0].id,
     playerVars:{playsinline:1,autoplay:0,controls:0,disablekb:1,fs:0,rel:0,
                 modestbranding:1,iv_load_policy:3,cc_load_policy:0},
-    events:{onReady:()=>{player.mute();log('ready');},
-            onStateChange:e=>log('state '+e.data)}});
+    events:{onReady:()=>{player.mute();playerReady=true;log('ready');if(autoV) go(autoV,true);},
+            onStateChange:e=>{ log('state '+e.data);
+              // iOS can start sound it was not allowed and then pause it.
+              if(e.data===2&&Date.now()<autoGuard&&!paused&&!winding) muteAndPlay(); }}});
 }
 window.onYouTubeIframeAPIReady=function(){ ytReady=true; maybePlayer(); };
 
@@ -310,12 +350,29 @@ function arm(v){
   $('#tap').classList.add('on');
 }
 $('#tap').onclick=()=>{ if(pending) go(pending); };
+// A tap is a user gesture, so sound is allowed; the tap screen is only for a
+// player that is not ready yet.
+function start(v){ if(playerReady) go(v); else arm(v); }
+// A deep link starts on its own. Nothing tapped, so the browser may refuse
+// sound (iOS always does); then it plays muted and the first tap brings sound.
+function autoStart(v){
+  pending=autoV=v; $('#stage').classList.add('on'); curtain(true);
+  if(playerReady) go(v,true);
+  setTimeout(()=>{ if(!playerReady){ autoV=null; $('#stage').classList.remove('on'); arm(v); } },8000);
+}
+function muteAndPlay(){ try{ player.mute(); player.playVideo(); }catch(e){} autoGuard=0; needSound(true); log('muted autoplay'); }
+function needSound(on){ $('#snd').classList.toggle('on',on); }
+function giveSound(){ if(!$('#snd').classList.contains('on')) return;
+  try{ player.unMute(); if(!winding) player.setVolume(100); if(!paused) player.playVideo(); }catch(e){}
+  needSound(false); log('sound on'); }
+$('#veil').onclick=giveSound; $('#snd').onclick=giveSound;
 
 function killCaptions(){ let n=0; const t=setInterval(()=>{
   try{ player.unloadModule('captions'); player.unloadModule('cc'); }catch(e){}
   if(++n>=8) clearInterval(t); },600); }
 
-function go(v){
+function go(v,auto){
+  autoV=null; pending=v;
   $('#tap').classList.remove('on'); $('#stage').classList.add('on');
   setLast(v.id); curtain(true);
   try{
@@ -324,12 +381,17 @@ function go(v){
     killCaptions(); log('go '+v.id);
   }catch(e){ log('ERR '+e); }
   navigator.wakeLock?.request('screen').then(w=>wake=w).catch(()=>{});
-  let waited=0;
+  let waited=0,muted=false;
   const probe=setInterval(()=>{
     let st=-99; try{ st=player.getPlayerState(); }catch(e){}
     waited+=300;
-    if(st===1||st===3){ clearInterval(probe); log('playing'); curtain(false); run(); listenRemote(); return; }
-    if(waited>=6000){ clearInterval(probe); log('no playback, state '+st);
+    if(st===1||(!auto&&st===3)){ clearInterval(probe); log('playing');
+      if(auto&&!muted) autoGuard=Date.now()+3000;
+      curtain(false); run(); listenRemote(); return; }
+    // Buffering means sound was allowed and it is loading; anything else this
+    // long after asking means the browser refused sound.
+    if(auto&&!muted&&((waited>=1500&&st!==3)||waited>=4500)){ muted=true; muteAndPlay(); }
+    if(waited>=(auto?9000:6000)){ needSound(false); clearInterval(probe); log('no playback, state '+st);
       $('#stage').classList.remove('on'); $('#tapt').textContent='Tap again to play';
       $('#tap').classList.add('on'); }
   },300);
@@ -441,14 +503,17 @@ fetch('content.json?_='+Date.now())
   .then(doc=>{
     DOC=doc;
     const ls=k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
-    const sel={}; DIMS.forEach(d=>sel[d.key]=Q.get(d.q)||ls(d.ls)||doc.defaults[d.q]||'all');
+    // A link that names any filter names all of them: what it leaves out is
+    // "all", not whatever this device picked last.
+    const linked=DIMS.some(d=>Q.has(d.q)), sel={};
+    DIMS.forEach(d=>sel[d.key]=linked?(Q.get(d.q)||'all'):(ls(d.ls)||doc.defaults[d.q]||'all'));
     applyFilter(sel);
     // A remembered combination the catalog no longer satisfies is a dead
     // picker, so fall back to everything rather than an empty grid.
     if(!VIDEOS.length){ DIMS.forEach(d=>sel[d.key]='all'); applyFilter(sel); }
     if(Q.get('targets')==='1') showHelp(true,true);
     const dl=wantedVideo();
-    if(dl) arm(dl); else $('#pick').classList.add('on');
+    if(dl) autoStart(dl); else $('#pick').classList.add('on');
     if(DEBUG) log('session '+chosen+'s, wind '+WIND+'s');
   })
   .catch(e=>{ $('#pick').classList.add('on');
