@@ -1,5 +1,6 @@
 <!doctype html><html lang=en><head>
 <meta charset=utf-8>
+<meta name=referrer content=strict-origin-when-cross-origin>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name=apple-mobile-web-app-capable content=yes>
@@ -35,6 +36,17 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 .big small{display:block;font-size:14px;font-weight:600;opacity:.75;margin-top:3px}
 .pin{display:block;margin:-4px auto 18px;background:none;border:0;color:#f0b429;
   font-size:14px;font-weight:600;text-decoration:underline;opacity:.85;padding:6px 10px}
+
+.remote{margin:0 0 22px;padding:14px 16px;border:1px solid #2f2b3d;border-radius:16px;font-size:14px}
+.remote summary{cursor:pointer;font-weight:600}.remote p{margin:12px 0;max-width:55em;opacity:.8}
+.remote input{display:block;width:100%;max-width:40em;margin:8px 0;padding:10px;border:1px solid #514965;
+  border-radius:8px;background:#1b1826;color:inherit;font:inherit}
+.remote .actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.remote button{padding:9px 12px;border:1px solid #514965;border-radius:9px;background:#241f33;color:inherit}
+.remote button:disabled{opacity:.4}.remote a{color:#f0b429}
+.remote li{margin:8px 0}.remote ul li{list-style:none}.remote ol{padding-left:22px}
+.remote li button{margin-left:12px}
+#remoteNote{min-height:1.4em}.corner{touch-action:none;-webkit-user-select:none;user-select:none}
 
 #tap{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
   gap:22px;background:#12101a;z-index:40;padding:30px;text-align:center;border:0;color:#f4f1ea;width:100%}
@@ -76,6 +88,7 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
   z-index:9;width:12px;height:12px;border-radius:50%;border:2px solid #fff;
   box-shadow:0 0 0 1px #000a,inset 0 0 0 1px #000a;opacity:0;transition:opacity .6s ease;pointer-events:none}
 #mark.on{opacity:.55}
+#mark.fast{opacity:.75}
 #mark.flash{opacity:.95;transition:opacity .18s ease}
 #snd{position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);
   z-index:5;display:none;padding:9px 16px;border-radius:999px;border:0;background:#000a;color:#fff;
@@ -101,6 +114,27 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   <button class=big id=surprise>Surprise me</button>
   <button class=pin id=pin>Make Surprise me pick from the filters above</button>
   <button class=pin id=share>Share a link that plays these filters</button>
+  <details class=remote id=remotePanel>
+    <summary>Remote · <span id=remoteStatus>Not set on this device</span></summary>
+    <p>Control this player from your phone while a video plays. Each Home Screen icon has its own storage:
+      a new icon starts without a remote. Open this section inside the icon you use to play videos.</p>
+    <label for=remoteInput>Private topic</label>
+    <input id=remoteInput type=password autocomplete=off autocapitalize=none spellcheck=false maxlength=64
+      placeholder="Paste an existing topic, or generate one">
+    <div class=actions>
+      <button id=remoteGenerate>Generate new topic</button><button id=remoteSet>Use this topic</button>
+      <button id=remoteForget>Forget on this device</button>
+    </div>
+    <p>Keep the topic and its links private: anyone with them can control playback. Generating a new topic
+      replaces this device’s old one; update your phone links too. Forgetting here leaves other devices unchanged.</p>
+    <div id=remoteLinks hidden>
+      <div class=actions><button id=remoteCopy>Copy topic</button><button id=remotePair>Copy player setup link</button></div>
+      <p>Use the same topic on your other player icons. Copy the command links to your phone for bookmarks or
+        Shortcuts (Get Contents of URL). Opening a command link sends it immediately.</p>
+      <ul id=remoteCommands></ul>
+    </div>
+    <p id=remoteNote role=status aria-live=polite></p>
+  </details>
   <div class=grid id=grid></div>
 </div>
 
@@ -159,25 +193,97 @@ function log(m){ if(!DEBUG) return; const d=$('#dbg'); d.classList.add('on');
 const PK=id=>'msrchl:pos:'+id;
 function getPos(id){ try{ return parseFloat(localStorage.getItem(PK(id)))||0; }catch(e){ return 0; } }
 function setPos(id,t){ try{ localStorage.setItem(PK(id),String(Math.max(0,t))); }catch(e){} }
-// Remote control over ntfy.sh. The topic is the only credential, so it never
-// appears in this file: it arrives once as ?remote=<topic> and is remembered.
-const remoteTopic=(()=>{ try{
-  const q=Q.get('remote');
-  if(q==='off'){ localStorage.removeItem('msrchl:remote'); return null; }
-  if(q){ localStorage.setItem('msrchl:remote',q); return q; }
-  return localStorage.getItem('msrchl:remote'); }catch(e){ return Q.get('remote'); } })();
+// Topics stay in device storage and user-requested links, never in debug logs.
+const REMOTE_KEY='msrchl:remote';
+const validTopic=t=>typeof t==='string'&&/^[a-zA-Z0-9_-]{1,64}$/.test(t)&&t!=='off';
+let remoteSaved=true, remoteNotice='';
+let remoteTopic=(()=>{
+  const q=Q.get('remote'); Q.delete('remote');
+  if(q!==null){
+    const url=new URL(location.href); url.searchParams.delete('remote');
+    history.replaceState(null,'',url.pathname+url.search+url.hash);
+  }
+  let old=null; try{ old=localStorage.getItem(REMOTE_KEY); }catch(e){ remoteSaved=false; }
+  if(q==='off'){
+    try{ localStorage.removeItem(REMOTE_KEY); }catch(e){ remoteSaved=false; }
+    return null;
+  }
+  if(q&&validTopic(q)){
+    try{ localStorage.setItem(REMOTE_KEY,q); }catch(e){ remoteSaved=false; }
+    return q;
+  }
+  if(q!==null) remoteNotice='Invalid topic. Use 1–64 letters, numbers, dashes or underscores (not “off”).';
+  return validTopic(old)?old:null;
+})();
+const REMOTE_COMMANDS=[['wind','Wind down'],['cancel','Cancel wind-down'],['pause','Pause'],
+  ['resume','Resume'],['toggle','Pause / resume'],['fwd','Forward 30 seconds'],['fwd60','Forward 1 minute'],['back','Back 10 seconds']];
+function commandUrl(cmd){ return 'https://ntfy.sh/'+encodeURIComponent(remoteTopic)+'/publish?message='+encodeURIComponent(cmd); }
+function renderRemote(){
+  $('#remoteStatus').textContent=remoteTopic?(remoteSaved?'Set on this device':'Set for this visit only'):'Not set on this device';
+  $('#remoteInput').type='password'; $('#remoteInput').value=remoteTopic||'';
+  $('#remoteForget').disabled=!remoteTopic;
+  $('#remoteLinks').hidden=!remoteTopic;
+  $('#remoteCommands').replaceChildren();
+  if(remoteTopic) REMOTE_COMMANDS.forEach(([cmd,label])=>{
+    const li=document.createElement('li'), a=document.createElement('a'), b=document.createElement('button');
+    a.textContent=label; a.href=commandUrl(cmd); a.target='_blank'; a.rel='noopener noreferrer';
+    b.textContent='Copy link'; b.setAttribute('aria-label','Copy '+label.toLowerCase()+' link');
+    b.onclick=()=>copyRemote(commandUrl(cmd)); li.append(a,b); $('#remoteCommands').append(li);
+  });
+  $('#remoteNote').textContent=remoteNotice||(!remoteSaved?'Storage is unavailable. This setting may not survive closing the player.':'');
+}
+function setRemoteTopic(topic){
+  if(topic&&!validTopic(topic)){
+    $('#remoteNote').textContent='Use 1–64 letters, numbers, dashes or underscores (not “off”).'; return;
+  }
+  remoteSaved=true; remoteNotice='';
+  try{ if(topic) localStorage.setItem(REMOTE_KEY,topic); else localStorage.removeItem(REMOTE_KEY); }
+  catch(e){ remoteSaved=false; }
+  if(remote){ remote.close(); remote=null; }
+  remoteTopic=topic; renderRemote();
+  if(ticker) listenRemote();
+}
+async function copyRemote(value){
+  try{ await navigator.clipboard.writeText(value); $('#remoteNote').textContent='Copied. Keep this link or topic private.'; }
+  catch(e){ $('#remoteInput').type='text'; $('#remoteInput').value=value; $('#remoteInput').select();
+    $('#remoteNote').textContent='Copy the selected text, then close this section to hide it.'; }
+}
+$('#remotePanel').ontoggle=()=>{ if(!$('#remotePanel').open){ $('#remoteInput').type='password'; renderRemote(); } };
+$('#remoteGenerate').onclick=()=>{
+  try{ const bytes=crypto.getRandomValues(new Uint8Array(24));
+    setRemoteTopic('msrchl-'+Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('')); }
+  catch(e){ $('#remoteNote').textContent='Could not generate a secure topic. Paste one from a trusted generator.'; }
+};
+$('#remoteSet').onclick=()=>{
+  const topic=$('#remoteInput').value.trim();
+  if(!topic){ $('#remoteNote').textContent='Paste a topic or generate one first.'; return; }
+  setRemoteTopic(topic);
+};
+$('#remoteForget').onclick=()=>setRemoteTopic(null);
+$('#remoteCopy').onclick=()=>copyRemote(remoteTopic);
+$('#remotePair').onclick=()=>{
+  const url=new URL(location.pathname,location.origin); url.searchParams.set('remote',remoteTopic);
+  copyRemote(url.href);
+};
+renderRemote();
+function receiveRemote(data){
+  let cmd=''; try{ const message=JSON.parse(data).message;
+    if(typeof message!=='string') return; cmd=message.trim().toLowerCase(); }catch(e){ return; }
+  if(!REMOTE_COMMANDS.some(([name])=>name===cmd)) return;
+  log('remote: '+cmd);
+  if(cmd==='wind') windDown();
+  else if(cmd==='cancel') cancelWind();
+  else if(cmd==='pause'&&!paused) togglePause();
+  else if(cmd==='resume'&&paused) togglePause();
+  else if(cmd==='toggle') togglePause();
+  else if(cmd==='fwd') skipVideo(30);
+  else if(cmd==='fwd60') skipVideo(60);
+  else if(cmd==='back') skipVideo(-10);
+}
 function listenRemote(){
   if(!remoteTopic||remote) return;
   remote=new EventSource('https://ntfy.sh/'+encodeURIComponent(remoteTopic)+'/sse');
-  remote.onmessage=e=>{
-    let cmd=''; try{ cmd=(JSON.parse(e.data).message||'').trim().toLowerCase(); }catch(err){ return; }
-    log('remote: '+cmd); markWind(true);
-    if(cmd==='wind') windDown();
-    else if(cmd==='cancel') cancelWind();
-    else if(cmd==='pause'&&!paused) togglePause();
-    else if(cmd==='resume'&&paused) togglePause();
-    else if(cmd==='toggle') togglePause();
-  };
+  remote.onmessage=e=>receiveRemote(e.data);
   remote.onerror=()=>log('remote: reconnecting');
   log('remote: listening');
 }
@@ -311,10 +417,10 @@ $('#share').onclick=()=>{
 };
 $('#pin').onclick=()=>{ try{ localStorage.setItem(SK,JSON.stringify(cur)); }catch(e){} renderSurprise(); log('surprise set pinned'); };
 
-$('#cTL').textContent='TOP LEFT\ntriple tap: this guide';
+$('#cTL').textContent='TOP LEFT\nhold: 2× fast-forward\ndouble tap: forward 1 minute\ntriple tap: this guide';
 $('#cTR').textContent='TOP RIGHT\ntap: wind down now\ndouble tap: cancel wind-down';
 $('#cBL').textContent='BOTTOM LEFT\ntap: pause / resume';
-$('#cBR').textContent='BOTTOM RIGHT\nback to the picker';
+$('#cBR').textContent='BOTTOM RIGHT\nback to the picker\nRemote setup is in the picker';
 // The guide labels the live targets, so it hides itself before a kid can
 // learn from it. sticky is for ?targets=1 while debugging.
 function showHelp(on,sticky){
@@ -334,7 +440,8 @@ function maybePlayer(){
   player=new YT.Player('yt',{videoId:VIDEOS[0].id,
     playerVars:{playsinline:1,autoplay:0,controls:0,disablekb:1,fs:0,rel:0,
                 modestbranding:1,iv_load_policy:3,cc_load_policy:0},
-    events:{onReady:()=>{player.mute();playerReady=true;log('ready');if(autoV) go(autoV,true);},
+    events:{onPlaybackRateChange:e=>{ log('speed '+e.data+'x'); $('#mark').classList.toggle('fast',fastRate!==null&&e.data>fastRate); },
+            onReady:()=>{player.mute();playerReady=true;log('ready');if(autoV) go(autoV,true);},
             onStateChange:e=>{ log('state '+e.data);
               // iOS can start sound it was not allowed and then pause it.
               if(e.data===2&&Date.now()<autoGuard&&!paused&&!winding) muteAndPlay(); }}});
@@ -372,6 +479,7 @@ function killCaptions(){ let n=0; const t=setInterval(()=>{
   if(++n>=8) clearInterval(t); },600); }
 
 function go(v,auto){
+  clearHold(); seekLanding=null;
   autoV=null; pending=v;
   $('#tap').classList.remove('on'); $('#stage').classList.add('on');
   setLast(v.id); curtain(true);
@@ -397,14 +505,23 @@ function go(v,auto){
   },300);
 }
 
-function save(){ try{ const t=player.getCurrentTime(),d=player.getDuration();
-  setPos(pending.id,(d&&t>d-30)?0:t); }catch(e){} }
+let seekLanding=null;
+function savedTime(t){
+  if(seekLanding&&seekLanding.id===pending.id){
+    if(Math.abs(t-seekLanding.to)<3||Date.now()>seekLanding.until) seekLanding=null;
+    else return seekLanding.to;
+  }
+  return t;
+}
+function save(){ try{ const t=savedTime(player.getCurrentTime());
+  setPos(pending.id,player.getPlayerState()===0&&!seekLanding?0:t); }catch(e){} }
 // Killing the app between ticks would otherwise lose up to 5s of position.
-addEventListener('pagehide',()=>{ if(ticker) save(); });
+addEventListener('pagehide',()=>{ clearHold(); if(ticker) save(); });
 
 // The session timer pauses too, so pausing to talk to him does not eat into
 // the session.
 function togglePause(){
+  clearHold();
   if(winding||!ticker) return;
   try{
     if(paused){ player.playVideo(); endAt+=Date.now()-pausedAt; paused=false; curtain(false); log('resume'); }
@@ -424,6 +541,25 @@ function run(){
   },250);
 }
 
+// Seeking changes video position, never the session deadline. A paused player
+// stays paused, and a wind-down cannot be escaped by seeking.
+let skipFlash=null;
+function skipVideo(delta){
+  if(!playerReady||!ticker||winding||!Number.isFinite(delta)) return false;
+  try{
+    const duration=player.getDuration(), current=savedTime(player.getCurrentTime());
+    if(!Number.isFinite(duration)||duration<=0||!Number.isFinite(current)) return false;
+    const target=Math.max(0,Math.min(duration-.25,current+delta));
+    player.seekTo(target,true);
+    seekLanding={id:pending.id,to:target,until:Date.now()+5000};
+    if(paused) player.pauseVideo();
+    setPos(pending.id,target);
+    const mark=$('#mark'); clearTimeout(skipFlash); mark.classList.add('flash');
+    skipFlash=setTimeout(()=>mark.classList.remove('flash'),650);
+    log('skip '+(delta>0?'+':'')+delta+'s'); return true;
+  }catch(e){ log('skip unavailable'); return false; }
+}
+
 // A dim 7px dot: confirmation for me that the tap registered, and that the
 // wind-down is running. Deliberately below what a toddler reads as a signal.
 function markWind(on){
@@ -434,6 +570,7 @@ function markWind(on){
 }
 
 function windDown(){
+  clearHold();
   if(winding) return; winding=true;
   preWindEnd=endAt;
   endAt=Date.now()+WIND*1000;
@@ -490,11 +627,59 @@ $('#cTR').onclick=()=>{
 };
 // Back to the picker. A reload to the bare path is the cleanest reset: it
 // drops any deep-link params and clears player, timer and wind-down state.
-$('#cBR').onclick=()=>{ save(); log('corner BR: back to picker');
+$('#cBR').onclick=()=>{ clearHold(); save(); log('corner BR: back to picker');
   location.href=location.pathname; };
-$('#cTL').onclick=()=>{
+// Holding temporarily speeds up playback. Releasing or cancelling restores
+// the previous rate. Clicks from a hold never contribute to tap gestures.
+const holdCorner=$('#cTL');
+let holdTimer=null, holdPointer=null, holdStart=null, suppressHoldClick=false, fastRate=null;
+function stopFast(){
+  if(fastRate===null) return;
+  const rate=fastRate; fastRate=null;
+  try{ player.setPlaybackRate(rate); }catch(e){}
+  $('#mark').classList.remove('fast');
+  if(ticker) save();
+}
+function startFast(){
+  if(!playerReady||!ticker||paused||winding) return;
+  try{
+    if(!player.getAvailablePlaybackRates().includes(2)) return;
+    const previous=player.getPlaybackRate();
+    if(previous>=2) return;
+    fastRate=previous; player.setPlaybackRate(2);
+  }catch(e){ stopFast(); }
+}
+function clearHold(){
+  clearTimeout(holdTimer); holdTimer=null; holdPointer=null; holdStart=null; stopFast();
+}
+function cancelHold(){ suppressHoldClick=true; clearHold(); clearTimeout(tlTimer); tlTaps=0; }
+holdCorner.onpointerdown=e=>{
+  if(!e.isPrimary||e.button!==0){ cancelHold(); return; }
+  clearHold(); clearTimeout(tlTimer); suppressHoldClick=false;
+  holdPointer=e.pointerId; holdStart={x:e.clientX,y:e.clientY};
+  holdCorner.setPointerCapture(e.pointerId);
+  holdTimer=setTimeout(()=>{
+    suppressHoldClick=true; tlTaps=0; startFast();
+  },500);
+};
+holdCorner.onpointermove=e=>{
+  if(e.pointerId===holdPointer&&holdStart&&Math.hypot(e.clientX-holdStart.x,e.clientY-holdStart.y)>14) cancelHold();
+};
+holdCorner.onpointerup=e=>{ if(e.pointerId===holdPointer) clearHold(); };
+holdCorner.onpointercancel=cancelHold;
+holdCorner.onlostpointercapture=()=>{ if(holdPointer!==null) cancelHold(); };
+holdCorner.oncontextmenu=e=>e.preventDefault();
+addEventListener('blur',cancelHold);
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) cancelHold(); });
+$('#cTL').onclick=e=>{
+  if(suppressHoldClick){ suppressHoldClick=false; e.preventDefault(); return; }
   tlTaps++; clearTimeout(tlTimer);
-  tlTimer=setTimeout(()=>{ if(tlTaps>=3) showHelp(!document.body.classList.contains('tg')); tlTaps=0; },350);
+  // Wait for a possible third tap before deciding whether this was a skip.
+  tlTimer=setTimeout(()=>{
+    if(tlTaps>=3) showHelp(!document.body.classList.contains('tg'));
+    else if(tlTaps===2) skipVideo(60);
+    tlTaps=0;
+  },350);
 };
 $('#cBL').onclick=()=>{ log('corner BL: pause toggle'); togglePause(); };
 
