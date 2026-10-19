@@ -92,6 +92,33 @@ command link and a Copy link button for each. Send a link to your phone and use
 it as a bookmark or a Shortcut with **Get Contents of URL**. Opening a command
 link immediately sends its command. The triple-tap guide points back to setup.
 
+### One-tap Fade Down on iPhone
+
+1. Inside the iPad Home Screen icon you actually use, return to the picker and
+   open **Remote**. Generate a topic if none is set. Copy the **Wind down** link
+   and send it privately to your phone.
+2. On the phone, [download Fade Down](shortcuts/Fade-Down.shortcut), then open
+   the downloaded file in Shortcuts. Its setup question asks for that link once.
+   If setup is skipped, edit the shortcut and paste the link into the URL field
+   of **Get Contents of URL**.
+3. In the shortcut's details, choose **Add to Home Screen**. Tap the resulting
+   icon whenever you want the 20-second sound-and-picture fade to end playback.
+   Allow the shortcut to connect to ntfy.sh if iOS asks on its first run.
+
+The player must remain open and both devices must have internet. No ntfy app or
+account is required. This stops the video; it does not lock or power off the
+physical iPad. The **Pause** command link stops playback immediately. A duplicated
+shortcut using that link instead can serve as a separate Pause button.
+
+The shared shortcut contains no topic or command link. It performs a GET request
+to the private URL supplied during setup, then discards the response. It does not
+claim that a server acknowledgment confirms the iPad received the command.
+Its editable source is `shortcuts/Fade-Down.source.plist`. To rebuild on macOS,
+convert the source to a binary plist with a `.shortcut` extension and run
+`shortcuts sign --mode anyone --input <unsigned.shortcut> --output <signed.shortcut>`.
+This sends the generic template to Apple for signing; never insert a private
+command link into the published source or signed file.
+
 The topic and all these links grant control of playback. Keep them private and
 out of the repo. Generate a new topic and update the player devices and phone
 links to rotate it; forgetting on one device leaves the others unchanged.
