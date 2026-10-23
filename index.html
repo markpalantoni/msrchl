@@ -333,7 +333,8 @@ $('#remotePair').onclick=()=>copyRemote(phoneSetupUrl(),$('#remotePair'));
 $('#remoteSend').onclick=async()=>{
   const button=$('#remoteSend');
   if(!navigator.share){ await copyRemote(phoneSetupUrl(),button); return; }
-  try{ await navigator.share({title:'Ms Rachel Remote',text:'Open this link on your phone to set up playback controls.',url:phoneSetupUrl()}); }
+  // Share one URL item: some share targets keep only text when both are supplied.
+  try{ await navigator.share({url:phoneSetupUrl()}); }
   catch(e){ if(e.name!=='AbortError') await copyRemote(phoneSetupUrl(),button); }
 };
 renderRemote();

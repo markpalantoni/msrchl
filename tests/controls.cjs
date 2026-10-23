@@ -161,10 +161,12 @@ test('blocked clipboard offers manual copying without replacing the saved topic 
   a.get('#remotePanel').open=false;a.get('#remotePanel').ontoggle();
   assert.equal(a.get('#remoteManual').hidden,true);assert.equal(a.get('#remoteManualInput').value,'');
 });
-test('native share receives the phone setup link and dismissing it does not copy a secret',async()=>{
+test('native share sends only the complete setup URL and dismissing it does not copy a secret',async()=>{
   const a=app({stored:'test-topic'});let shared;
   a.context.navigator.share=async data=>{shared=data;};
-  await a.get('#remoteSend').onclick();assert.equal(new URL(shared.url).pathname,'/remote.html');
+  await a.get('#remoteSend').onclick();
+  assert.deepEqual(Object.keys(shared),['url']);
+  assert.equal(shared.url,'https://example.test/remote.html?remote=test-topic');
   a.context.navigator.share=async()=>{const e=Error();e.name='AbortError';throw e;};
   await a.get('#remoteSend').onclick();assert.equal(a.calls.some(c=>c[0]==='copy'),false);
 });
@@ -219,4 +221,15 @@ test('returning to the picker preserves the last launch address and cancels defe
   assert.equal(a.run('pending'),null);assert.equal(a.run('autoV'),null);
   assert.equal(a.run('ticker'),null);assert.equal(a.run('winding'),false);
   assert.equal(a.intervals.size,0);assert.ok(a.calls.some(c=>c[0]==='close'));
+});
+
+
+test('sharing without native support or after failure copies the complete setup URL',async()=>{
+  for(const unavailable of [true,false]){
+    const a=app({stored:'test-topic'});
+    if(!unavailable) a.context.navigator.share=async()=>{throw Error('share failed');};
+    await a.get('#remoteSend').onclick();
+    assert.equal(a.calls.find(c=>c[0]==='copy')[1],'https://example.test/remote.html?remote=test-topic');
+    assert.equal(a.get('#remoteSend').textContent,'Copied!');
+  }
 });

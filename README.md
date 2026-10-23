@@ -145,7 +145,8 @@ the panel warns that the topic is only set for this visit.
 
 In the iPad player's **Remote** section, choose **Send controls to phone** to
 open the device's share sheet, or **Copy phone setup link** to paste into
-Messages or Mail. Copying changes the button to **Copied!** and shows a visible
+Messages or Mail. Native sharing sends the URL alone so a share target cannot
+select explanatory text while dropping the separate URL. Copying changes the button to **Copied!** and shows a visible
 confirmation. If clipboard access is denied, a separate field selects the text
 for manual copying without replacing the topic input.
 
