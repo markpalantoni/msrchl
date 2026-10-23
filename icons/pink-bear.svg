@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="A smiling pink teddy bear">
+  <rect width="512" height="512" fill="#fce6ef"/>
+  <circle cx="132" cy="151" r="70" fill="#df80a4"/>
+  <circle cx="380" cy="151" r="70" fill="#df80a4"/>
+  <circle cx="132" cy="151" r="39" fill="#f5bad0"/>
+  <circle cx="380" cy="151" r="39" fill="#f5bad0"/>
+  <path d="M256 131c-103 0-171 68-171 168 0 94 70 151 171 151s171-57 171-151c0-100-68-168-171-168Z" fill="#eb9abb"/>
+  <ellipse cx="160" cy="326" rx="27" ry="17" fill="#dc769e"/>
+  <ellipse cx="352" cy="326" rx="27" ry="17" fill="#dc769e"/>
+  <ellipse cx="195" cy="278" rx="15" ry="19" fill="#633c4e"/>
+  <ellipse cx="317" cy="278" rx="15" ry="19" fill="#633c4e"/>
+  <circle cx="190" cy="272" r="4" fill="#fff6f0"/>
+  <circle cx="312" cy="272" r="4" fill="#fff6f0"/>
+  <ellipse cx="256" cy="350" rx="68" ry="53" fill="#fff2e9"/>
+  <path d="M238 330q18-13 36 0c6 6-7 23-18 23s-24-17-18-23Z" fill="#633c4e"/>
+  <rect x="252" y="347" width="8" height="20" rx="4" fill="#633c4e"/>
+  <path d="M228 365C237 384 251 384 260 367L253 363C247 375 239 375 235 362Z" fill="#633c4e"/>
+  <path d="M252 367C261 384 275 384 284 365L277 362C273 375 265 375 259 363Z" fill="#633c4e"/>
+</svg>

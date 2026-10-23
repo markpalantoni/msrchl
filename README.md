@@ -46,6 +46,17 @@ on release, movement, cancellation, pause, wind-down, or leaving the app. The
 session still lasts the chosen amount of real time. Videos without 2x support
 keep their normal speed; double-tap skipping remains available.
 
+## Home Screen icon
+
+The site supplies a pink teddy-bear icon for Safari's **Add to Home Screen**
+preview, installed web apps and browser tabs. The editable artwork is
+`icons/pink-bear.svg`; the PNG exports include a 180-pixel Apple touch icon.
+Existing iPad icons may retain their cached artwork. If the old letter icon
+persists, reload the site in Safari and add it to the Home Screen again.
+Keep the old player icon until the replacement works. If Remote is configured,
+copy its topic from the old icon and set the same topic inside the new icon;
+Home Screen icons can have separate storage.
+
 ## iPad launcher
 
 [Download Open Ms Rachel](shortcuts/Open-Ms-Rachel.shortcut) on the iPad and
