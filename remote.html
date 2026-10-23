@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name=referrer content=no-referrer>
+<meta name=robots content="noindex,nofollow,noarchive">
+<meta name=apple-mobile-web-app-title content="Ms Rachel Remote">
+<link rel=apple-touch-icon sizes=180x180 href="icons/pink-bear-180.png">
+<link rel=icon type="image/png" sizes=32x32 href="icons/pink-bear-32.png">
+<title>Ms Rachel Remote</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#12101a;color:#f4f1ea;font:16px/1.5 system-ui,sans-serif}
+main{max-width:520px;margin:auto;padding:32px 22px max(32px,env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;gap:14px}header img{width:64px;height:64px;border-radius:16px}
+h1{font-size:26px;margin:0}header p{margin:2px 0;color:#c3baca;font-size:14px}
+#connection{color:#c3baca;margin:24px 0 16px}#setupHint{padding:16px;background:#241f33;border-radius:14px}
+a{color:#f0b429}.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{font:inherit;cursor:pointer;touch-action:manipulation;border:1px solid #514965;border-radius:16px;
+ color:inherit;background:#241f33;padding:18px 12px;min-height:66px;font-weight:650}
+button:focus-visible{outline:3px solid #f0b429;outline-offset:3px}button:disabled{opacity:.4;cursor:default}
+button[data-command=wind]{grid-column:1/-1;background:#f0b429;color:#2a1f00;border:0;font-size:23px}
+button small{display:block;font-size:13px;font-weight:400}button[data-command=toggle]{grid-column:1/-1}
+#status{min-height:3em;margin:20px 0 8px;font-weight:600;color:#f0b429}
+.note{font-size:14px;color:#c3baca}footer{margin-top:28px;border-top:1px solid #2f2b3d;padding-top:16px}
+#forget{background:none;border:0;font-size:14px;color:#c3baca;min-height:44px;padding:8px 0;text-decoration:underline}
+</style>
+</head>
+<body>
+<main>
+  <header><img src="icons/pink-bear-180.png" alt=""><div><h1>Ms Rachel Remote</h1><p>Your playback controls</p></div></header>
+  <p id=connection></p>
+  <p id=setupHint hidden>On your iPad, open the player’s <b>Remote</b> section and choose
+    <b>Send controls to phone</b>. Open that setup link here to connect this remote.</p>
+  <div class=controls aria-label="Playback controls">
+    <button data-command=wind disabled>Wind down<small>Fade sound and picture over 20 seconds</small></button>
+    <button data-command=pause disabled>Pause</button>
+    <button data-command=resume disabled>Resume</button>
+    <button data-command=cancel disabled>Cancel wind-down</button>
+    <button data-command=back disabled>Back 10 seconds</button>
+    <button data-command=fwd disabled>Forward 30 seconds</button>
+    <button data-command=fwd60 disabled>Forward 1 minute</button>
+    <button data-command=toggle disabled>Pause / resume</button>
+  </div>
+  <p id=status role=status aria-live=polite></p>
+  <p class=note>Controls every active iPad using this remote. Keep the player open and both devices online.</p>
+  <footer><p class=note>Keep your setup link private. This browser remembers the connection;
+    reopening the setup link also reconnects a new browser or Home Screen icon.</p>
+    <button id=forget hidden>Forget this remote on this device</button>
+  </footer>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const buttons=[...document.querySelectorAll('[data-command]')];
+const KEY='msrchl:remote', valid=t=>typeof t==='string'&&/^[a-zA-Z0-9_-]{1,64}$/.test(t)&&t!=='off';
+const params=new URLSearchParams(location.search), incoming=params.get('remote');
+if(incoming!==null){
+  const url=new URL(location.href);url.searchParams.delete('remote');
+  history.replaceState(null,'',url.pathname+url.search+url.hash);
+}
+let topic=null, saved=true, busy=false, notice='';
+try{topic=localStorage.getItem(KEY);}catch(e){saved=false;}
+if(incoming==='off'){
+  topic=null;try{localStorage.removeItem(KEY);}catch(e){saved=false;}
+}else if(valid(incoming)){
+  topic=incoming;try{localStorage.setItem(KEY,topic);}catch(e){saved=false;}
+}else if(incoming!==null){notice='That setup link is invalid. Send a fresh link from the iPad’s Remote section.';}
+if(!valid(topic))topic=null;
+function render(){
+  $('#connection').textContent=topic?(saved?'Ready. Your controls are set up.':'Ready for this visit. Reopen your setup link next time; browser storage is unavailable.'):'This remote is not connected yet.';
+  $('#setupHint').hidden=!!topic;$('#forget').hidden=!topic;
+  buttons.forEach(b=>b.disabled=!topic||busy);
+}
+$('#status').textContent=notice;
+async function sendCommand(cmd){
+  if(!topic||busy||!buttons.some(b=>b.dataset.command===cmd))return;
+  busy=true;render();$('#status').textContent='Sending…';
+  const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),10000);
+  try{
+    const response=await fetch('https://ntfy.sh/'+encodeURIComponent(topic),{
+      method:'POST',headers:{'Content-Type':'text/plain','Cache':'no'},body:cmd,signal:controller.signal
+    });
+    if(!response.ok)throw new Error('Request failed');
+    const labels={wind:'Wind-down',cancel:'Cancel wind-down',pause:'Pause',resume:'Resume',toggle:'Pause / resume',back:'Back 10 seconds',fwd:'Forward 30 seconds',fwd60:'Forward 1 minute'};
+    $('#status').textContent=labels[cmd]+' sent. Check the iPad for the playback change.';
+  }catch(e){$('#status').textContent='Couldn’t confirm delivery. Check the iPad before trying again.';}
+  finally{clearTimeout(timer);busy=false;render();}
+}
+buttons.forEach(b=>b.onclick=()=>sendCommand(b.dataset.command));
+$('#forget').onclick=()=>{
+  if(busy)return;
+  topic=null;try{localStorage.removeItem(KEY);}catch(e){}
+  $('#status').textContent='Forgotten on this device. Your iPads are unchanged.';render();
+};
+render();
+</script>
+</body>
+</html>

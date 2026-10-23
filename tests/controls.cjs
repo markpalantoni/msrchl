@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const {webcrypto}=require('node:crypto');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1];
-function app({query='',stored=null,blocked=false}={}){
+function app({query='',stored=null,blocked=false,clipboardBlocked=false}={}){
   const nodes=new Map(), timers=new Map(), storage=new Map(), calls=[];
   if(stored) storage.set('msrchl:remote',stored);
   let next=0;
@@ -14,7 +14,7 @@ function app({query='',stored=null,blocked=false}={}){
       classList:{add:(...v)=>v.forEach(x=>classes.add(x)),remove:(...v)=>v.forEach(x=>classes.delete(x)),
         contains:x=>classes.has(x),toggle:(x,on)=>{if(on??!classes.has(x))classes.add(x);else classes.delete(x);}},
       append(...items){this.children.push(...items);},appendChild(item){this.children.push(item);},
-      replaceChildren(){this.children=[];},setAttribute(){},select(){},setPointerCapture(){}};
+      replaceChildren(){this.children=[];},setAttribute(){},focus(){},select(){},setSelectionRange(){},setPointerCapture(){}};
   }
   const get=selector=>{if(!nodes.has(selector))nodes.set(selector,node());return nodes.get(selector);};
   const context=vm.createContext({URL,URLSearchParams,Uint8Array,crypto:webcrypto,console,
@@ -24,7 +24,7 @@ function app({query='',stored=null,blocked=false}={}){
     localStorage:{getItem:key=>{if(blocked)throw Error();return storage.get(key)||null;},
       setItem:(key,value)=>{if(blocked)throw Error();storage.set(key,value);},
       removeItem:key=>{if(blocked)throw Error();storage.delete(key);}},
-    navigator:{clipboard:{writeText:async value=>calls.push(['copy',value])}},
+    navigator:{clipboard:{writeText:async value=>{if(clipboardBlocked)throw Error('denied');calls.push(['copy',value]);}}},
     setTimeout:(fn,ms)=>{timers.set(++next,{fn,ms});return next;},clearTimeout:id=>timers.delete(id),
     setInterval:()=>++next,clearInterval(){},addEventListener(){},
     fetch:()=>new Promise(()=>{}),window:{},EventSource:class{constructor(url){calls.push(['listen',url]);}close(){calls.push(['close']);}}
@@ -140,4 +140,31 @@ test('a failed seek eventually yields to the real position; finished videos rest
   const a=app();playing(a);a.run('skipVideo(30);seekLanding.until=0;save()');
   assert.equal(a.storage.get('msrchl:pos:video'),'45');
   a.run('player.getPlayerState=()=>0;save()');assert.equal(a.storage.get('msrchl:pos:video'),'0');
+});
+
+test('phone setup copying confirms success beside the button and uses the dedicated controller URL',async()=>{
+  const a=app({stored:'test-topic'}), b=a.get('#remotePair');b.textContent='Copy phone setup link';
+  await b.onclick();
+  const url=new URL(a.calls.find(c=>c[0]==='copy')[1]);
+  assert.equal(url.pathname,'/remote.html');assert.equal(url.searchParams.get('remote'),'test-topic');
+  assert.equal(b.textContent,'Copied!');assert.equal(b.disabled,false);
+  assert.equal(a.get('#remoteNote').classList.contains('copyFeedback'),true);
+  await b.onclick();a.fire(4000);assert.equal(b.textContent,'Copy phone setup link');
+});
+test('blocked clipboard offers manual copying without replacing the saved topic input',async()=>{
+  const a=app({stored:'test-topic',clipboardBlocked:true}),b=a.get('#remotePair');
+  await b.onclick();
+  assert.equal(b.textContent,'Copy manually');assert.equal(a.get('#remoteManual').hidden,false);
+  assert.equal(new URL(a.get('#remoteManualInput').value).searchParams.get('remote'),'test-topic');
+  assert.equal(a.get('#remoteInput').type,'password');assert.equal(a.get('#remoteInput').value,'test-topic');
+  assert.match(a.get('#remoteNote').textContent,/blocked/);assert.equal(a.calls.some(c=>c[0]==='copy'),false);
+  a.get('#remotePanel').open=false;a.get('#remotePanel').ontoggle();
+  assert.equal(a.get('#remoteManual').hidden,true);assert.equal(a.get('#remoteManualInput').value,'');
+});
+test('native share receives the phone setup link and dismissing it does not copy a secret',async()=>{
+  const a=app({stored:'test-topic'});let shared;
+  a.context.navigator.share=async data=>{shared=data;};
+  await a.get('#remoteSend').onclick();assert.equal(new URL(shared.url).pathname,'/remote.html');
+  a.context.navigator.share=async()=>{const e=Error();e.name='AbortError';throw e;};
+  await a.get('#remoteSend').onclick();assert.equal(a.calls.some(c=>c[0]==='copy'),false);
 });

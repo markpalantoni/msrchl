@@ -114,17 +114,45 @@ Each iPad Home Screen icon has its own storage: configure Remote inside the
 actual icon you use. A new icon starts without a topic. When storage is blocked,
 the panel warns that the topic is only set for this visit.
 
-Copy the topic or player setup link to configure another player. The setup link
-uses `?remote=<topic>`; `?remote=off` forgets it. The player removes this parameter
-from its address bar immediately, and ordinary shared video links omit it.
+### Set up phone controls once
+
+In the iPad player's **Remote** section, choose **Send controls to phone** to
+open the device's share sheet, or **Copy phone setup link** to paste into
+Messages or Mail. Copying changes the button to **Copied!** and shows a visible
+confirmation. If clipboard access is denied, a separate field selects the text
+for manual copying without replacing the topic input.
+
+The setup link opens `remote.html?remote=<topic>`. Opening it imports the topic,
+removes it from the address bar immediately, and displays all eight controls.
+The phone remembers the topic in that browser; bookmark `remote.html` to reopen
+the controls. Another browser or Home Screen icon may have separate storage;
+reopen the original private setup link there to pair it. If storage is blocked,
+the controller says the setup is only available for the current visit.
+
+Use the same topic on both iPads to control them together. Use **Copy topic**
+and paste it inside the second iPad's actual player icon. Different topics give
+independent controls. Existing player links using `?remote=<topic>` and
+`?remote=off` continue to work; ordinary shared video links omit the topic.
+
+The phone controller only sends a command after a button press. Requests use
+HTTPS POST with `Cache: no`, so opening or previewing the setup link never sends
+a playback command and these button commands aren't retained in ntfy's message
+cache. A pending request disables buttons to prevent duplicate taps. The page
+reports accepted requests as sent; it cannot confirm the iPad received them.
+If delivery cannot be confirmed, check the iPad before retrying a skip.
+The controller loads no video catalog or YouTube scripts.
 
 While a video plays, the player listens over [ntfy.sh](https://ntfy.sh) for
 `wind`, `cancel`, `pause`, `resume`, `toggle`, `fwd` (+30 seconds), `fwd60`
-(+1 minute) or `back` (-10 seconds). Seeking keeps the session deadline and pause state unchanged,
-clamps to the video bounds, and is ignored during wind-down. The Remote section provides a
-command link and a Copy link button for each. Send a link to your phone and use
-it as a bookmark or a Shortcut with **Get Contents of URL**. Opening a command
-link immediately sends its command. The triple-tap guide points back to setup.
+(+1 minute) or `back` (-10 seconds). Seeking keeps the session deadline and pause
+state unchanged, clamps to video bounds, and is ignored during wind-down.
+The triple-tap guide points back to Remote setup in the picker.
+
+Legacy command links and their copy buttons remain under **Individual command
+links and Shortcuts**. Opening one sends immediately using GET. Use the phone
+setup link for normal sharing: email scanners or link previews that visit a
+legacy command URL could trigger its command. The legacy Shortcut below still
+works with a command link.
 
 ### One-tap Fade Down on iPhone
 
@@ -170,7 +198,7 @@ earlier; the notes in the file explain how episode numbers give the year.
 Static site, no build. Serve the directory (`python3 -m http.server 8765`) and
 load it in a browser. Pushing to `main` deploys via GitHub Pages.
 
-Run `node --test tests/controls.cjs` for the remote setup, seeking and gesture
+Run `node --test tests/controls.cjs tests/phone-remote.cjs` for the remote setup, seeking and gesture
 logic checks. These use a simulated player; also verify playback and touch
 behavior in a real browser before shipping.
 

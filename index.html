@@ -50,7 +50,11 @@ h1{font-size:26px;font-weight:700;margin-bottom:4px}
 .remote button:disabled{opacity:.4}.remote a{color:#f0b429}
 .remote li{margin:8px 0}.remote ul li{list-style:none}.remote ol{padding-left:22px}
 .remote li button{margin-left:12px}
-#remoteNote{min-height:1.4em}.corner{touch-action:none;-webkit-user-select:none;user-select:none}
+#remoteNote{min-height:1.4em}
+#remoteNote.copyFeedback{position:fixed;z-index:70;bottom:max(22px,env(safe-area-inset-bottom));left:50%;
+ transform:translateX(-50%);margin:0;width:max-content;max-width:calc(100% - 32px);padding:14px 18px;
+ border-radius:14px;background:#f0b429;color:#2a1f00;font-weight:650;opacity:1;box-shadow:0 5px 28px #0008}
+.remote #remoteManualInput{background:#fff;color:#211b2d}.corner{touch-action:none;-webkit-user-select:none;user-select:none}
 
 #tap{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
   gap:22px;background:#12101a;z-index:40;padding:30px;text-align:center;border:0;color:#f4f1ea;width:100%}
@@ -132,9 +136,16 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
     <p>Keep the topic and its links private: anyone with them can control playback. Generating a new topic
       replaces this device’s old one; update your phone links too. Forgetting here leaves other devices unchanged.</p>
     <div id=remoteLinks hidden>
-      <div class=actions><button id=remoteCopy>Copy topic</button><button id=remotePair>Copy player setup link</button></div>
-      <p>Use the same topic on your other player icons. Copy the command links to your phone for bookmarks or
-        Shortcuts (Get Contents of URL). Opening a command link sends it immediately.</p>
+      <p>Send one setup link to your phone. Open it once to get all the playback controls;
+        your phone remembers the setup in that browser.</p>
+      <div class=actions><button id=remoteSend>Send controls to phone</button><button id=remotePair>Copy phone setup link</button><button id=remoteCopy>Copy topic</button></div>
+      <div id=remoteManual hidden><label for=remoteManualInput>Copy this private text manually</label>
+        <input id=remoteManualInput type=text readonly autocomplete=off autocapitalize=none spellcheck=false>
+      </div>
+      <p>Use the same topic on both iPads to control them together.</p>
+      <details><summary>Individual command links and Shortcuts</summary>
+      <p>These older command links send immediately when opened. For normal phone use,
+        use the phone setup link above to get buttons. Copy a command link only when configuring a Shortcut.</p>
       <ul id=remoteCommands></ul>
       <p><strong>One-tap fade from your iPhone</strong></p>
       <ol>
@@ -146,6 +157,7 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
       <p>Tap Fade Down to fade sound and picture over 20 seconds, then stop the video.
         The player must be open and both devices online. No ntfy app is needed.
         For an immediate stop, use the Pause link.</p>
+      </details>
     </div>
     <p id=remoteNote role=status aria-live=polite></p>
   </details>
@@ -231,8 +243,15 @@ let remoteTopic=(()=>{
 })();
 const REMOTE_COMMANDS=[['wind','Wind down'],['cancel','Cancel wind-down'],['pause','Pause'],
   ['resume','Resume'],['toggle','Pause / resume'],['fwd','Forward 30 seconds'],['fwd60','Forward 1 minute'],['back','Back 10 seconds']];
+const copyLabels=new WeakMap(), copyTimers=new WeakMap();
+let copyNoticeTimer=null;
+function phoneSetupUrl(){
+  const url=new URL('remote.html',location.href); url.searchParams.set('remote',remoteTopic); return url.href;
+}
 function commandUrl(cmd){ return 'https://ntfy.sh/'+encodeURIComponent(remoteTopic)+'/publish?message='+encodeURIComponent(cmd); }
 function renderRemote(){
+  clearTimeout(copyNoticeTimer); $('#remoteNote').classList.remove('copyFeedback');
+  $('#remoteManual').hidden=true; $('#remoteManualInput').value='';
   $('#remoteStatus').textContent=remoteTopic?(remoteSaved?'Set on this device':'Set for this visit only'):'Not set on this device';
   $('#remoteInput').type='password'; $('#remoteInput').value=remoteTopic||'';
   $('#remoteForget').disabled=!remoteTopic;
@@ -242,7 +261,7 @@ function renderRemote(){
     const li=document.createElement('li'), a=document.createElement('a'), b=document.createElement('button');
     a.textContent=label; a.href=commandUrl(cmd); a.target='_blank'; a.rel='noopener noreferrer';
     b.textContent='Copy link'; b.setAttribute('aria-label','Copy '+label.toLowerCase()+' link');
-    b.onclick=()=>copyRemote(commandUrl(cmd)); li.append(a,b); $('#remoteCommands').append(li);
+    b.onclick=()=>copyRemote(commandUrl(cmd),b); li.append(a,b); $('#remoteCommands').append(li);
   });
   $('#remoteNote').textContent=remoteNotice||(!remoteSaved?'Storage is unavailable. This setting may not survive closing the player.':'');
 }
@@ -257,10 +276,24 @@ function setRemoteTopic(topic){
   remoteTopic=topic; renderRemote();
   if(ticker) listenRemote();
 }
-async function copyRemote(value){
-  try{ await navigator.clipboard.writeText(value); $('#remoteNote').textContent='Copied. Keep this link or topic private.'; }
-  catch(e){ $('#remoteInput').type='text'; $('#remoteInput').value=value; $('#remoteInput').select();
-    $('#remoteNote').textContent='Copy the selected text, then close this section to hide it.'; }
+async function copyRemote(value,button){
+  const label=copyLabels.get(button)||button.textContent; copyLabels.set(button,label);
+  clearTimeout(copyTimers.get(button)); clearTimeout(copyNoticeTimer);
+  button.disabled=true; button.textContent='Copying…';
+  $('#remoteManual').hidden=true; $('#remoteManualInput').value='';
+  $('#remoteNote').classList.add('copyFeedback'); $('#remoteNote').textContent='Copying…';
+  try{
+    await navigator.clipboard.writeText(value); button.textContent='Copied!';
+    $('#remoteNote').textContent='Copied. Paste it into Messages or Mail to send to your phone.';
+  }catch(e){
+    button.textContent='Copy manually'; const input=$('#remoteManualInput'); input.value=value;
+    $('#remoteManual').hidden=false; input.focus(); input.select(); input.setSelectionRange(0,value.length);
+    $('#remoteNote').textContent='Automatic copying was blocked. Copy the selected text manually.';
+  }finally{
+    button.disabled=false;
+    copyTimers.set(button,setTimeout(()=>button.textContent=label,4000));
+    copyNoticeTimer=setTimeout(()=>$('#remoteNote').classList.remove('copyFeedback'),4000);
+  }
 }
 $('#remotePanel').ontoggle=()=>{ if(!$('#remotePanel').open){ $('#remoteInput').type='password'; renderRemote(); } };
 $('#remoteGenerate').onclick=()=>{
@@ -274,10 +307,13 @@ $('#remoteSet').onclick=()=>{
   setRemoteTopic(topic);
 };
 $('#remoteForget').onclick=()=>setRemoteTopic(null);
-$('#remoteCopy').onclick=()=>copyRemote(remoteTopic);
-$('#remotePair').onclick=()=>{
-  const url=new URL(location.pathname,location.origin); url.searchParams.set('remote',remoteTopic);
-  copyRemote(url.href);
+$('#remoteCopy').onclick=()=>copyRemote(remoteTopic,$('#remoteCopy'));
+$('#remotePair').onclick=()=>copyRemote(phoneSetupUrl(),$('#remotePair'));
+$('#remoteSend').onclick=async()=>{
+  const button=$('#remoteSend');
+  if(!navigator.share){ await copyRemote(phoneSetupUrl(),button); return; }
+  try{ await navigator.share({title:'Ms Rachel Remote',text:'Open this link on your phone to set up playback controls.',url:phoneSetupUrl()}); }
+  catch(e){ if(e.name!=='AbortError') await copyRemote(phoneSetupUrl(),button); }
 };
 renderRemote();
 function receiveRemote(data){
