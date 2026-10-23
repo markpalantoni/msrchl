@@ -3,7 +3,7 @@
 <meta name=referrer content=strict-origin-when-cross-origin>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name=apple-mobile-web-app-capable content=yes>
+<meta name=apple-mobile-web-app-capable content=no>
 <meta name=apple-mobile-web-app-status-bar-style content=black>
 <meta name=apple-mobile-web-app-title content="Ms Rachel">
 <link rel=apple-touch-icon sizes=180x180 href="icons/pink-bear-180.png">
@@ -122,10 +122,24 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   <button class=big id=surprise>Surprise me</button>
   <button class=pin id=pin>Make Surprise me pick from the filters above</button>
   <button class=pin id=share>Share a link that plays these filters</button>
+  <details class=remote id=homeSetup>
+    <summary>iPad Home Screen setup</summary>
+    <p>For YouTube Premium, use the browser where you’re signed into your Premium account.
+      A separate web app may not share that sign-in.</p>
+    <ol>
+      <li>Open <a href="?v=last">Resume last video</a> in your regular browser.</li>
+      <li>Choose <b>Share → Add to Home Screen</b> and turn <b>Open as Web App off</b>.</li>
+      <li>Keep the pink bear icon and tap <b>Add</b>. The bookmark opens in your default browser.</li>
+    </ol>
+    <p>Test playback before replacing your old icon. Your Premium account must be signed in
+      on youtube.com in that browser, and YouTube cookies must be allowed for embedded playback.</p>
+    <p>Alternatively, <a href="shortcuts/Open-Ms-Rachel.shortcut" download="Open Ms Rachel.shortcut">download Open Ms Rachel</a>
+      and add it to the Home Screen from Shortcuts. It opens the last-video link in your default browser.</p>
+  </details>
   <details class=remote id=remotePanel>
     <summary>Remote · <span id=remoteStatus>Not set on this device</span></summary>
-    <p>Control this player from your phone while a video plays. Each Home Screen icon has its own storage:
-      a new icon starts without a remote. Open this section inside the icon you use to play videos.</p>
+    <p>Control this player from your phone while a video plays. Browsers and separate web apps can have different storage.
+      Set up Remote in the browser you use to play videos.</p>
     <label for=remoteInput>Private topic</label>
     <input id=remoteInput type=password autocomplete=off autocapitalize=none spellcheck=false maxlength=64
       placeholder="Paste an existing topic, or generate one">

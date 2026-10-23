@@ -46,6 +46,29 @@ on release, movement, cancellation, pause, wind-down, or leaving the app. The
 session still lasts the chosen amount of real time. Videos without 2x support
 keep their normal speed; double-tap skipping remains available.
 
+## Home Screen launch address and YouTube Premium
+
+Use `https://markpalantoni.github.io/msrchl/?v=last` in the regular browser
+where YouTube is signed into the Premium account. This entry point resolves
+the last video and saved position from that browser on every launch; it does
+not pin a particular video ID. Extra filter and duration parameters added to
+the address do not change the `v=last` behavior.
+
+In Safari's **Share > Add to Home Screen**, turn **Open as Web App off**.
+The resulting bookmark opens in the default browser. Set that default to the
+browser with the Premium login. The player opts out of the legacy standalone
+Apple web-app mode; iPadOS 26 still requires turning off its install toggle.
+An existing standalone icon is not converted by a site update: create a new
+bookmark and verify playback before removing the old icon. Copy any Remote
+topic from the old web app into the regular browser if needed.
+
+YouTube's embedded player must be able to access the Premium sign-in and
+YouTube cookies. Separate web apps may not share the browser's account context.
+The site cannot inspect a cross-origin YouTube account, verify Premium, or
+promise that YouTube will never serve an ad. Test on the physical iPad in the
+chosen browser. YouTube's official troubleshooting is at
+https://support.google.com/youtube/answer/7437519.
+
 ## Home Screen icon
 
 The site supplies a pink teddy-bear icon for Safari's **Add to Home Screen**
@@ -75,10 +98,9 @@ Verify it on the target iPad with the browser closed, with another tab selected,
 and with the player already selected. The published artifact is Apple-signed;
 its iPad launch and tab-reuse behavior still require those device checks.
 
-For a dedicated player surface, Safari also supports opening the player URL,
-then **Share > Add to Home Screen > Open as Web App**. That creates a separate
-Home Screen web app and may need fresh Remote setup; it is independent of the
-Shortcuts launcher and database.
+For a browser bookmark without Shortcuts, use the Home Screen setup above
+with **Open as Web App off**. Avoid standalone installation when relying on
+the browser’s YouTube Premium sign-in.
 
 ## Deep links
 
