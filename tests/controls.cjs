@@ -4,8 +4,8 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const {webcrypto}=require('node:crypto');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1];
-function app({query='',stored=null,blocked=false,clipboardBlocked=false}={}){
-  const nodes=new Map(), timers=new Map(), storage=new Map(), calls=[];
+function app({query='',stored=null,blocked=false,clipboardBlocked=false,values={}}={}){
+  const nodes=new Map(), timers=new Map(), intervals=new Map(), storage=new Map(Object.entries(values)), calls=[];
   if(stored) storage.set('msrchl:remote',stored);
   let next=0;
   function node(){
@@ -20,17 +20,17 @@ function app({query='',stored=null,blocked=false,clipboardBlocked=false}={}){
   const context=vm.createContext({URL,URLSearchParams,Uint8Array,crypto:webcrypto,console,
     location:{href:'https://example.test/'+query,search:query,pathname:'/',origin:'https://example.test'},
     history:{replaceState:(_a,_b,url)=>calls.push(['url',url])},
-    document:{querySelector:get,createElement:node,body:node(),addEventListener(){}},
+    document:{querySelector:get,querySelectorAll:()=>[],createElement:node,body:node(),addEventListener(){}},
     localStorage:{getItem:key=>{if(blocked)throw Error();return storage.get(key)||null;},
       setItem:(key,value)=>{if(blocked)throw Error();storage.set(key,value);},
       removeItem:key=>{if(blocked)throw Error();storage.delete(key);}},
     navigator:{clipboard:{writeText:async value=>{if(clipboardBlocked)throw Error('denied');calls.push(['copy',value]);}}},
     setTimeout:(fn,ms)=>{timers.set(++next,{fn,ms});return next;},clearTimeout:id=>timers.delete(id),
-    setInterval:()=>++next,clearInterval(){},addEventListener(){},
+    setInterval:(fn,ms)=>{intervals.set(++next,{fn,ms});return next;},clearInterval:id=>intervals.delete(id),addEventListener(){},
     fetch:()=>new Promise(()=>{}),window:{},EventSource:class{constructor(url){calls.push(['listen',url]);}close(){calls.push(['close']);}}
   });
   vm.runInContext(source,context);
-  return {get,calls,storage,context,run:code=>vm.runInContext(code,context),
+  return {get,calls,storage,intervals,context,run:code=>vm.runInContext(code,context),
     fire(ms){const entries=[...timers];for(const [id,t] of entries)if(t.ms===ms){timers.delete(id);t.fn();}}};
 }
 function playing(a){
@@ -167,4 +167,56 @@ test('native share receives the phone setup link and dismissing it does not copy
   await a.get('#remoteSend').onclick();assert.equal(new URL(shared.url).pathname,'/remote.html');
   a.context.navigator.share=async()=>{const e=Error();e.name='AbortError';throw e;};
   await a.get('#remoteSend').onclick();assert.equal(a.calls.some(c=>c[0]==='copy'),false);
+});
+
+
+test('last-video launch keeps its address through filter and session changes, while sharing stays explicit',async()=>{
+  const a=app({query:'?v=last'});
+  a.run(`DOC={defaults:{},providers:[{id:'ms-rachel',name:'Ms Rachel'}],topics:[],characters:[],
+    videos:{video:{provider:'ms-rachel',t:'Example'}}};
+    applyFilter({prov:'ms-rachel',topic:'all',era:'all',char:'all'});`);
+  a.get('#mins').children[1].onclick();
+  assert.equal(a.storage.get('msrchl:prov'),'ms-rachel');
+  assert.equal(a.storage.get('msrchl:seconds'),'180');
+  assert.equal(a.calls.some(c=>c[0]==='url'),false);
+  await a.get('#share').onclick();
+  const shared=new URL(a.calls.find(c=>c[0]==='copy')[1]);
+  assert.equal(shared.searchParams.get('v'),'any');
+  assert.equal(shared.searchParams.get('provider'),'ms-rachel');
+  assert.equal(shared.searchParams.get('m'),'3');
+});
+test('last-video launch remembers session length; explicit duration wins and inaccessible storage falls back',()=>{
+  assert.equal(app({query:'?v=last',values:{'msrchl:seconds':'180'}}).run('chosen'),180);
+  assert.equal(app({query:'?v=last&m=5',values:{'msrchl:seconds':'180'}}).run('chosen'),300);
+  assert.equal(app({query:'?v=last',blocked:true}).run('chosen'),1200);
+  assert.equal(app({query:'?v=last',values:{'msrchl:seconds':'invalid'}}).run('chosen'),1200);
+  assert.equal(app({query:'?v=last',values:{'msrchl:seconds':'-20'}}).run('chosen'),1200);
+  assert.equal(app({values:{'msrchl:seconds':'180'}}).run('chosen'),1200);
+});
+test('last-video links still strip imported credentials without appending picker state',()=>{
+  const a=app({query:'?v=last&remote=test-topic'});a.run('syncUrl()');
+  assert.deepEqual(a.calls.filter(c=>c[0]==='url'),[['url','/?v=last']]);
+  assert.equal(a.storage.get('msrchl:remote'),'test-topic');
+});
+test('ordinary deep links still describe the picker in the address',()=>{
+  const a=app({query:'?v=example'});a.run("cur.prov='ms-rachel';chosen=300;syncUrl()");
+  const address=new URL(a.calls.find(c=>c[0]==='url')[1],'https://example.test');
+  assert.equal(address.searchParams.get('v'),'example');
+  assert.equal(address.searchParams.get('provider'),'ms-rachel');
+  assert.equal(address.searchParams.get('m'),'5');
+});
+test('returning to the picker preserves the last launch address and cancels deferred playback',()=>{
+  const a=app({query:'?v=last',stored:'test-topic'});playing(a);
+  a.run(`autoStart({id:'video',t:'Example'});playerReady=false;
+    winding=true;windFade=setInterval(()=>{},80);listenRemote();`);
+  assert.ok(a.intervals.size>0);
+  a.get('#cBR').onclick();a.fire(8000);
+  assert.equal(a.context.location.href,'https://example.test/?v=last');
+  assert.equal(a.get('#pick').classList.contains('on'),true);
+  assert.equal(a.get('#stage').classList.contains('on'),false);
+  assert.equal(a.get('#tap').classList.contains('on'),false);
+  assert.equal(a.storage.get('msrchl:pos:video'),'45');
+  assert.equal(a.run('pending'),null);assert.equal(a.run('autoV'),null);
+  assert.equal(a.run('ticker'),null);assert.equal(a.run('winding'),false);
+  assert.equal(a.intervals.size,0);assert.ok(a.calls.some(c=>c[0]==='close'));
 });

@@ -51,8 +51,13 @@ keep their normal speed; double-tap skipping remains available.
 Use `https://markpalantoni.github.io/msrchl/?v=last` in the regular browser
 where YouTube is signed into the Premium account. This entry point resolves
 the last video and saved position from that browser on every launch; it does
-not pin a particular video ID. Extra filter and duration parameters added to
-the address do not change the `v=last` behavior.
+not pin a particular video ID. When opened with `v=last`, the site leaves the
+launch address unchanged: it does not append provider filters or session length,
+or replace `last` with a video ID. Returning to the picker also keeps the address.
+Video ID, playback position, provider filters, and the selected session length
+live in browser storage. Explicit duration/filter parameters in an incoming link
+still override the saved selections. Remote setup credentials are always removed
+from the address after import.
 
 In Safari's **Share > Add to Home Screen**, turn **Open as Web App off**.
 The resulting bookmark opens in the default browser. Set that default to the
@@ -105,16 +110,16 @@ the browser’s YouTube Premium sign-in.
 ## Deep links
 
 Useful for a home-screen shortcut, e.g. `?v=last` reopens whatever played
-last, where it left off, for a 20 minute session.
+last, where it left off, using the saved session length (20 minutes initially).
 
 A link with `v` starts playing on its own. Browsers only allow sound after a
 tap (iOS always enforces this), so where sound is refused it plays muted with
 a "Tap for sound" pill, and a tap anywhere off the corners turns sound on. If
 nothing plays at all, it falls back to a "Tap to start" screen.
 
-The address bar always carries the picker's filters and length, and "Share a
-link that plays these filters" copies (or shares) one that plays a random
-match, e.g. `?provider=ms-rachel&topic=colors&m=5&v=any`. A link that names
+Except for stable `v=last` launch links, the address bar carries the picker's
+filters and length. "Share a link that plays these filters" always copies
+(or shares) an explicit link that plays a random match, e.g. `?provider=ms-rachel&topic=colors&m=5&v=any`. A link that names
 any filter names all of them: what it leaves out means "all", not whatever the
 device picked last.
 
