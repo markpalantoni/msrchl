@@ -46,6 +46,29 @@ on release, movement, cancellation, pause, wind-down, or leaving the app. The
 session still lasts the chosen amount of real time. Videos without 2x support
 keep their normal speed; double-tap skipping remains available.
 
+## iPad launcher
+
+[Download Open Ms Rachel](shortcuts/Open-Ms-Rachel.shortcut) on the iPad and
+open the file in Shortcuts. The signed launcher has one action: **Open URLs**
+with `https://markpalantoni.github.io/msrchl/?v=last`. It sends the URL on every
+run, regardless of whether the browser is already running, rather than only
+opening the browser app. It uses the device's default browser.
+
+In the shortcut's details, choose **Add to Home Screen**. Keep using the same
+browser as before to retain its saved positions and Remote topic. If the launch
+opens another browser, that browser needs its own Remote setup.
+
+Browser tab selection is handled by the default browser. This launcher does not
+search Chrome's open tabs or guarantee that an existing matching tab is reused.
+Verify it on the target iPad with the browser closed, with another tab selected,
+and with the player already selected. The published artifact is Apple-signed;
+its iPad launch and tab-reuse behavior still require those device checks.
+
+For a dedicated player surface, Safari also supports opening the player URL,
+then **Share > Add to Home Screen > Open as Web App**. That creates a separate
+Home Screen web app and may need fresh Remote setup; it is independent of the
+Shortcuts launcher and database.
+
 ## Deep links
 
 Useful for a home-screen shortcut, e.g. `?v=last` reopens whatever played
