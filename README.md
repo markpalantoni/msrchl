@@ -143,6 +143,11 @@ the panel warns that the topic is only set for this visit.
 
 ### Set up phone controls once
 
+Pairing controls stay under the collapsed **Remote** section. Installation
+instructions are kept here rather than on the player. A paired phone shows
+playback controls; connection help appears only when unpaired, and forgetting
+the connection is under **Settings**.
+
 In the iPad player's **Remote** section, choose **Send controls to phone** to
 open the device's share sheet, or **Copy phone setup link** to paste into
 Messages or Mail. Native sharing sends the URL alone so a share target cannot

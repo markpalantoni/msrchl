@@ -122,26 +122,8 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
   <button class=big id=surprise>Surprise me</button>
   <button class=pin id=pin>Make Surprise me pick from the filters above</button>
   <button class=pin id=share>Share a link that plays these filters</button>
-  <details class=remote id=homeSetup>
-    <summary>iPad Home Screen setup</summary>
-    <p>For YouTube Premium, use the browser where you’re signed into your Premium account.
-      A separate web app may not share that sign-in.</p>
-    <p>The launch address stays <b>?v=last</b>. Video, playback position, provider filters,
-      and your chosen session length are remembered in this browser.</p>
-    <ol>
-      <li>Open <a href="?v=last">Resume last video</a> in your regular browser.</li>
-      <li>Choose <b>Share → Add to Home Screen</b> and turn <b>Open as Web App off</b>.</li>
-      <li>Keep the pink bear icon and tap <b>Add</b>. The bookmark opens in your default browser.</li>
-    </ol>
-    <p>Test playback before replacing your old icon. Your Premium account must be signed in
-      on youtube.com in that browser, and YouTube cookies must be allowed for embedded playback.</p>
-    <p>Alternatively, <a href="shortcuts/Open-Ms-Rachel.shortcut" download="Open Ms Rachel.shortcut">download Open Ms Rachel</a>
-      and add it to the Home Screen from Shortcuts. It opens the last-video link in your default browser.</p>
-  </details>
   <details class=remote id=remotePanel>
     <summary>Remote · <span id=remoteStatus>Not set on this device</span></summary>
-    <p>Control this player from your phone while a video plays. Browsers and separate web apps can have different storage.
-      Set up Remote in the browser you use to play videos.</p>
     <label for=remoteInput>Private topic</label>
     <input id=remoteInput type=password autocomplete=off autocapitalize=none spellcheck=false maxlength=64
       placeholder="Paste an existing topic, or generate one">
@@ -149,30 +131,17 @@ body.tg .corner{opacity:1;background:#f0b42918;border:2px dashed #f0b42999;
       <button id=remoteGenerate>Generate new topic</button><button id=remoteSet>Use this topic</button>
       <button id=remoteForget>Forget on this device</button>
     </div>
-    <p>Keep the topic and its links private: anyone with them can control playback. Generating a new topic
-      replaces this device’s old one; update your phone links too. Forgetting here leaves other devices unchanged.</p>
+    <p>Anyone with this topic or its links can control playback. A new topic requires reconnecting your phone.</p>
     <div id=remoteLinks hidden>
-      <p>Send one setup link to your phone. Open it once to get all the playback controls;
-        your phone remembers the setup in that browser.</p>
       <div class=actions><button id=remoteSend>Send controls to phone</button><button id=remotePair>Copy phone setup link</button><button id=remoteCopy>Copy topic</button></div>
       <div id=remoteManual hidden><label for=remoteManualInput>Copy this private text manually</label>
         <input id=remoteManualInput type=text readonly autocomplete=off autocapitalize=none spellcheck=false>
       </div>
       <p>Use the same topic on both iPads to control them together.</p>
-      <details><summary>Individual command links and Shortcuts</summary>
-      <p>These older command links send immediately when opened. For normal phone use,
-        use the phone setup link above to get buttons. Copy a command link only when configuring a Shortcut.</p>
+      <details><summary>Shortcuts</summary>
+      <p>Command links send immediately when opened. Use only to configure Shortcuts.</p>
       <ul id=remoteCommands></ul>
-      <p><strong>One-tap fade from your iPhone</strong></p>
-      <ol>
-        <li>Copy the <b>Wind down</b> link above and send it privately to your phone.</li>
-        <li>On your phone, <a href="shortcuts/Fade-Down.shortcut" download="Fade Down.shortcut">download Fade Down</a>
-          and open it in Shortcuts. Paste the link when setup asks.</li>
-        <li>In Shortcuts, open Fade Down’s details and choose <b>Add to Home Screen</b>.</li>
-      </ol>
-      <p>Tap Fade Down to fade sound and picture over 20 seconds, then stop the video.
-        The player must be open and both devices online. No ntfy app is needed.
-        For an immediate stop, use the Pause link.</p>
+      <a href="shortcuts/Fade-Down.shortcut" download="Fade Down.shortcut">Download Fade Down</a>
       </details>
     </div>
     <p id=remoteNote role=status aria-live=polite></p>

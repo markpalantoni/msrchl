@@ -13,7 +13,7 @@
 *{box-sizing:border-box}body{margin:0;background:#12101a;color:#f4f1ea;font:16px/1.5 system-ui,sans-serif}
 main{max-width:520px;margin:auto;padding:32px 22px max(32px,env(safe-area-inset-bottom))}
 header{display:flex;align-items:center;gap:14px}header img{width:64px;height:64px;border-radius:16px}
-h1{font-size:26px;margin:0}header p{margin:2px 0;color:#c3baca;font-size:14px}
+h1{font-size:26px;margin:0}
 #connection{color:#c3baca;margin:24px 0 16px}#setupHint{padding:16px;background:#241f33;border-radius:14px}
 a{color:#f0b429}.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 button{font:inherit;cursor:pointer;touch-action:manipulation;border:1px solid #514965;border-radius:16px;
@@ -28,7 +28,7 @@ button small{display:block;font-size:13px;font-weight:400}button[data-command=to
 </head>
 <body>
 <main>
-  <header><img src="icons/pink-bear-180.png" alt=""><div><h1>Ms Rachel Remote</h1><p>Your playback controls</p></div></header>
+  <header><img src="icons/pink-bear-180.png" alt=""><h1>Ms Rachel Remote</h1></header>
   <p id=connection></p>
   <p id=setupHint hidden>On your iPad, open the player’s <b>Remote</b> section and choose
     <b>Send controls to phone</b>. Open that setup link here to connect this remote.</p>
@@ -44,10 +44,10 @@ button small{display:block;font-size:13px;font-weight:400}button[data-command=to
   </div>
   <p id=status role=status aria-live=polite></p>
   <p class=note>Controls every active iPad using this remote. Keep the player open and both devices online.</p>
-  <footer><p class=note>Keep your setup link private. This browser remembers the connection;
-    reopening the setup link also reconnects a new browser or Home Screen icon.</p>
+  <footer><details><summary>Settings</summary>
+    <p class=note>Keep your setup link private. Anyone with it can control playback.</p>
     <button id=forget hidden>Forget this remote on this device</button>
-  </footer>
+  </details></footer>
 </main>
 <script>
 const $=s=>document.querySelector(s);
@@ -67,7 +67,7 @@ if(incoming==='off'){
 }else if(incoming!==null){notice='That setup link is invalid. Send a fresh link from the iPad’s Remote section.';}
 if(!valid(topic))topic=null;
 function render(){
-  $('#connection').textContent=topic?(saved?'Ready. Your controls are set up.':'Ready for this visit. Reopen your setup link next time; browser storage is unavailable.'):'This remote is not connected yet.';
+  $('#connection').textContent=topic?(saved?'Ready':'Ready for this visit. Reopen your setup link next time; browser storage is unavailable.'):'This remote is not connected yet.';
   $('#setupHint').hidden=!!topic;$('#forget').hidden=!topic;
   buttons.forEach(b=>b.disabled=!topic||busy);
 }
